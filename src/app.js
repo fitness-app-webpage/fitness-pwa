@@ -1,7 +1,7 @@
 import { Router } from '@vaadin/router';
 
-// console.log(import.meta.env.MODE);
-// console.log(import.meta.env.BASE_URL);
+console.log(import.meta.env.MODE);
+console.log(import.meta.env.BASE_URL);
 
 const BASE = import.meta.env.MODE === 'production' ? import.meta.env.BASE_URL : '';
 
