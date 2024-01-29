@@ -1,11 +1,6 @@
 import { LitElement, html, css } from "lit";
-import '../components/input/inputField';
 import '../components/page/page';
-import '../components/button/Button';
-import '../components/forms/register-form'
-import '../components/error/errorMessage';
 import '../components/forms/userInfo-form'
-import '../components/forms/goal-form'
 import {Router} from "@vaadin/router";
 import {BASE, router} from "../../app"
 

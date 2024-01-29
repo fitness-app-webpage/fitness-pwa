@@ -1,9 +1,6 @@
 import { LitElement, html, css } from "lit";
-import '../components/input/inputField';
 import '../components/page/page';
-import '../components/button/Button';
 import '../components/forms/register-form'
-import '../components/error/errorMessage';
 import {Router} from "@vaadin/router";
 import {BASE} from "../../app"
 
@@ -29,10 +26,27 @@ export default class Register extends LitElement {
             width: 360px;
             overflow: hidden;
         }
-        h1 {
-          text-align: center;
+        /* .container {
+            height: 600px;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
         }
-  
+        register-form,
+        userinfo-form,
+        goal-form {
+            width: 280px;
+            position: absolute;
+            top: 100px;
+            left: 40px;
+            transition: 0.5s;
+        }
+        userinfo-form {
+            left: 450px;
+        }
+        goal-form {
+            left: 450px;
+        } */
         @media only screen and (max-width: 480px) {
             h1 {
                 font-size: 24px;
