@@ -27,7 +27,7 @@ export default class InputField extends LitElement{
     this.value = "";
     this.name = "";
     this.label = "";
-    this.pattern = "";
+    this.pattern = ".{1,}";
     this.min = "";
     this.max = "";
     this.type = "text";

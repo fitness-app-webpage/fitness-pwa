@@ -5,6 +5,7 @@ import '../components/button/Button';
 import '../components/forms/register-form'
 import '../components/error/errorMessage';
 import '../components/forms/userInfo-form'
+import '../components/forms/goal-form'
 // import {Router} from "@vaadin/router";
 // import {BASE} from "../../app"
 
@@ -38,6 +39,7 @@ export default class Register extends LitElement {
         <div class="container">
             <register-form></register-form>
             <userinfo-form></userinfo-form>
+            <goal-form></goal-form>
         </div>
       </page-div> 
   `;

@@ -36,11 +36,9 @@ export default class GoalForm extends LitElement {
     return html`
           <form @submit=${this.submitForm}>
             <h1>Register</h1>
-            <input-field type="date" name="birthday" label="Birthday" required></input-field>
-            <input-field type="number" name="weight" label="Weight in kilo grams" pattern=".{2,3}" required></input-field>
-            <input-field type="number" name="height" label="Height in centimeters" pattern=".{2,3}" required></input-field>
-            <input-field type="email" name="email" label="Email" required></input-field>
-            <input-field type="password" name="password" label="Password" required></input-field>
+            <input-field type="text" name="activityLevel" label="Activity level(pal)" value="AVERAGE" required></input-field>
+            <input-field type="text" name="goal" label="Goal" value="SLOWLYLOSEWEIGHT"  required></input-field>
+            <input-field type="text" name="protein" label="Weight per kilo grams protein" pattern="([0-2])?([\.][0-9]?)?" required></input-field>
             <button-div value="Register" @click=${this.handleSubmit}></button-div>
           </form>
   `;
@@ -51,7 +49,8 @@ export default class GoalForm extends LitElement {
     const form = e.target;
     const formData = new FormData(form);
     this.data = Object.fromEntries(formData.entries())
-    this.handleData();
+    console.log(this.data)
+    // this.handleData();
   }
 
   handleData() {
