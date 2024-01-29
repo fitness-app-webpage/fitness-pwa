@@ -4,19 +4,22 @@ import '../components/page/page';
 import '../components/button/Button';
 import '../components/forms/register-form'
 import '../components/error/errorMessage';
+import '../components/forms/userInfo-form'
+import '../components/forms/goal-form'
 import {Router} from "@vaadin/router";
-import {BASE} from "../../app"
+import {BASE, router} from "../../app"
 
-export default class Register extends LitElement {
+export default class RegisterUserInfo extends LitElement {
   static get properties() {
     return{
-        _registerData: {type: Object, state: true}
+      _registerData: {type: Object},
     }
   };
 
   constructor() {
     super();
     this._registerData = {};
+    this._personalData = {};
   }
 
   static get styles(){ 
@@ -32,7 +35,6 @@ export default class Register extends LitElement {
         h1 {
           text-align: center;
         }
-  
         @media only screen and (max-width: 480px) {
             h1 {
                 font-size: 24px;
@@ -41,25 +43,34 @@ export default class Register extends LitElement {
     }
     `;
   }
+  onBeforeEnter(location, commands) {
+    if(location.route.data === undefined || location.route.data === null) {
+      return commands.redirect(`${BASE}/register`)
+    }
+    this._registerData = location.route.data.register;
 
+  }
   onBeforeLeave(location) {
-    location.route.data = {register: this._registerData};
+    location.route.data = {register: this._registerData, userInfo: this._personalData};
   }
 
   render() {
     return html`
       <page-div ?noHeader=${true}>
         <div class="container">
-            <h1>Register</h1>
-            <register-form @next="${this.handleNext}"></register-form>
+            <h1>Personal info</h1>
+            <userinfo-form @next=${this.handleNext} @back=${this.handleBack}></userinfo-form>
         </div>
       </page-div> 
   `;
   }
   handleNext(e) {
-    this._registerData = e.detail
-    Router.go(`${BASE}/register/personal-info`)
+    this._personalData = e.detail;
+    Router.go(`${BASE}/register/goal`)
+  }
+  handleBack(e) {
+    Router.go(`${BASE}/register`)
   }
 }
 
-customElements.define('register-div', Register);
+customElements.define('register-userinfo', RegisterUserInfo);
