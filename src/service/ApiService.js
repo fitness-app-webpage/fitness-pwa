@@ -77,9 +77,8 @@ export function login(formData) {
 
     var fetchOptions = {
         method: "POST",
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
     }
-
     return fetch(login_url, fetchOptions)
         .then(response => {
             if(response.ok) {
@@ -97,14 +96,15 @@ export function login(formData) {
 }
 
 export function register(formData) {
-
     var fetchOptions = {
         method: "POST",
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
+        headers: {"Content-type": "application/json; charset=UTF-8"}
     }
 
-    return fetch(refresh_url, fetchOptions)
+    return fetch(register_url, fetchOptions)
         .then(response => {
+            console.log(response)
             if(response.ok) {
                 return response;
             }

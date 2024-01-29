@@ -27,7 +27,7 @@ export default class InputField extends LitElement{
     this.value = "";
     this.name = "";
     this.label = "";
-    this.pattern = "";
+    this.pattern = ".{1,}";
     this.min = "";
     this.max = "";
     this.type = "text";
@@ -72,9 +72,9 @@ export default class InputField extends LitElement{
         position: relative;
         padding: 8px;
         margin: 9px 0;
-        border-radius: var(--input-field-border-radius, 15px);
+        border-radius: var(--input-field-border-radius, 30px);
         /* width: var(--input-field-width, 100%); */
-        background-color: var(--input-field-background-color, #cccccc);
+        background-color: var(--input-field-background-color, #e4dfdf);
       }
       label {
         position: absolute;
@@ -142,7 +142,7 @@ export default class InputField extends LitElement{
       input:-webkit-autofill:hover, 
       input:-webkit-autofill:focus, 
       input:-webkit-autofill:active{
-        box-shadow: 0 0 0 30px var(--box-shadow-color, #cccccc) inset;
+        box-shadow: 0 0 0 30px var(--box-shadow-color, #e4dfdf) inset;
       
       }
       input::-webkit-outer-spin-button,

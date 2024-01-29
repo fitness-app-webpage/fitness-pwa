@@ -34,12 +34,7 @@ export default class LoginDiv extends LitElement {
         background-color: white;
         width: 360px;
         /* padding: 30px 50px 50px 50px; */
-        border-radius: 10px;
-      }
-      input-field {
-        --input-field-background-color: #e4dfdf;
-        --input-field-border-radius: 30px;
-        --box-shadow-color: #e4dfdf;
+        /* border-radius: 10px; */
       }
       .other-links {
         display: flex;

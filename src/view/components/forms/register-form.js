@@ -1,5 +1,5 @@
 import { LitElement, html, css } from "lit";
-// import * as service from "../../service/ApiService";
+import { register } from "../../../service/ApiService";
 // import {Router} from "@vaadin/router";
 // import {BASE} from "../../app"
 
@@ -18,34 +18,51 @@ export default class RegisterForm extends LitElement {
 
   static get styles(){ 
     return css`
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    h1 {
+      text-align: center;
+    }
+
+    @media only screen and (max-width: 480px) {
+            h1 {
+                font-size: 24px;
+                margin-bottom: 0;
+            }
+    }
     `;
   }
 
   render() {
     return html`
           <form @submit=${this.submitForm}>
-            <input-field type="text" name="firstName" label="First name"></input-field>
-            <input-field type="text" name="lastName" label="Last name"></input-field>
-            <input-field type="text" name="username" label="Username"></input-field>
-            <input-field type="email" name="email" label="Email"></input-field>
-            <input-field type="password" name="password" label="Password"></input-field>
+            <h1>Register</h1>
+            <input-field type="text" name="firstName" label="First name" required></input-field>
+            <input-field type="text" name="lastName" label="Last name" required></input-field>
+            <input-field type="text" name="username" label="Username" required></input-field>
+            <input-field type="email" name="email" label="Email" required></input-field>
+            <input-field type="password" name="password" label="Password" required></input-field>
             <button-div value="Register" @click=${this.handleSubmit}></button-div>
           </form>
   `;
   }
 
   submitForm(e) {
-    console.log(e)
     e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
     this.data = Object.fromEntries(formData.entries())
-    console.log(this.data)
     this.handleData();
   }
 
   handleData() {
-    return "";
+    register(this.data)
+      .then(e => {
+        console.log(e)
+        return e;
+      })
   }
 
   handleSubmit(e) {
