@@ -2,6 +2,8 @@ import { LitElement, html, css } from "lit";
 import * as service from "../../service/ApiService";
 import '../components/input/inputField';
 import '../components/page/page';
+import '../components/button/Button';
+import '../components/error/errorMessage';
 import {Router} from "@vaadin/router";
 import {BASE} from "../../app"
 
@@ -21,13 +23,6 @@ export default class LoginDiv extends LitElement {
 
   static get styles(){ 
     return css`
-      /* .body-div{
-        display: flex;
-        background-color: inherit;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-      } */
       h1{
         margin: 0 0 20px 0;
         text-align: center;
@@ -46,6 +41,24 @@ export default class LoginDiv extends LitElement {
         --input-field-border-radius: 30px;
         --box-shadow-color: #e4dfdf;
       }
+      .other-links {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      hr {
+        margin: 100px 0 0 0;
+      }
+      a {
+        font-weight: bold;
+        opacity: 0.85;
+        text-decoration: none;
+        color: black;
+      }
+      a:link, a:visited {
+        color: black;
+      }
       
       @media only screen and (max-width: 480px) {
         h1 {
@@ -58,13 +71,19 @@ export default class LoginDiv extends LitElement {
   render() {
     return html`
       <page-div ?noHeader=${true}>
+        <div class="main-div">
           <div class="login-div" @keyup=${this.enterKeyPressed}>
             <h1>Login</h1>
             <input-field type="email" name="email" @input-changed="${this.listenerInput}" class="email-input" label="Email"></input-field>
             <input-field type="password" name="password" @input-changed="${this.listenerInput}" class="pass-input" label="Password"></input-field>
-            <!-- <error-message></error-message> -->
-            <!-- <button-div @click="${this._login}" value="Login" ?disabled=${this.disabled}></button-div> -->
+            <error-message></error-message>
+            <button-div @click="${this._login}" value="Login" ?disabled=${this.disabled}></button-div>
           </div>
+          <div class="other-links">
+            <hr>
+            <a href=${BASE + "/register"}>or register here</a>
+          </div>
+        </div>
       </page-div> 
   `;
   }

@@ -9,7 +9,7 @@ export default class Button extends LitElement{
   
   constructor() {
     super();
-    this.value = "Button"; 
+    this.value = "Button";
   }
   
   static get styles(){ 

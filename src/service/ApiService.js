@@ -12,6 +12,8 @@ import { jwtDecode } from "jwt-decode";
 const api_url = "http://localhost:8080/api";
 const refresh_url = "http://localhost:8080/authenticate/refreshtoken";
 const login_url = "http://localhost:8080/login";
+const register_url = "http://localhost:8080/register"
+
 
 
 export function checkAuth() {
@@ -90,6 +92,24 @@ export function login(formData) {
             }
             else {
               throw new Error("Incorrect email or password")
+            }
+        })
+}
+
+export function register(formData) {
+
+    var fetchOptions = {
+        method: "POST",
+        body: JSON.stringify(formData)
+    }
+
+    return fetch(refresh_url, fetchOptions)
+        .then(response => {
+            if(response.ok) {
+                return response;
+            }
+            else {
+              throw new Error("Something did go wrong")
             }
         })
 }
