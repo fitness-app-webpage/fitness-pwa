@@ -1,9 +1,7 @@
 import { LitElement, html, css } from "lit";
-import { register } from "../../../service/ApiService";
-// import {Router} from "@vaadin/router";
-// import {BASE} from "../../app"
+// import { register } from "../../../service/ApiService";
 
-export default class RegisterForm extends LitElement {
+export default class GoalForm extends LitElement {
   static get properties() {
     return{
       data: {type: Object},
@@ -38,11 +36,11 @@ export default class RegisterForm extends LitElement {
     return html`
           <form @submit=${this.submitForm}>
             <h1>Register</h1>
-            <input-field type="text" name="firstName" label="First name" pattern=".{1,}" required></input-field>
-            <input-field type="text" name="lastName" label="Last name" pattern=".{1,}" required></input-field>
-            <input-field type="text" name="username" label="Username" pattern=".{1,}" required></input-field>
-            <input-field type="email" name="email" label="Email" pattern=".{1,}" required></input-field>
-            <input-field type="password" name="password" label="Password" pattern=".{1,}" required></input-field>
+            <input-field type="date" name="birthday" label="Birthday" required></input-field>
+            <input-field type="number" name="weight" label="Weight in kilo grams" pattern=".{2,3}" required></input-field>
+            <input-field type="number" name="height" label="Height in centimeters" pattern=".{2,3}" required></input-field>
+            <input-field type="email" name="email" label="Email" required></input-field>
+            <input-field type="password" name="password" label="Password" required></input-field>
             <button-div value="Register" @click=${this.handleSubmit}></button-div>
           </form>
   `;
@@ -69,4 +67,4 @@ export default class RegisterForm extends LitElement {
   }
 }
 
-customElements.define('register-form', RegisterForm);
+customElements.define('goal-form', GoalForm);

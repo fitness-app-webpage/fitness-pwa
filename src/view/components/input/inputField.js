@@ -14,7 +14,7 @@ export default class InputField extends LitElement{
       type: {type: String},
       validity: {type: Object},
       errormessage: {type: String},
-      ariaLabel: {type: String}
+      ariaLabel: {type: String},
     }
   };
 
@@ -27,7 +27,7 @@ export default class InputField extends LitElement{
     this.value = "";
     this.name = "";
     this.label = "";
-    this.pattern = ".{1,}";
+    this.pattern = "";
     this.min = "";
     this.max = "";
     this.type = "text";

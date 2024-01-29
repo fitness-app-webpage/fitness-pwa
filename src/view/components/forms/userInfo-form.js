@@ -1,9 +1,7 @@
 import { LitElement, html, css } from "lit";
-import { register } from "../../../service/ApiService";
-// import {Router} from "@vaadin/router";
-// import {BASE} from "../../app"
+// import { register } from "../../../service/ApiService";
 
-export default class RegisterForm extends LitElement {
+export default class UserInfoForm extends LitElement {
   static get properties() {
     return{
       data: {type: Object},
@@ -38,11 +36,10 @@ export default class RegisterForm extends LitElement {
     return html`
           <form @submit=${this.submitForm}>
             <h1>Register</h1>
-            <input-field type="text" name="firstName" label="First name" pattern=".{1,}" required></input-field>
-            <input-field type="text" name="lastName" label="Last name" pattern=".{1,}" required></input-field>
-            <input-field type="text" name="username" label="Username" pattern=".{1,}" required></input-field>
-            <input-field type="email" name="email" label="Email" pattern=".{1,}" required></input-field>
-            <input-field type="password" name="password" label="Password" pattern=".{1,}" required></input-field>
+            <input-field type="date" name="birthday" label="Birthday" required></input-field>
+            <input-field type="text" name="weight" label="Weight in kilo grams" pattern="([0-9]{2,3})?([\.][0-9][0-9]?)?" errormessage="Weight must be betwen  " required></input-field>
+            <input-field type="text" name="height" label="Height in centimeters" pattern="[1-4][0-9]{2}" errormessage="Height must be betweem 100cm and 400cm" required></input-field>
+            <input-field type="text" name="sex" label="Sex" value="MALE"></input-field>
             <button-div value="Register" @click=${this.handleSubmit}></button-div>
           </form>
   `;
@@ -53,7 +50,8 @@ export default class RegisterForm extends LitElement {
     const form = e.target;
     const formData = new FormData(form);
     this.data = Object.fromEntries(formData.entries())
-    this.handleData();
+    console.log(this.data)
+    // this.handleData();
   }
 
   handleData() {
@@ -69,4 +67,4 @@ export default class RegisterForm extends LitElement {
   }
 }
 
-customElements.define('register-form', RegisterForm);
+customElements.define('userinfo-form', UserInfoForm);
