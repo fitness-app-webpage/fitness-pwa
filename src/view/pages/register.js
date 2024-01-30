@@ -37,7 +37,7 @@ export default class Register extends LitElement {
       }
     };
     this._formsArray = [
-      html`<user-form @login=${this.handleLogin} @next=${this.handleNext}></user-from>`,
+      html`<user-form @login=${this.handleLogin} @next=${this.handleNext}></user-form>`,
       html`<userinfo-form @back=${this.handleBack} @next=${this.handleNext}></userinfo-form>`,
       html`<userinfo2-form @back=${this.handleBack} @next=${this.handleNext}></userinfo2-form>`,
       html`<goal-form @back=${this.handleBack} @next=${this.handleNext}></goal-form>`,

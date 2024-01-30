@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit";
 import '../input/radio-picker'
+import '../input/datePicker'
 
 export default class UserInfoForm extends LitElement {
   static get properties() {
@@ -44,9 +45,9 @@ export default class UserInfoForm extends LitElement {
     return html`
           <h1>Personal info</h1>
           <form @submit=${this.submitForm}>
-            <input-field type="date" name="birthday" label="Birthday" required></input-field>
+            <date-picker></date-picker>
+            <!-- <input-field type="date" name="birthday" label="Birthday" required></input-field> -->
             <div>
-              <!-- <radio-picker name="sex" label=${["Male", "Female"]} value=${["MALE", "FEMALE"]}></radio-picker> -->
               <radio-picker name="sex" .options=${[{label: "Male", value: "MALE"}, {label: "Female", value: "FEMALE"}]}></radio-picker>
             </div>
             <div class="button-container">

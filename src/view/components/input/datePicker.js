@@ -1,17 +1,19 @@
 import { LitElement, html, css } from "lit";
 
-export default class RadioPicker extends LitElement{
+export default class DatePicker extends LitElement{
   
   static get properties() {
     return{
-        options: {type: Array},
-        value: {type: String},
-        name: {type: String},
-        required: {type: Boolean, reflect: true},
-        label: {type: String},
-        validity: {type: Object},
-        errormessage: {type: String},
-        ariaLabel: {type: String},
+      value: {type: String, reflect: true},
+      name: {type: String, reflect: true},
+      required: {type: Boolean, reflect: true},
+      label: {type: String},
+      pattern: {type: String},
+      min: {type: String},
+      max: {type: String},
+      validity: {type: Object},
+      errormessage: {type: String},
+      ariaLabel: {type: String},
     }
   };
 
@@ -21,10 +23,12 @@ export default class RadioPicker extends LitElement{
 
   constructor() {
     super();
-    this.name = "";
-    this.options = [];
     this.value = "";
+    this.name = "";
     this.label = "";
+    this.pattern = ".{1,}";
+    this.min = "";
+    this.max = "";
     this.ariaLabel = "";
     this.validity = {};
     this.errormessage = "Field is required";
@@ -64,47 +68,35 @@ export default class RadioPicker extends LitElement{
   
   static get styles(){ 
     return css`
-        .background-div{
-            display: flex;
-            padding: 8px;
-            margin: 20px 0;
-        }
-        label {
-          height: 6px;
-          font-size: 20px;
-          display: inline-flex;
-          text-align: center;
-          align-items: center;
-          justify-content: center;
-          margin-right: 30px;
-        }
-        input {
-            height: 20px;
-            width: 20px;
-            margin: 0 10px 0 0 ;
-        }
-     `;
+      .background-div{
+        position: relative;
+        padding: 8px;
+        margin: 9px 0;
+        border-radius: var(--input-field-border-radius, 30px);
+        /* width: var(--input-field-width, 100%); */
+        background-color: var(--input-field-background-color, #e4dfdf);
+      }
+      `;
     }
 
 
   render() {
     return html`
     <div class="background-div">
+        <input 
+        type="tel"
+        name=${this.name} 
+        id=${this.name} 
+        .value="${this.value}" 
+        pattern="${this.pattern}"
+        min="${this.min}" 
+        max="${this.max}"
+        aria-label=${this.ariaLabel}
+        @input="${this.updateValue}" 
+        ?required="${this.required}"
+        />
 
-        ${this.options.map(e =>
-            html`<label for="${this.name}">
-                 <input 
-                    type="radio"
-                    name=${this.name} 
-                    id=${this.name} 
-                    .value="${e.value}" 
-                    aria-label=${this.ariaLabel}
-                    @input="${this.updateValue}" 
-                    ?required="${this.required}"
-                />
-                ${e.label}
-                </label>`
-        )}
+        <label for="${this.name}">${this.label}</label>
     </div>`;
   }
 
@@ -124,4 +116,4 @@ export default class RadioPicker extends LitElement{
     }
   }
 }
-customElements.define('radio-picker', RadioPicker);
+customElements.define('date-picker', DatePicker);
