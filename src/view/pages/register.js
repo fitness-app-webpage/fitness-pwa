@@ -2,7 +2,9 @@ import { LitElement, html, css } from "lit";
 import '../components/page/page';
 import '../components/forms/register-form'
 import '../components/forms/userInfo-form'
+import '../components/forms/userInfo2-form'
 import '../components/forms/goal-form'
+import '../components/forms/user-form'
 import { register, login, setPersonalInfo } from "../../service/ApiService";
 import {Router} from "@vaadin/router";
 import {BASE} from "../../app"
@@ -35,11 +37,13 @@ export default class Register extends LitElement {
       }
     };
     this._formsArray = [
-      html`<userinfo-form @login=${this.handleLogin} @next=${this.handleNext}></userinfo-form>`,
+      html`<user-form @login=${this.handleLogin} @next=${this.handleNext}></user-from>`,
+      html`<userinfo-form @back=${this.handleBack} @next=${this.handleNext}></userinfo-form>`,
+      html`<userinfo2-form @back=${this.handleBack} @next=${this.handleNext}></userinfo2-form>`,
       html`<goal-form @back=${this.handleBack} @next=${this.handleNext}></goal-form>`,
       html`<register-form @back=${this.handleBack} @submit=${this.handleSubmit}></register-form>`
     ]
-    this._stepCounter = 0;
+    this._stepCounter = 1;
   }
 
   static get styles(){ 
@@ -112,22 +116,7 @@ export default class Register extends LitElement {
 
   handleSubmit(e) {
     this._changeObjectValue(e.detail);
-    register(this._registerData.register)
-      .then(response => {
-        if(response.ok) {
-          const auth = {email: this._registerData.register.email, password: this._registerData.register.password}
-          login(auth).then(e => {
-            setPersonalInfo(this._registerData.personalInfo)
-              .then(e => {
-                Router.go(`${BASE}/home`)
-              }).catch(error => {
-                console.log(error)
-              })
-          }).catch(error => {
-            console.log(error)
-          })
-        }
-      })
+    this._handleRegister();
   }
 
   handleLogin() {
@@ -150,6 +139,24 @@ export default class Register extends LitElement {
           this._registerData[e][i] = data[i]
         }
       })
+    })
+  }
+  _handleRegister() {
+    register(this._registerData.register)
+    .then(response => {
+      if(response.ok) {
+        const auth = {email: this._registerData.register.email, password: this._registerData.register.password}
+        login(auth).then(e => {
+          setPersonalInfo(this._registerData.personalInfo)
+            .then(e => {
+              Router.go(`${BASE}/home`)
+            }).catch(error => {
+              console.log(error)
+            })
+        }).catch(error => {
+          console.log(error)
+        })
+      }
     })
   }
 }

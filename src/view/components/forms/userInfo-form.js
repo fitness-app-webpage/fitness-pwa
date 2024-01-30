@@ -1,4 +1,5 @@
 import { LitElement, html, css } from "lit";
+import '../input/radio-picker'
 
 export default class UserInfoForm extends LitElement {
   static get properties() {
@@ -44,11 +45,12 @@ export default class UserInfoForm extends LitElement {
           <h1>Personal info</h1>
           <form @submit=${this.submitForm}>
             <input-field type="date" name="birthday" label="Birthday" required></input-field>
-            <input-field type="text" name="weight" label="Weight in kilo grams" pattern="([0-9]{2,3})?([\.][0-9][0-9]?)?" errormessage="Weight must be betwen  " required></input-field>
-            <input-field type="text" name="height" label="Height in centimeters" pattern="[1-4][0-9]{2}" errormessage="Height must be betweem 100cm and 400cm" required></input-field>
-            <input-field type="text" name="sex" label="Sex" value="MALE" required></input-field>
+            <div>
+              <!-- <radio-picker name="sex" label=${["Male", "Female"]} value=${["MALE", "FEMALE"]}></radio-picker> -->
+              <radio-picker name="sex" .options=${[{label: "Male", value: "MALE"}, {label: "Female", value: "FEMALE"}]}></radio-picker>
+            </div>
             <div class="button-container">
-              <button-div value="Login" @click=${this.handleBack}></button-div>
+              <button-div value="Back" @click=${this.handleBack}></button-div>
               <button-div value="Next" @click=${this.handleSubmit}></button-div>
             </div>
           </form>
@@ -63,20 +65,12 @@ export default class UserInfoForm extends LitElement {
     this.dispatchEvent(new CustomEvent('next', {detail: this.data}));
   }
 
-  handleData() {
-    register(this.data)
-      .then(e => {
-        console.log(e)
-        return e;
-      })
-  }
-
   handleSubmit(e) {
     this.shadowRoot.querySelector("form").requestSubmit();
   }
 
   handleBack(e) {
-    this.dispatchEvent(new Event('login'));
+    this.dispatchEvent(new Event('back'));
   }
 }
 

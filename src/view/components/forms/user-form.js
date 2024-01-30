@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit";
 
-export default class UserInfoForm extends LitElement {
+export default class UserForm extends LitElement {
   static get properties() {
     return{
       data: {type: Object},
@@ -43,10 +43,8 @@ export default class UserInfoForm extends LitElement {
     return html`
           <h1>Personal info</h1>
           <form @submit=${this.submitForm}>
-            <input-field type="date" name="birthday" label="Birthday" required></input-field>
-            <input-field type="text" name="weight" label="Weight in kilo grams" pattern="([0-9]{2,3})?([\.][0-9][0-9]?)?" errormessage="Weight must be betwen  " required></input-field>
-            <input-field type="text" name="height" label="Height in centimeters" pattern="[1-4][0-9]{2}" errormessage="Height must be betweem 100cm and 400cm" required></input-field>
-            <input-field type="text" name="sex" label="Sex" value="MALE" required></input-field>
+            <input-field type="text" name="firstName" label="First name" pattern=".{1,}" required></input-field>
+            <input-field type="text" name="lastName" label="Last name" pattern=".{1,}" required></input-field>
             <div class="button-container">
               <button-div value="Login" @click=${this.handleBack}></button-div>
               <button-div value="Next" @click=${this.handleSubmit}></button-div>
@@ -63,14 +61,6 @@ export default class UserInfoForm extends LitElement {
     this.dispatchEvent(new CustomEvent('next', {detail: this.data}));
   }
 
-  handleData() {
-    register(this.data)
-      .then(e => {
-        console.log(e)
-        return e;
-      })
-  }
-
   handleSubmit(e) {
     this.shadowRoot.querySelector("form").requestSubmit();
   }
@@ -80,4 +70,4 @@ export default class UserInfoForm extends LitElement {
   }
 }
 
-customElements.define('userinfo-form', UserInfoForm);
+customElements.define('user-form', UserForm);
