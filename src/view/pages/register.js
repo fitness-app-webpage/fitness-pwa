@@ -101,9 +101,7 @@ export default class Register extends LitElement {
   }
   handleNext(e) {
     this._formsArray[this._stepCounter] = e.target;
-    Object.keys(e.detail).map(i => {
-      this._registerData.personalInfo[i] = e.detail[i]
-    })
+    this._changeObjectValue(e.detail)
     this._next();
     this.requestUpdate();
   }
@@ -113,9 +111,7 @@ export default class Register extends LitElement {
   }
 
   handleSubmit(e) {
-    Object.keys(e.detail).map(i => {
-      this._registerData.register[i] = e.detail[i]
-    })
+    this._changeObjectValue(e.detail);
     register(this._registerData.register)
       .then(response => {
         if(response.ok) {
@@ -146,6 +142,15 @@ export default class Register extends LitElement {
   _back() {
     if(this._stepCounter <= 0) return;
     this._stepCounter -= 1;
+  }
+  _changeObjectValue(data) {
+    Object.keys(this._registerData).map(e => {
+      Object.keys(this._registerData[e]).map(i => {
+        if(data[i]) {
+          this._registerData[e][i] = data[i]
+        }
+      })
+    })
   }
 }
 
