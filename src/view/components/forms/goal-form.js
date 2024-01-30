@@ -1,5 +1,4 @@
 import { LitElement, html, css } from "lit";
-// import { register } from "../../../service/ApiService";
 
 export default class GoalForm extends LitElement {
   static get properties() {
@@ -42,6 +41,7 @@ export default class GoalForm extends LitElement {
 
   render() {
     return html`
+          <h1>Goal</h1>
           <form @submit=${this.submitForm}>
             <input-field type="text" name="activityLevel" label="Activity level(pal)" value="AVERAGE" required></input-field>
             <input-field type="text" name="goal" label="Goal" value="SLOWLYLOSEWEIGHT"  required></input-field>
@@ -59,7 +59,7 @@ export default class GoalForm extends LitElement {
     const form = e.target;
     const formData = new FormData(form);
     this.data = Object.fromEntries(formData.entries())
-    this.dispatchEvent(new CustomEvent('submit', {detail: this.data}));
+    this.dispatchEvent(new CustomEvent('next', {detail: this.data}));
   }
 
   handleSubmit(e) {

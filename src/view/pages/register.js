@@ -1,19 +1,45 @@
 import { LitElement, html, css } from "lit";
 import '../components/page/page';
 import '../components/forms/register-form'
+import '../components/forms/userInfo-form'
+import '../components/forms/goal-form'
+import { register, login, setPersonalInfo } from "../../service/ApiService";
 import {Router} from "@vaadin/router";
 import {BASE} from "../../app"
 
 export default class Register extends LitElement {
   static get properties() {
     return{
-        _registerData: {type: Object, state: true}
+        _registerData: {type: Object, state: true},
     }
   };
 
   constructor() {
     super();
-    this._registerData = {};
+    this._registerData = {
+      register: {
+        username: "",
+        email: "",
+        password: "",
+        firstName: "",
+        lastName: ""
+      },
+      personalInfo: {
+        weight: "",
+        height: "",
+        birthday: "",
+        sex: "",
+        activityLevel: "",
+        goal: "",
+        protein: ""
+      }
+    };
+    this._formsArray = [
+      html`<userinfo-form @login=${this.handleLogin} @next=${this.handleNext}></userinfo-form>`,
+      html`<goal-form @back=${this.handleBack} @next=${this.handleNext}></goal-form>`,
+      html`<register-form @back=${this.handleBack} @submit=${this.handleSubmit}></register-form>`
+    ]
+    this._stepCounter = 0;
   }
 
   static get styles(){ 
@@ -25,6 +51,9 @@ export default class Register extends LitElement {
             background-color: white;
             width: 360px;
             overflow: hidden;
+        }
+        h1 {
+          text-align: center;
         }
         /* .container {
             height: 600px;
@@ -64,15 +93,59 @@ export default class Register extends LitElement {
     return html`
       <page-div ?noHeader=${true}>
         <div class="container">
-            <h1>Register</h1>
-            <register-form @next="${this.handleNext}"></register-form>
+            <p>${this._stepCounter + 1} / ${this._formsArray.length}</p>
+            ${this._formsArray[this._stepCounter]}
         </div>
       </page-div> 
   `;
   }
   handleNext(e) {
-    this._registerData = e.detail
-    Router.go(`${BASE}/register/personal-info`)
+    this._formsArray[this._stepCounter] = e.target;
+    Object.keys(e.detail).map(i => {
+      this._registerData.personalInfo[i] = e.detail[i]
+    })
+    this._next();
+    this.requestUpdate();
+  }
+  handleBack() {
+    this._back();
+    this.requestUpdate();
+  }
+
+  handleSubmit(e) {
+    Object.keys(e.detail).map(i => {
+      this._registerData.register[i] = e.detail[i]
+    })
+    register(this._registerData.register)
+      .then(response => {
+        if(response.ok) {
+          const auth = {email: this._registerData.register.email, password: this._registerData.register.password}
+          login(auth).then(e => {
+            setPersonalInfo(this._registerData.personalInfo)
+              .then(e => {
+                Router.go(`${BASE}/home`)
+              }).catch(error => {
+                console.log(error)
+              })
+          }).catch(error => {
+            console.log(error)
+          })
+        }
+      })
+  }
+
+  handleLogin() {
+    Router.go(`${BASE}/login`)
+  }
+
+  _next() {
+    if(this._stepCounter >= this._formsArray.length - 1) return;
+    this._stepCounter += 1;
+  }
+
+  _back() {
+    if(this._stepCounter <= 0) return;
+    this._stepCounter -= 1;
   }
 }
 

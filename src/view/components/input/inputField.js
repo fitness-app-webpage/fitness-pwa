@@ -42,9 +42,10 @@ export default class InputField extends LitElement{
     this.setAttribute('tabindex', '0');
     this.addEventListener('focus', this.setFocus.bind(this))
     this.internals.setFormValue(this.value)
-    if(this.required) {
+    if(this.required && this.value === "") {
       this.internals.setValidity({customError: true}, this.errormessage)
     }
+    
   }
 
   disconnectedCallback() {
@@ -56,10 +57,11 @@ export default class InputField extends LitElement{
     this.shadowRoot.querySelector('input').focus()
   }
 
-  updated() {
-    this.internals.setFormValue(this.value)
-    this.setValidity(this.shadowRoot.querySelector("input"));
-  }
+  // updated() {
+  //   console.log(this.value)
+  //   this.internals.setFormValue(this.value)
+  //   this.setValidity(this.shadowRoot.querySelector("input"));
+  // }
 
   formResetCallback() {
     this.value = "";

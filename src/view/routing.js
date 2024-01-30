@@ -5,8 +5,6 @@ import * as service from '../service/ApiService';
 import "./pages/home"
 import "./pages/login"
 import "./pages/register"
-import "./pages/registerUserInfo"
-import "./pages/registerGoal"
 
 const outlet = document.querySelector("#outlet"); 
 
@@ -30,15 +28,9 @@ const a = (context, commands) => {
     
 router.setRoutes([
     {path: `${BASE}/`, name: "Home", component: "home-view"},
+    {path: `${BASE}/home`, name: "Home", component: "home-view"},
     {path: `${BASE}/login`, name: "Login", component: 'login-div', action: changeTitleAndAuthCheck},
-    {path: `${BASE}/register`, 
-        children: [
-            {path: `${BASE}/`, name: "Register", component: 'register-div', action: e => document.title = e.route.name},
-            {path: `${BASE}/personal-info`, name: "Register personal info", component: 'register-userinfo', action: e => document.title = e.route.name},
-            {path: `${BASE}/goal`, name: "Register goal", component: 'register-goal', action: a},
-            
-        ]
-    },
+    {path: `${BASE}/register`, name: "Register", component: 'register-div', action: e => document.title = e.route.name},
 //     {path: `${BASE}/logout`, action: logout, redirect: `${BASE}/login`},
 //     {path: `${BASE}/home`, name: "Home", component: 'travel-type-nav', action: changeTitleAndAuthCheck},
 //     {path: `${BASE}/register-trip`, name: "Register trip", component: 'travel-type-nav', action: changeTitleAndAuthCheck},

@@ -1,5 +1,5 @@
 import { LitElement, html, css } from "lit";
-import * as service from "../../service/ApiService";
+import {login} from "../../service/ApiService";
 import '../components/input/inputField';
 import '../components/page/page';
 import '../components/button/Button';
@@ -90,7 +90,7 @@ export default class LoginDiv extends LitElement {
   }
   _login() {
       if(this.inputFieldsAreEmpty()) {
-        service.login(this.loginData)
+        login(this.loginData)
           .then(response => {
             Router.go(`${BASE}/home`);
           })

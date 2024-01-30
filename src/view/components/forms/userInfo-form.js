@@ -1,5 +1,4 @@
 import { LitElement, html, css } from "lit";
-// import { register } from "../../../service/ApiService";
 
 export default class UserInfoForm extends LitElement {
   static get properties() {
@@ -42,13 +41,14 @@ export default class UserInfoForm extends LitElement {
 
   render() {
     return html`
+          <h1>Personal info</h1>
           <form @submit=${this.submitForm}>
             <input-field type="date" name="birthday" label="Birthday" required></input-field>
             <input-field type="text" name="weight" label="Weight in kilo grams" pattern="([0-9]{2,3})?([\.][0-9][0-9]?)?" errormessage="Weight must be betwen  " required></input-field>
             <input-field type="text" name="height" label="Height in centimeters" pattern="[1-4][0-9]{2}" errormessage="Height must be betweem 100cm and 400cm" required></input-field>
-            <input-field type="text" name="sex" label="Sex" value="MALE"></input-field>
+            <input-field type="text" name="sex" label="Sex" value="MALE" required></input-field>
             <div class="button-container">
-              <button-div value="Back" @click=${this.handleBack}></button-div>
+              <button-div value="Login" @click=${this.handleBack}></button-div>
               <button-div value="Next" @click=${this.handleSubmit}></button-div>
             </div>
           </form>
@@ -76,7 +76,7 @@ export default class UserInfoForm extends LitElement {
   }
 
   handleBack(e) {
-    this.dispatchEvent(new Event('back'));
+    this.dispatchEvent(new Event('login'));
   }
 }
 

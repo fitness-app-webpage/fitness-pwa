@@ -104,7 +104,6 @@ export function register(formData) {
 
     return fetch(register_url, fetchOptions)
         .then(response => {
-            console.log(response)
             if(response.ok) {
                 return response;
             }
@@ -152,6 +151,7 @@ function postRequest(url, data) {
     };
     return fetch(api_url + url, fetchOptions)
         .then(response => {
+            console.log(response)
             if(response.ok) {
                 return response;
             }
@@ -217,4 +217,7 @@ function deleteRequest(url) {
             }
             throw new Error("error!");
         })
+}
+export function setPersonalInfo(data) {
+    return postRequest("/userinfo", data)
 }
