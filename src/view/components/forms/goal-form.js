@@ -42,7 +42,7 @@ export default class GoalForm extends LitElement {
   render() {
     return html`
           <h1>Goal</h1>
-          <form @submit=${this.submitForm}>
+          <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed}>
             <input-field type="text" name="activityLevel" label="Activity level(pal)" value="AVERAGE" required></input-field>
             <input-field type="text" name="goal" label="Goal" value="SLOWLYLOSEWEIGHT"  required></input-field>
             <input-field type="text" name="protein" label="Weight per kilo grams protein" pattern="([0-2])?([\.][0-9]?)?" required></input-field>
@@ -67,6 +67,11 @@ export default class GoalForm extends LitElement {
   }
   handleBack(e) {
     this.dispatchEvent(new Event('back'));
+  }
+  enterKeyPressed(e) {
+    if(e.key === "Enter" || e.keyCode === 13) {
+      this.handleSubmit();
+    }
   }
 }
 

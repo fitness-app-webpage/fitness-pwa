@@ -42,9 +42,9 @@ export default class UserInfoForm2 extends LitElement {
   render() {
     return html`
           <h1>Personal info</h1>
-          <form @submit=${this.submitForm}>
-            <input-field type="text" name="weight" label="Weight in kilo grams" pattern="([0-9]{2,3})?([\.][0-9][0-9]?)?" errormessage="Weight must be betwen  " required></input-field>
-            <input-field type="text" name="height" label="Height in centimeters" pattern="[1-4][0-9]{2}" errormessage="Height must be betweem 100cm and 400cm" required></input-field>
+          <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed}>
+            <input-field type="text" name="weight" label="Weight in kilo grams" pattern="([0-9]{2,3})?([\.][0-9][0-9]?)?" errormessage="Weight must be between" required></input-field>
+            <input-field type="text" name="height" label="Height in centimeters" pattern="[1-4][0-9]{2}" errormessage="Height must be betweem 100cm and 299cm" required></input-field>
             <div class="button-container">
               <button-div value="Back" @click=${this.handleBack}></button-div>
               <button-div value="Next" @click=${this.handleSubmit}></button-div>
@@ -67,6 +67,11 @@ export default class UserInfoForm2 extends LitElement {
 
   handleBack(e) {
     this.dispatchEvent(new Event('back'));
+  }
+  enterKeyPressed(e) {
+    if(e.key === "Enter" || e.keyCode === 13) {
+      this.handleSubmit();
+    }
   }
 }
 

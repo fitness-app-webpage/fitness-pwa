@@ -44,7 +44,7 @@ export default class UserInfoForm extends LitElement {
   render() {
     return html`
           <h1>Personal info</h1>
-          <form @submit=${this.submitForm}>
+          <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed}>
             <date-picker name="birthday" label="Birthday" required></date-picker>
             <!-- <input-field type="date" name="birthday" label="Birthday" required></input-field> -->
             <div>
@@ -72,6 +72,11 @@ export default class UserInfoForm extends LitElement {
 
   handleBack(e) {
     this.dispatchEvent(new Event('back'));
+  }
+  enterKeyPressed(e) {
+    if(e.key === "Enter" || e.keyCode === 13) {
+      this.handleSubmit();
+    }
   }
 }
 

@@ -42,7 +42,7 @@ export default class UserForm extends LitElement {
   render() {
     return html`
           <h1>Personal info</h1>
-          <form @submit=${this.submitForm}>
+          <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed}>
             <input-field type="text" name="firstName" label="First name" pattern=".{1,}" required></input-field>
             <input-field type="text" name="lastName" label="Last name" pattern=".{1,}" required></input-field>
             <div class="button-container">
@@ -67,6 +67,11 @@ export default class UserForm extends LitElement {
 
   handleBack(e) {
     this.dispatchEvent(new Event('login'));
+  }
+  enterKeyPressed(e) {
+    if(e.key === "Enter" || e.keyCode === 13) {
+      this.handleSubmit();
+    }
   }
 }
 

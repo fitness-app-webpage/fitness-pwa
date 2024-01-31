@@ -42,7 +42,7 @@ export default class RegisterForm extends LitElement {
   render() {
     return html`
           <h1>Register</h1>
-          <form @submit=${this.submitForm}>
+          <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed}>
             <input-field type="text" name="username" label="Username" pattern=".{1,}" required></input-field>
             <input-field type="email" name="email" label="Email" pattern=".{1,}" required></input-field>
             <input-field type="password" name="password" label="Password" pattern=".{1,}" required></input-field>
@@ -67,6 +67,11 @@ export default class RegisterForm extends LitElement {
   }
   handleBack(e) {
     this.dispatchEvent(new Event('back'));
+  }
+  enterKeyPressed(e) {
+    if(e.key === "Enter" || e.keyCode === 13) {
+      this.handleSubmit();
+    }
   }
 }
 
