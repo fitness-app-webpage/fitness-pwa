@@ -70,6 +70,7 @@ export default class DatePicker extends LitElement{
   }
   update() {
     super.update()
+    this.internals.setFormValue(this.value)
     this.setValidity(this.shadowRoot.querySelector("input"))
   }
   
