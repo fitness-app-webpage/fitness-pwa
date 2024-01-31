@@ -34,6 +34,9 @@ export default class DatePicker extends LitElement{
     this.errormessage = "Field is required";
     this._pickerStatus = false;
     this.internals = this.attachInternals();
+    this._navCalendar = 0;
+    this._divs = []
+    this._monthAndYear = "";
   }
 
   connectedCallback() {
@@ -180,7 +183,7 @@ export default class DatePicker extends LitElement{
         padding: 0 12px 0 12px;
         margin: 16px 0 8px 0;
         /* background-color: red; */
-        border-bottom: 2px solid;
+        /* border-bottom: 2px solid; */
       }
       svg {
         fill: currentColor;
@@ -193,8 +196,23 @@ export default class DatePicker extends LitElement{
       .header-right {
         display: flex;
       }
-      .body-picker {
-        height: 100%;
+      .days-row {
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .days-row span {
+        width: 40px;
+        height: 40px;
+        opacity: 0.6;
+        font-size: 0.75rem;
+      }
+      .days-picker {
+        /* background-color: red; */
+        height: 80px;
+        width: 80px;
       }
       .month-year {
         font-size: 20px;
@@ -209,6 +227,17 @@ export default class DatePicker extends LitElement{
      .space {
       height: 34px;
       width: 12px;
+     }
+     .days-picker-row {
+      display: flex;
+      justify-content: center;
+      text-align: center;
+      align-items: center;
+      flex-wrap: wrap;
+     }
+     .day {
+      width: 40px;
+      height: 40px;
      }
       `;
     }
@@ -246,7 +275,7 @@ export default class DatePicker extends LitElement{
         <div class="container">
           <div class="header-picker">
             <div class="header-left">
-              <span class="month-year">december 2003</span>
+              <span class="month-year">${this._monthAndYear}</span>
               <button class="arrow-down-button">
                 <svg>
                   <path d="M7 10l5 5 5-5z" />
@@ -254,20 +283,33 @@ export default class DatePicker extends LitElement{
               </button>
             </div>
             <div class="header-right">
-            <button>
+            <button @click=${this.goMonthBack}>
                 <svg>
                   <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z" />
                 </svg>
               </button>
               <div class="space"></div>
-              <button>
+              <button @click=${this.goToNextMonth}>
                 <svg>
                   <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
                 </svg>
               </button>
             </div>
           </div>
-          <div class="body-picker"></div>
+          <div class="body-picker">
+            <div class="days-row">
+              <span>M</span>
+              <span>T</span>
+              <span>W</span>
+              <span>T</span>
+              <span>F</span>
+              <span>S</span>
+              <span>S</span>
+            </div>
+            <div class="days-number-row">
+              ${this._divs}
+            </div>
+          </div>
         </div>
     </div>
     `;
@@ -299,6 +341,69 @@ export default class DatePicker extends LitElement{
   handleDatepicker() {
     this._pickerStatus = !this._pickerStatus;
     this.shadowRoot.querySelector(".picker").style.display = this._pickerStatus ? "block" : "none"
+    // this._makeDateDivs();
+    this._makeHeaderDivs();
+    this._makeDateBodyDivs();
+    this.requestUpdate()
   }
+  _makeHeaderDivs() {
+
+  }
+
+  _makeDateBodyDivs() {
+    const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+    const thisYear = new Date().getFullYear();
+    const dt = new Date(`${thisYear}`);
+
+    dt.setMonth(new Date().getMonth() + this._navCalendar)
+
+    this._divs = [];
+    const day = dt.getDate()
+    const month = dt.getMonth()
+    const year = dt.getFullYear()
+
+    const firstDayOfMonth = new Date(year, month, 1);
+    const dayInMonth = new Date(year, month + 1, 0).getDate();
+
+    const dateString = firstDayOfMonth.toLocaleDateString('en-us', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+    });
+    
+    let paddingDays = weekdays.indexOf(dateString.split(', ')[0]);
+    this._monthAndYear = `${dt.toLocaleDateString('en-us', { month: 'long' })} ${year}`;
+    let rowDivs = [];
+    paddingDays = paddingDays === 0 ? 7 : paddingDays;
+    for(let i = 1; i <= paddingDays + dayInMonth; i++) {
+      if(i >= paddingDays) {
+        rowDivs = [...rowDivs, html`<button class="day">${i - paddingDays + 1}</button>`]
+      } else {
+        rowDivs = [...rowDivs, html`<div class="day"></div>`]
+      }
+      if(i - paddingDays + 1 === dayInMonth) {
+        for(let a = 0; rowDivs.length < 7; a++) {
+          rowDivs = [...rowDivs, html`<div class="day"></div>`]
+        }
+      }
+      if(rowDivs.length % 7 === 0) {
+        this._divs = [...this._divs, html`<div class="days-picker-row">${rowDivs}</div>`]
+        rowDivs = []
+      }
+    }
+  }
+  goMonthBack() {
+    this._navCalendar--;
+    this._makeDateBodyDivs();
+    this.requestUpdate()
+  }
+  goToNextMonth() {
+    this._navCalendar++;
+    this._makeDateBodyDivs();
+    this.requestUpdate();
+  }
+  
 }
 customElements.define('date-picker', DatePicker);
