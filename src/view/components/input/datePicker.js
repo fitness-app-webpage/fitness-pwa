@@ -26,12 +26,13 @@ export default class DatePicker extends LitElement{
     this.value = "";
     this.name = "";
     this.label = "";
-    this.pattern = ".{1,}";
+    this.pattern = "\d{2}/\d{2}/\d{4}";
     this.min = "";
-    this.max = "";
+    this.max = 10;
     this.ariaLabel = "";
     this.validity = {};
     this.errormessage = "Field is required";
+    this._pickerStatus = false;
     this.internals = this.attachInternals();
   }
 
@@ -76,6 +77,139 @@ export default class DatePicker extends LitElement{
         /* width: var(--input-field-width, 100%); */
         background-color: var(--input-field-background-color, #e4dfdf);
       }
+      label {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--input-field-label-color, #545454);
+        font-weight: normal;
+        transition: .4s ease;
+        user-select: none;
+        cursor: text;
+      }
+      label, input {
+        display: flex;
+        align-items: center;
+        margin: 0 6px;
+      }
+      input {
+        position: relative;
+        top: 5px;
+        border: none;
+        outline: none;
+        padding: 0;
+        background-color: var(--input-field-background-color, inherit);
+        line-height: 2em;
+        width: 80%;
+      }
+      input:focus + label,
+      :host(:not([value=""])) label {
+        top: 25%;
+        font-size: 14px;
+      }
+      
+      input:-webkit-autofill,
+      input:-webkit-autofill:hover, 
+      input:-webkit-autofill:focus, 
+      input:-webkit-autofill:active{
+        box-shadow: 0 0 0 30px var(--box-shadow-color, #e4dfdf) inset;
+      
+      }
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+      }
+      .input-datepicker {
+        display: flex;
+        align-items: center;
+      }
+      .date-picker-icon {
+        /* position: relative; */
+        /* width: 2px; */
+        display: flex;
+        align-items: center;
+        max-height: 2em;
+        height: 0.01em;
+      }
+      button {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        background-color: transparent;
+        text-align: center;
+        border: 0;
+        border-radius: 50%;
+        cursor: pointer;
+        color: black;
+        outline: 0;
+      }
+      button:hover {
+        background-color: rgba(0, 0, 0, 0.04);
+      }
+      button svg{
+        height: 24px;
+        width: 24px;
+      }
+      .picker {
+        display: none;
+        position: absolute;
+        /* inset: auto auto 0px 0px; */
+        height: 340px;
+        width: 320px;
+        border-radius: 5px;
+        background-color: white;
+        box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 5px -3px, rgba(0, 0, 0, 0.14) 0px 8px 10px 1px, rgba(0, 0, 0, 0.12) 0px 3px 14px 2px;
+      }
+      .container {
+        border-radius: inherit;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      .date-picker-icon button {
+        padding: 5px;
+      }
+      .header-picker {
+        display: flex;
+        min-height: 40px;
+        max-height: 40px;
+        /* justify-content: space-evenly; */
+        align-items: center;
+        padding: 0 12px 0 12px;
+        margin: 16px 0 8px 0;
+        /* background-color: red; */
+        border-bottom: 2px solid;
+      }
+      svg {
+        fill: currentColor;
+      }
+      .header-left {
+        display: flex;
+        align-items: center;
+        margin-right: auto;
+      }
+      .header-right {
+        display: flex;
+      }
+      .body-picker {
+        height: 100%;
+      }
+      .month-year {
+        font-size: 20px;
+        margin-right: 6px;
+      }
+      .arrow-down-button {
+        padding: 5px;
+      }
+     .header-right button {
+      padding: 5px;
+     }
+     .space {
+      height: 34px;
+      width: 12px;
+     }
       `;
     }
 
@@ -83,28 +217,74 @@ export default class DatePicker extends LitElement{
   render() {
     return html`
     <div class="background-div">
-        <input 
-        type="tel"
-        name=${this.name} 
-        id=${this.name} 
-        .value="${this.value}" 
-        pattern="${this.pattern}"
-        min="${this.min}" 
-        max="${this.max}"
-        aria-label=${this.ariaLabel}
-        @input="${this.updateValue}" 
-        ?required="${this.required}"
-        />
+        <div class="input-datepicker">
+          <input 
+          type="tel"
+          name=${this.name} 
+          id=${this.name} 
+          .value="${this.value}" 
+          pattern="${this.pattern}"
+          min="${this.min}" 
+          maxlength="${this.max}"
+          aria-label=${this.ariaLabel}
+          @input="${this.updateValue}" 
+          ?required="${this.required}"
+          />
+          <label for="${this.name}">${this.label}</label>
+          <div class="date-picker-icon">
+            <button @click="${this.handleDatepicker}">
+              <svg>
+                <path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z" />
+              </svg>
+            </button>
+        </div>
+      </div>
+    </div>
 
-        <label for="${this.name}">${this.label}</label>
-    </div>`;
+    <div class="picker">
+      <div tabindex=0></div>
+        <div class="container">
+          <div class="header-picker">
+            <div class="header-left">
+              <span class="month-year">december 2003</span>
+              <button class="arrow-down-button">
+                <svg>
+                  <path d="M7 10l5 5 5-5z" />
+                </svg>
+              </button>
+            </div>
+            <div class="header-right">
+            <button>
+                <svg>
+                  <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z" />
+                </svg>
+              </button>
+              <div class="space"></div>
+              <button>
+                <svg>
+                  <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="body-picker"></div>
+        </div>
+    </div>
+    `;
   }
 
   updateValue(e) {
+    if(isNaN(e.target.value.charAt(e.target.value.lenght - 1))) {
+      e.target.value = this.value;
+      return;
+    }
     this.value = e.target.value;
+    if(this.value.length === 2 || this.value.length === 5) {
+      this.value += "-"
+    }
     this.internals.setFormValue(this.value)
     this.setValidity(e.target)
-    this.dispatchEvent(new CustomEvent('input-changed', {[e.target.name]: e.target.value}));
+    this.dispatchEvent(new CustomEvent('input-changed', {[e.target.name]: this.value}));
   }
 
   setValidity(input) {
@@ -114,6 +294,11 @@ export default class DatePicker extends LitElement{
     } else {
       this.internals.setValidity({});
     }
+  }
+
+  handleDatepicker() {
+    this._pickerStatus = !this._pickerStatus;
+    this.shadowRoot.querySelector(".picker").style.display = this._pickerStatus ? "block" : "none"
   }
 }
 customElements.define('date-picker', DatePicker);
