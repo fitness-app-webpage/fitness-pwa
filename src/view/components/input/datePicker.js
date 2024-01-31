@@ -32,17 +32,21 @@ export default class DatePicker extends LitElement{
     this.ariaLabel = "";
     this.validity = {};
     this.errormessage = "Field is required";
-    this._pickerStatus = false;
     this.internals = this.attachInternals();
+    this._pickerStatus = false;
+    this._yearStatus = false;
     this._navCalendar = 0;
     this._divs = []
     this._monthAndYear = "";
+    this._yearNav = new Date().getFullYear()
+    this._yearDivs = [];
   }
 
   connectedCallback() {
     super.connectedCallback();
     this.setAttribute('tabindex', '0');
     this.addEventListener('focus', this.setFocus.bind(this))
+    this._makeYears();
     this.internals.setFormValue(this.value)
     if(this.required && this.value === "") {
       this.internals.setValidity({customError: true}, this.errormessage)
@@ -204,6 +208,10 @@ export default class DatePicker extends LitElement{
         flex-wrap: wrap;
       }
       .days-row span {
+        display: flex;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
         width: 40px;
         height: 40px;
         opacity: 0.6;
@@ -238,6 +246,25 @@ export default class DatePicker extends LitElement{
      .day {
       width: 40px;
       height: 40px;
+     }
+     .body-picker {
+      max-height: 276px;
+     }
+     .year-picker {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      text-align: center;
+      align-items: center;
+      overflow-y: auto;
+      height: 100%;
+      max-height: 100%;
+     }
+     .year-button {
+      /* margin: 10px; */
+      padding: 5px 10px;
+      font-size: 20px;
+      border-radius: 20px;
      }
       `;
     }
@@ -276,7 +303,7 @@ export default class DatePicker extends LitElement{
           <div class="header-picker">
             <div class="header-left">
               <span class="month-year">${this._monthAndYear}</span>
-              <button class="arrow-down-button">
+              <button class="arrow-down-button" @click=${this.changeYear}>
                 <svg>
                   <path d="M7 10l5 5 5-5z" />
                 </svg>
@@ -297,16 +324,10 @@ export default class DatePicker extends LitElement{
             </div>
           </div>
           <div class="body-picker">
-            <div class="days-row">
-              <span>M</span>
-              <span>T</span>
-              <span>W</span>
-              <span>T</span>
-              <span>F</span>
-              <span>S</span>
-              <span>S</span>
+            <div class="year-picker" style="display: none">
+              ${this._yearDivs}
             </div>
-            <div class="days-number-row">
+            <div class="body-container">
               ${this._divs}
             </div>
           </div>
@@ -342,23 +363,20 @@ export default class DatePicker extends LitElement{
     this._pickerStatus = !this._pickerStatus;
     this.shadowRoot.querySelector(".picker").style.display = this._pickerStatus ? "block" : "none"
     // this._makeDateDivs();
-    this._makeHeaderDivs();
-    this._makeDateBodyDivs();
-    this.requestUpdate()
-  }
-  _makeHeaderDivs() {
-
+    this._makeDateDivs();
   }
 
-  _makeDateBodyDivs() {
+  _makeDateDivs() {
     const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
     const thisYear = new Date().getFullYear();
-    const dt = new Date(`${thisYear}`);
+    const dt = new Date(`${this._yearNav}`);
 
     dt.setMonth(new Date().getMonth() + this._navCalendar)
 
-    this._divs = [];
+    let rowDivs = [];
+    let res = [];
+
     const day = dt.getDate()
     const month = dt.getMonth()
     const year = dt.getFullYear()
@@ -375,8 +393,9 @@ export default class DatePicker extends LitElement{
     
     let paddingDays = weekdays.indexOf(dateString.split(', ')[0]);
     this._monthAndYear = `${dt.toLocaleDateString('en-us', { month: 'long' })} ${year}`;
-    let rowDivs = [];
+    
     paddingDays = paddingDays === 0 ? 7 : paddingDays;
+
     for(let i = 1; i <= paddingDays + dayInMonth; i++) {
       if(i >= paddingDays) {
         rowDivs = [...rowDivs, html`<button class="day">${i - paddingDays + 1}</button>`]
@@ -389,20 +408,56 @@ export default class DatePicker extends LitElement{
         }
       }
       if(rowDivs.length % 7 === 0) {
-        this._divs = [...this._divs, html`<div class="days-picker-row">${rowDivs}</div>`]
+        res = [...res, html`<div class="days-picker-row">${rowDivs}</div>`]
         rowDivs = []
       }
     }
+    this._divs = [html`<div class="days-row">
+                        <span>M</span>
+                        <span>T</span>
+                        <span>W</span>
+                        <span>T</span>
+                        <span>F</span>
+                        <span>S</span>
+                        <span>S</span>
+                      </div>
+                      <div class="days-number-row">
+                        ${res}
+                      </div>
+    `];
+    this.requestUpdate();
   }
   goMonthBack() {
     this._navCalendar--;
-    this._makeDateBodyDivs();
-    this.requestUpdate()
+    this._makeDateDivs();
   }
   goToNextMonth() {
     this._navCalendar++;
-    this._makeDateBodyDivs();
+    this._makeDateDivs();
+  }
+  changeYear() {
+    this._yearStatus = !this._yearStatus
+    this.shadowRoot.querySelector(".arrow-down-button")
+      .style = this._yearStatus 
+      ? "transform: rotateX(180deg)" 
+      : "transform: rotateX(0eg)"
+
+    if(this._yearStatus) {
+      this._divs = []
+      this.shadowRoot.querySelector(".body-container").style.display = "none";
+      this.shadowRoot.querySelector(".year-picker").style.display = "block";
+    } else {
+      this.shadowRoot.querySelector(".body-container").style.display = "block";
+      this.shadowRoot.querySelector(".year-picker").style.display = "none";
+
+      this._makeDateDivs();
+    }
     this.requestUpdate();
+  }
+  _makeYears() {
+    for(let i = 1900; i <= 2099; i++) {
+      this._yearDivs = [...this._yearDivs, html`<button class="year-button">${i}</button>`]
+    }
   }
   
 }
