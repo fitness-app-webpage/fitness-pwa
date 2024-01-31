@@ -28,7 +28,7 @@ export default class DatePicker extends LitElement{
     this.text = "default text"
     this.name = "";
     this.label = "";
-    this.pattern = "";
+    this.pattern ="(0[1-9]|1[0-9]|2[0-9]|3[01])-(0[1-9]|1[012])-[0-9]{4}"
     this.min = 10;
     this.max = 10;
     this.ariaLabel = "";
@@ -89,6 +89,9 @@ export default class DatePicker extends LitElement{
         border-radius: var(--input-field-border-radius, 30px);
         background-color: var(--input-field-background-color, #e4dfdf);
       }
+      #invalid-input {
+      border: 2px solid red;
+     }
       label {
         position: absolute;
         top: 50%;
@@ -271,6 +274,11 @@ export default class DatePicker extends LitElement{
       font-size: 20px;
       border-radius: 20px;
      }
+     .error-message {
+      margin-left: 12px;
+      color: red;
+      visibility: hidden;
+     }
       `;
     }
 
@@ -285,6 +293,7 @@ export default class DatePicker extends LitElement{
           name=${this.name} 
           id=${this.name} 
           .value="${this.value}" 
+          pattern=${this.pattern}
           minlength="${this.min}" 
           maxlength="${this.max}"
           aria-label=${this.ariaLabel}
@@ -301,6 +310,7 @@ export default class DatePicker extends LitElement{
         </div>
       </div>
     </div>
+    <span class="error-message">${this.errormessage}</span>
 
     <div class="picker">
       <div tabindex=0></div>
@@ -342,7 +352,6 @@ export default class DatePicker extends LitElement{
   }
 
   updateValue(e) {
-    console.log(e.target.value)
     if(isNaN(e.target.value.charAt(e.target.value.lenght - 1))) {
       e.target.value = this.value;
       return;
@@ -357,11 +366,19 @@ export default class DatePicker extends LitElement{
   }
 
   setValidity(input) {
+    let errorDiv = this.shadowRoot.querySelector(".background-div");
+    let errorMessage = this.shadowRoot.querySelector(".error-message");
     if(!input.checkValidity()) {
       this.validity = input.validity;
-      this.internals.setValidity({customError: true}, this.errormessage)
+      this.internals.setValidity({customError: true}, " ");
+      if(this.value !== "") {
+        errorDiv.id = "invalid-input"
+        errorMessage.style = "visibility: visible;"
+      }
     } else {
       this.internals.setValidity({});
+      errorDiv.id = "";
+      errorMessage.style = "visibility: hidden;"
     }
   }
 

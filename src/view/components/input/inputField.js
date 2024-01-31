@@ -6,7 +6,7 @@ export default class InputField extends LitElement{
     return{
       value: {type: String, reflect: true},
       name: {type: String, reflect: true},
-      required: {type: Boolean, reflect: true},
+      // required: {type: Boolean, reflect: true},
       label: {type: String},
       pattern: {type: String},
       min: {type: String},
@@ -27,7 +27,7 @@ export default class InputField extends LitElement{
     this.value = "";
     this.name = "";
     this.label = "";
-    this.pattern = ".{1,}";
+    this.pattern = "/^.{1,}/";
     this.min = "";
     this.max = "";
     this.type = "text";
@@ -42,9 +42,9 @@ export default class InputField extends LitElement{
     this.setAttribute('tabindex', '0');
     this.addEventListener('focus', this.setFocus.bind(this))
     this.internals.setFormValue(this.value)
-    if(this.required && this.value === "") {
-      this.internals.setValidity({customError: true}, this.errormessage)
-    }
+    // if(this.required && this.value === "") {
+    //   this.internals.setValidity({customError: true}, this.errormessage)
+    // }
     
   }
 
@@ -150,7 +150,8 @@ export default class InputField extends LitElement{
       input::-webkit-outer-spin-button,
       input::-webkit-inner-spin-button {
         -webkit-appearance: none;
-      }`;
+      }
+      `;
     }
 
 
@@ -178,9 +179,14 @@ export default class InputField extends LitElement{
     this.value = e.target.value;
     this.internals.setFormValue(this.value)
     this.setValidity(e.target)
+    this.checkValidation(e.target)
     this.dispatchEvent(new CustomEvent('input-changed', {[e.target.name]: e.target.value}));
   }
-
+  checkValidation(input) {
+    const str = this.value;
+    const regex = new RegExp(this.pattern);
+    const result = new RegExp(this.pattern).test(this.value);
+  }
   setValidity(input) {
     if(!input.checkValidity()) {
       this.validity = input.validity;
