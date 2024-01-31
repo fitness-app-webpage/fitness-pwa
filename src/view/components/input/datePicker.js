@@ -26,8 +26,8 @@ export default class DatePicker extends LitElement{
     this.value = "";
     this.name = "";
     this.label = "";
-    this.pattern = "\d{2}/\d{2}/\d{4}";
-    this.min = "";
+    this.pattern = "";
+    this.min = 10;
     this.max = 10;
     this.ariaLabel = "";
     this.validity = {};
@@ -38,7 +38,8 @@ export default class DatePicker extends LitElement{
     this._navCalendar = 0;
     this._divs = []
     this._monthAndYear = "";
-    this._yearNav = new Date().getFullYear()
+    this._year = new Date().getFullYear()
+    this._month = "";
     this._yearDivs = [];
   }
 
@@ -63,16 +64,14 @@ export default class DatePicker extends LitElement{
     this.shadowRoot.querySelector('input').focus()
   }
 
-  // updated() {
-  //   console.log(this.value)
-  //   this.internals.setFormValue(this.value)
-  //   this.setValidity(this.shadowRoot.querySelector("input"));
-  // }
-
   formResetCallback() {
     this.value = "";
     this.internals.setFormValue(this.value)
-  }  
+  }
+  update() {
+    super.update()
+    this.setValidity(this.shadowRoot.querySelector("input"))
+  }
   
   static get styles(){ 
     return css`
@@ -81,7 +80,6 @@ export default class DatePicker extends LitElement{
         padding: 8px;
         margin: 9px 0;
         border-radius: var(--input-field-border-radius, 30px);
-        /* width: var(--input-field-width, 100%); */
         background-color: var(--input-field-background-color, #e4dfdf);
       }
       label {
@@ -279,11 +277,10 @@ export default class DatePicker extends LitElement{
           name=${this.name} 
           id=${this.name} 
           .value="${this.value}" 
-          pattern="${this.pattern}"
-          min="${this.min}" 
+          minlength="${this.min}" 
           maxlength="${this.max}"
           aria-label=${this.ariaLabel}
-          @input="${this.updateValue}" 
+          @input="${this.updateValue}"
           ?required="${this.required}"
           />
           <label for="${this.name}">${this.label}</label>
@@ -337,6 +334,7 @@ export default class DatePicker extends LitElement{
   }
 
   updateValue(e) {
+    console.log(e.target.value)
     if(isNaN(e.target.value.charAt(e.target.value.lenght - 1))) {
       e.target.value = this.value;
       return;
@@ -362,15 +360,16 @@ export default class DatePicker extends LitElement{
   handleDatepicker() {
     this._pickerStatus = !this._pickerStatus;
     this.shadowRoot.querySelector(".picker").style.display = this._pickerStatus ? "block" : "none"
-    // this._makeDateDivs();
-    this._makeDateDivs();
+    if(this._pickerStatus) {
+      this._makeDateDivs();
+    }
   }
 
   _makeDateDivs() {
     const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
     const thisYear = new Date().getFullYear();
-    const dt = new Date(`${this._yearNav}`);
+    const dt = new Date(`${this._year}`);
 
     dt.setMonth(new Date().getMonth() + this._navCalendar)
 
@@ -378,11 +377,11 @@ export default class DatePicker extends LitElement{
     let res = [];
 
     const day = dt.getDate()
-    const month = dt.getMonth()
+    this._month = dt.getMonth()
     const year = dt.getFullYear()
 
-    const firstDayOfMonth = new Date(year, month, 1);
-    const dayInMonth = new Date(year, month + 1, 0).getDate();
+    const firstDayOfMonth = new Date(year, this._month, 1);
+    const dayInMonth = new Date(year, this._month + 1, 0).getDate();
 
     const dateString = firstDayOfMonth.toLocaleDateString('en-us', {
       weekday: 'long',
@@ -398,7 +397,7 @@ export default class DatePicker extends LitElement{
 
     for(let i = 1; i <= paddingDays + dayInMonth; i++) {
       if(i >= paddingDays) {
-        rowDivs = [...rowDivs, html`<button class="day">${i - paddingDays + 1}</button>`]
+        rowDivs = [...rowDivs, html`<button class="day" @click=${this.clickDay}>${i - paddingDays + 1}</button>`]
       } else {
         rowDivs = [...rowDivs, html`<div class="day"></div>`]
       }
@@ -456,9 +455,17 @@ export default class DatePicker extends LitElement{
   }
   _makeYears() {
     for(let i = 1900; i <= 2099; i++) {
-      this._yearDivs = [...this._yearDivs, html`<button class="year-button">${i}</button>`]
+      this._yearDivs = [...this._yearDivs, html`<button class="year-button" @click=${this.clickOnYear}>${i}</button>`]
     }
   }
-  
+  clickOnYear(e) {
+    this._year = e.target.textContent
+    this.changeYear();
+  }
+  clickDay(e) {
+    let month = String(this._month + 1)
+    this.value = `${e.target.textContent.length === 1 ? 0 + e.target.textContent : e.target.textContent}-${month.length === 1 ? 0 + month : month}-${this._year}`
+    this.handleDatepicker();
+  }
 }
 customElements.define('date-picker', DatePicker);
