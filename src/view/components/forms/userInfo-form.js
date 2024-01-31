@@ -45,9 +45,9 @@ export default class UserInfoForm extends LitElement {
     return html`
           <h1>Personal info</h1>
           <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed}>
-            <date-picker name="birthday" label="Birthday" required></date-picker>
+            <date-picker name="birthday" label="dd-mm-yyyy" text="When is your birthday" required></date-picker>
             <div>
-              <radio-picker name="sex" .options=${[{label: "Male", value: "MALE"}, {label: "Female", value: "FEMALE"}]}></radio-picker>
+              <radio-picker name="sex" .options=${[{label: "Male", value: "MALE"}, {label: "Female", value: "FEMALE"}]} required></radio-picker>
             </div>
             <div class="button-container">
               <button-div value="Back" @click=${this.handleBack}></button-div>

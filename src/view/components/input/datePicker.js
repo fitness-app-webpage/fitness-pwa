@@ -7,6 +7,7 @@ export default class DatePicker extends LitElement{
       value: {type: String, reflect: true},
       name: {type: String, reflect: true},
       required: {type: Boolean, reflect: true},
+      text: {type: String},
       label: {type: String},
       pattern: {type: String},
       min: {type: String},
@@ -24,6 +25,7 @@ export default class DatePicker extends LitElement{
   constructor() {
     super();
     this.value = "";
+    this.text = "default text"
     this.name = "";
     this.label = "";
     this.pattern = "";
@@ -76,6 +78,10 @@ export default class DatePicker extends LitElement{
   
   static get styles(){ 
     return css`
+      h1{
+        font-size: var(--date-picker-h1-font-size, 18px);
+        margin-left: 12px;
+      }
       .background-div{
         position: relative;
         padding: 8px;
@@ -271,6 +277,7 @@ export default class DatePicker extends LitElement{
 
   render() {
     return html`
+    <h1>${this.text}</h1>
     <div class="background-div">
         <div class="input-datepicker">
           <input 

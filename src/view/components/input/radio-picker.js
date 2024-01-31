@@ -78,10 +78,24 @@ export default class RadioPicker extends LitElement{
           justify-content: center;
           margin-right: 30px;
         }
+        span {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-align: center;
+          cursor: pointer;
+          padding: 9px;
+          border-radius: 50%;
+        }
+        span:hover {
+          background-color: rgb(0 76 255 / 8%);
+
+        }
         input {
             height: 20px;
             width: 20px;
-            margin: 0 10px 0 0 ;
+            margin: 0;
+            cursor: pointer;
         }
      `;
     }
@@ -93,15 +107,17 @@ export default class RadioPicker extends LitElement{
 
         ${this.options.map(e =>
             html`<label for="${this.name}">
-                 <input 
-                    type="radio"
-                    name=${this.name} 
-                    id=${this.name} 
-                    .value="${e.value}" 
-                    aria-label=${this.ariaLabel}
-                    @input="${this.updateValue}" 
-                    ?required="${this.required}"
-                />
+                <span>
+                  <input 
+                      type="radio"
+                      name=${this.name} 
+                      id=${this.name} 
+                      .value="${e.value}" 
+                      aria-label=${this.ariaLabel}
+                      @input="${this.updateValue}" 
+                      ?required="${this.required}"
+                  />
+                </span>
                 ${e.label}
                 </label>`
         )}
