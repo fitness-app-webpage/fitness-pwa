@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit";
 
-export default class InputField extends LitElement{
+export default class NumbericInput extends LitElement{
   
   static get properties() {
     return{
@@ -13,6 +13,7 @@ export default class InputField extends LitElement{
       max: {type: String},
       type: {type: String},
       validity: {type: Object},
+      abbreviateType: {type: String},
       errormessage: {type: String},
       ariaLabel: {type: String},
     }
@@ -27,12 +28,13 @@ export default class InputField extends LitElement{
     this.value = "";
     this.name = "";
     this.label = "";
-    this.pattern = ".{1,}";
+    this.pattern = "";
     this.min = "";
     this.max = "";
     this.type = "text";
     this.ariaLabel = "";
     this.validity = {};
+    this.abbreviateType = "";
     this.errormessage = "Field is required";
     this.internals = this.attachInternals();
   }
@@ -71,8 +73,8 @@ export default class InputField extends LitElement{
   static get styles(){ 
     return css`
       .background-div{
-        display: flex;
         position: relative;
+        display: flex;
         padding: 8px;
         margin: 9px 0;
         border-radius: var(--input-field-border-radius, 30px);
@@ -105,6 +107,15 @@ export default class InputField extends LitElement{
         background-color: var(--input-field-background-color, inherit);
         line-height: 2em;
         width: 96%;
+      }
+      .abbreviate {
+        display: flex;
+        margin-left: 20px;
+        position: relative;
+        top: 0px;
+        left: -20px;
+        justify-content: center;
+        align-self: center;
       }
       
       
@@ -193,7 +204,7 @@ export default class InputField extends LitElement{
     return html`
     <div class="background-div">
         <input 
-        .type=${this.type}
+        type="text"
         name=${this.name} 
         id=${this.name} 
         .value="${this.value}" 
@@ -206,6 +217,7 @@ export default class InputField extends LitElement{
         />
 
         <label for="${this.name}">${this.label}</label>
+        <span class="abbreviate">${this.abbreviateType}</span>
     </div>
     <span class="error-message">${this.errormessage}</span>`;
   }
@@ -242,4 +254,4 @@ export default class InputField extends LitElement{
     return true;
   }
 }
-customElements.define('input-field', InputField);
+customElements.define('numberic-input', NumbericInput);

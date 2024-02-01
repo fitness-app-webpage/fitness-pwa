@@ -1,4 +1,5 @@
 import { LitElement, html, css } from "lit";
+import '../input/numberic-input'
 
 export default class UserInfoForm2 extends LitElement {
   static get properties() {
@@ -47,8 +48,8 @@ export default class UserInfoForm2 extends LitElement {
     return html`
           <h1>Personal info</h1>
           <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed} novalidate>
-            <input-field type="text" name="weight" label="Weight in kilo grams" pattern="([0-9]{2,3})?([\.][0-9][0-9]?)?" errormessage="Weight must be between" required></input-field>
-            <input-field type="text" name="height" label="Height in centimeters" pattern="[1-4][0-9]{2}" errormessage="Height must be betweem 100cm and 299cm" required></input-field>
+            <numberic-input type="text" name="weight" label="Weight in kilo grams" pattern="([0-9]{2,3})?([\.][0-9][0-9]?)?" errormessage="Weight must be between" abbreviateType="kg" required></numberic-input>
+            <numberic-input type="text" name="height" label="Height in centimeters" pattern="[1-4][0-9]{2}" errormessage="Height must be betweem 100cm and 299cm" abbreviateType="cm" required></numberic-input>
             <div class="button-container">
               <button-div value="Back" @click=${this.handleBack}></button-div>
               <button-div value="Next" @click=${this.handleSubmit}></button-div>

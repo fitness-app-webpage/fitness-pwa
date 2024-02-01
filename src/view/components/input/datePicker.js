@@ -87,10 +87,12 @@ export default class DatePicker extends LitElement{
         padding: 8px;
         margin: 9px 0;
         border-radius: var(--input-field-border-radius, 30px);
-        background-color: var(--input-field-background-color, #e4dfdf);
+        /* background-color: var(--input-field-background-color, #e4dfdf); */
+        border: #e4dfdf solid;
       }
       .invalid-input {
       border: 2px solid red;
+      width: 340px;
      }
      #invalid-input {
       animation: shake 0.2s ease-in-out 0s 2;
@@ -108,11 +110,12 @@ export default class DatePicker extends LitElement{
       label, input {
         display: flex;
         align-items: center;
-        margin: 0 6px;
+        margin-left: 24px;
+        margin-right: 6px;
       }
       input {
         position: relative;
-        top: 5px;
+        top: 0px;
         border: none;
         outline: none;
         padding: 0;
@@ -122,7 +125,10 @@ export default class DatePicker extends LitElement{
       }
       input:focus + label,
       :host(:not([value=""])) label {
-        top: 25%;
+        top: -1.5px;
+        background-color: white;
+        padding: 0 4px;
+        margin-left: 20px;
         font-size: 14px;
       }
       
@@ -130,7 +136,7 @@ export default class DatePicker extends LitElement{
       input:-webkit-autofill:hover, 
       input:-webkit-autofill:focus, 
       input:-webkit-autofill:active{
-        box-shadow: 0 0 0 30px var(--box-shadow-color, #e4dfdf) inset;
+        box-shadow: 0 0 0 30px var(--box-shadow-color, white) inset;
       
       }
       input::-webkit-outer-spin-button,
