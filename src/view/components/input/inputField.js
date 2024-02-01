@@ -6,7 +6,7 @@ export default class InputField extends LitElement{
     return{
       value: {type: String, reflect: true},
       name: {type: String, reflect: true},
-      // required: {type: Boolean, reflect: true},
+      required: {type: Boolean, reflect: true},
       label: {type: String},
       pattern: {type: String},
       min: {type: String},
@@ -27,7 +27,7 @@ export default class InputField extends LitElement{
     this.value = "";
     this.name = "";
     this.label = "";
-    this.pattern = "/^.{1,}/";
+    this.pattern = ".{1,}";
     this.min = "";
     this.max = "";
     this.type = "text";
@@ -42,9 +42,9 @@ export default class InputField extends LitElement{
     this.setAttribute('tabindex', '0');
     this.addEventListener('focus', this.setFocus.bind(this))
     this.internals.setFormValue(this.value)
-    // if(this.required && this.value === "") {
-    //   this.internals.setValidity({customError: true}, this.errormessage)
-    // }
+    if(this.required && this.value === "") {
+      this.internals.setValidity({customError: true}, this.errormessage)
+    }
     
   }
 
@@ -75,7 +75,7 @@ export default class InputField extends LitElement{
         padding: 8px;
         margin: 9px 0;
         border-radius: var(--input-field-border-radius, 30px);
-        /* width: var(--input-field-width, 100%); */
+        width: var(--input-field-width, 344px);
         background-color: var(--input-field-background-color, #e4dfdf);
       }
       label {
@@ -151,6 +151,33 @@ export default class InputField extends LitElement{
       input::-webkit-inner-spin-button {
         -webkit-appearance: none;
       }
+      .error-message {
+      margin-left: 12px;
+      color: red;
+      visibility: hidden;
+     }
+     .invalid-input {
+      border: 2px solid red;
+     }
+     #invalid-input {
+      animation: shake 0.2s ease-in-out 0s 2;
+     }
+
+     @keyframes shake {
+      0% {
+        margin-left: 0rem;
+      }
+      25% {
+        margin-left: 0.5rem;
+      }
+      75% {
+        margin-left: -0.5rem;
+      }
+      100% {
+        margin-left: 0rem;
+      }
+    }
+
       `;
     }
 
@@ -172,20 +199,17 @@ export default class InputField extends LitElement{
         />
 
         <label for="${this.name}">${this.label}</label>
-    </div>`;
+    </div>
+    <span class="error-message">${this.errormessage}</span>`;
   }
 
   updateValue(e) {
+    this.shadowRoot.querySelector(".background-div").classList.remove("invalid-input")
+    this.shadowRoot.querySelector(".error-message").style = "visibility: none;"
     this.value = e.target.value;
     this.internals.setFormValue(this.value)
     this.setValidity(e.target)
-    this.checkValidation(e.target)
     this.dispatchEvent(new CustomEvent('input-changed', {[e.target.name]: e.target.value}));
-  }
-  checkValidation(input) {
-    const str = this.value;
-    const regex = new RegExp(this.pattern);
-    const result = new RegExp(this.pattern).test(this.value);
   }
   setValidity(input) {
     if(!input.checkValidity()) {
@@ -194,6 +218,21 @@ export default class InputField extends LitElement{
     } else {
       this.internals.setValidity({});
     }
+  }
+  checkValidation() {
+    const input = this.shadowRoot.querySelector("input")
+    const errorDiv = this.shadowRoot.querySelector(".background-div");
+    const errorMessage = this.shadowRoot.querySelector(".error-message");
+    if(!input.checkValidity()) {
+      errorDiv.classList.add("invalid-input")
+      errorDiv.id = "invalid-input"
+      errorMessage.style = "visibility: visible;" 
+      setTimeout(() => {
+        errorDiv.id = "";
+      }, 500)
+      return false;     
+    }
+    return true;
   }
 }
 customElements.define('input-field', InputField);

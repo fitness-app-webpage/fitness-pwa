@@ -14,6 +14,9 @@ export default class RegisterForm extends LitElement {
 
   static get styles(){ 
     return css`
+    :host {
+      width: 100%;
+    }
     form {
       display: flex;
       flex-direction: column;
@@ -25,6 +28,7 @@ export default class RegisterForm extends LitElement {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+      margin: 10px 0 0 0;
     }
     button-div {
       width: 120px;
@@ -42,13 +46,13 @@ export default class RegisterForm extends LitElement {
   render() {
     return html`
           <h1>Register</h1>
-          <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed}>
+          <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed} novalidate>
             <input-field type="text" name="username" label="Username" pattern=".{1,}" required></input-field>
             <input-field type="email" name="email" label="Email" pattern=".{1,}" required></input-field>
             <input-field type="password" name="password" label="Password" pattern=".{1,}" required></input-field>
             <div class="button-container">
               <button-div value="Back" @click=${this.handleBack}></button-div>
-              <button-div value="Next" @click=${this.handleSubmit}></button-div>
+              <button-div value="Register" @click=${this.handleSubmit}></button-div>
             </div>
           </form>
   `;
@@ -57,9 +61,20 @@ export default class RegisterForm extends LitElement {
   submitForm(e) {
     e.preventDefault();
     const form = e.target;
-    const formData = new FormData(form);
-    this.data = Object.fromEntries(formData.entries())
-    this.dispatchEvent(new CustomEvent('submit', {detail: this.data}));
+    if(form.checkValidity()) {
+      const formData = new FormData(form);
+      this.data = Object.fromEntries(formData.entries())
+      this.dispatchEvent(new CustomEvent('submit', {detail: this.data}));
+    } else {
+      let firstInvalidInput = false;
+      Array.from(form.elements).map(e => {
+        e.checkValidation()
+        if(!firstInvalidInput && !e.checkValidation()) {
+          firstInvalidInput = true;
+          e.focus();
+        }
+      })
+    }
   }
 
   handleSubmit(e) {

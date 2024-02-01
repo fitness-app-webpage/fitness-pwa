@@ -89,8 +89,11 @@ export default class DatePicker extends LitElement{
         border-radius: var(--input-field-border-radius, 30px);
         background-color: var(--input-field-background-color, #e4dfdf);
       }
-      #invalid-input {
+      .invalid-input {
       border: 2px solid red;
+     }
+     #invalid-input {
+      animation: shake 0.2s ease-in-out 0s 2;
      }
       label {
         position: absolute;
@@ -279,6 +282,20 @@ export default class DatePicker extends LitElement{
       color: red;
       visibility: hidden;
      }
+     @keyframes shake {
+      0% {
+        margin-left: 0rem;
+      }
+      25% {
+        margin-left: 0.5rem;
+      }
+      75% {
+        margin-left: -0.5rem;
+      }
+      100% {
+        margin-left: 0rem;
+      }
+    }
       `;
     }
 
@@ -352,6 +369,8 @@ export default class DatePicker extends LitElement{
   }
 
   updateValue(e) {
+    this.shadowRoot.querySelector(".background-div").classList.remove("invalid-input")
+    this.shadowRoot.querySelector(".error-message").style = "visibility: none;"
     if(isNaN(e.target.value.charAt(e.target.value.lenght - 1))) {
       e.target.value = this.value;
       return;
@@ -361,24 +380,28 @@ export default class DatePicker extends LitElement{
       this.value += "-"
     }
     this.internals.setFormValue(this.value)
-    this.setValidity(e.target)
     this.dispatchEvent(new CustomEvent('input-changed', {[e.target.name]: this.value}));
   }
 
   setValidity(input) {
-    let errorDiv = this.shadowRoot.querySelector(".background-div");
-    let errorMessage = this.shadowRoot.querySelector(".error-message");
     if(!input.checkValidity()) {
       this.validity = input.validity;
-      this.internals.setValidity({customError: true}, " ");
-      if(this.value !== "") {
-        errorDiv.id = "invalid-input"
-        errorMessage.style = "visibility: visible;"
-      }
+      this.internals.setValidity({customError: true}, this.errormessage);
     } else {
       this.internals.setValidity({});
-      errorDiv.id = "";
-      errorMessage.style = "visibility: hidden;"
+    }
+  }
+  checkValidation() {
+    const input = this.shadowRoot.querySelector("input")
+    const errorDiv = this.shadowRoot.querySelector(".background-div");
+    const errorMessage = this.shadowRoot.querySelector(".error-message");
+    if(!input.checkValidity()) {
+      errorDiv.classList.add("invalid-input")
+      errorDiv.id = "invalid-input"
+      errorMessage.style = "visibility: visible;" 
+      setTimeout(() => {
+        errorDiv.id = "";
+      }, 500)  
     }
   }
 
@@ -490,6 +513,8 @@ export default class DatePicker extends LitElement{
   clickDay(e) {
     let month = String(this._month + 1)
     this.value = `${e.target.textContent.length === 1 ? 0 + e.target.textContent : e.target.textContent}-${month.length === 1 ? 0 + month : month}-${this._year}`
+    this.shadowRoot.querySelector(".background-div").classList.remove("invalid-input")
+    this.shadowRoot.querySelector(".error-message").style = "visibility: none;"
     this.handleDatepicker();
   }
 }

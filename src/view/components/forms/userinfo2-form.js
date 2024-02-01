@@ -14,6 +14,9 @@ export default class UserInfoForm2 extends LitElement {
 
   static get styles(){ 
     return css`
+    :host {
+      width: 100%;
+    }
     form {
       display: flex;
       flex-direction: column;
@@ -25,6 +28,7 @@ export default class UserInfoForm2 extends LitElement {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+      margin: 10px 0 0 0;
     }
     button-div {
       width: 120px;
@@ -42,7 +46,7 @@ export default class UserInfoForm2 extends LitElement {
   render() {
     return html`
           <h1>Personal info</h1>
-          <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed}>
+          <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed} novalidate>
             <input-field type="text" name="weight" label="Weight in kilo grams" pattern="([0-9]{2,3})?([\.][0-9][0-9]?)?" errormessage="Weight must be between" required></input-field>
             <input-field type="text" name="height" label="Height in centimeters" pattern="[1-4][0-9]{2}" errormessage="Height must be betweem 100cm and 299cm" required></input-field>
             <div class="button-container">
@@ -56,9 +60,20 @@ export default class UserInfoForm2 extends LitElement {
   submitForm(e) {
     e.preventDefault();
     const form = e.target;
-    const formData = new FormData(form);
-    this.data = Object.fromEntries(formData.entries())
-    this.dispatchEvent(new CustomEvent('next', {detail: this.data}));
+    if(form.checkValidity()) {
+      const formData = new FormData(form);
+      this.data = Object.fromEntries(formData.entries())
+      this.dispatchEvent(new CustomEvent('next', {detail: this.data}));
+    } else {
+      let firstInvalidInput = false;
+      Array.from(form.elements).map(e => {
+        e.checkValidation()
+        if(!firstInvalidInput && !e.checkValidation()) {
+          firstInvalidInput = true;
+          e.focus();
+        }
+      })
+    }
   }
 
   handleSubmit(e) {

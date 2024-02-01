@@ -16,6 +16,9 @@ export default class UserInfoForm extends LitElement {
 
   static get styles(){ 
     return css`
+    :host {
+      width: 100%;
+    }
     form {
       display: flex;
       flex-direction: column;
@@ -27,9 +30,13 @@ export default class UserInfoForm extends LitElement {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+      margin: 10px 0 0 0;
     }
     button-div {
       width: 120px;
+    }
+    .radio-container {
+      padding-left: 12px;
     }
 
     @media only screen and (max-width: 480px) {
@@ -44,9 +51,9 @@ export default class UserInfoForm extends LitElement {
   render() {
     return html`
           <h1>Personal info</h1>
-          <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed}>
+          <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed} novalidate>
             <date-picker name="birthday" label="dd-mm-yyyy" text="When is your birthday" errormessage=${"Invalid birthday date"} required></date-picker>
-            <div>
+            <div class="radio-container">
               <radio-picker name="sex" .options=${[{label: "Male", value: "MALE"}, {label: "Female", value: "FEMALE"}]} required></radio-picker>
             </div>
             <div class="button-container">
@@ -60,9 +67,20 @@ export default class UserInfoForm extends LitElement {
   submitForm(e) {
     e.preventDefault();
     const form = e.target;
-    const formData = new FormData(form);
-    this.data = Object.fromEntries(formData.entries())
-    this.dispatchEvent(new CustomEvent('next', {detail: this.data}));
+    if(form.checkValidity()) {
+      const formData = new FormData(form);
+      this.data = Object.fromEntries(formData.entries())
+      this.dispatchEvent(new CustomEvent('next', {detail: this.data}));
+    } else {
+      let firstInvalidInput = false;
+      Array.from(form.elements).map(e => {
+        e.checkValidation()
+        if(!firstInvalidInput && !e.checkValidation()) {
+          firstInvalidInput = true;
+          e.focus();
+        }
+      })
+    }
   }
 
   handleSubmit(e) {

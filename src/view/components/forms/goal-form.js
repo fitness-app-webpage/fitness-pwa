@@ -14,6 +14,9 @@ export default class GoalForm extends LitElement {
 
   static get styles(){ 
     return css`
+    :host {
+      width: 100%;
+    }
     form {
       display: flex;
       flex-direction: column;
@@ -25,6 +28,7 @@ export default class GoalForm extends LitElement {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+      margin: 10px 0 0 0;
     }
     button-div {
       width: 120px;
@@ -42,7 +46,7 @@ export default class GoalForm extends LitElement {
   render() {
     return html`
           <h1>Goal</h1>
-          <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed}>
+          <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed} novalidate>
             <input-field type="text" name="activityLevel" label="Activity level(pal)" value="AVERAGE" required></input-field>
             <input-field type="text" name="goal" label="Goal" value="SLOWLYLOSEWEIGHT"  required></input-field>
             <input-field type="text" name="protein" label="Weight per kilo grams protein" pattern="([0-2])?([\.][0-9]?)?" required></input-field>
@@ -57,9 +61,20 @@ export default class GoalForm extends LitElement {
   submitForm(e) {
     e.preventDefault();
     const form = e.target;
-    const formData = new FormData(form);
-    this.data = Object.fromEntries(formData.entries())
-    this.dispatchEvent(new CustomEvent('next', {detail: this.data}));
+    if(form.checkValidity()) {
+      const formData = new FormData(form);
+      this.data = Object.fromEntries(formData.entries())
+      this.dispatchEvent(new CustomEvent('next', {detail: this.data}));
+    } else {
+      let firstInvalidInput = false;
+      Array.from(form.elements).map(e => {
+        e.checkValidation()
+        if(!firstInvalidInput && !e.checkValidation()) {
+          firstInvalidInput = true;
+          e.focus();
+        }
+      })
+    }
   }
 
   handleSubmit(e) {

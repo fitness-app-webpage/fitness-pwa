@@ -64,9 +64,10 @@ export default class RadioPicker extends LitElement{
   
   static get styles(){ 
     return css`
+        
         .background-div{
             display: flex;
-            padding: 8px;
+            flex-wrap: wrap;
             margin: 20px 0;
         }
         label {
@@ -77,8 +78,9 @@ export default class RadioPicker extends LitElement{
           align-items: center;
           justify-content: center;
           margin-right: 30px;
+          margin-left: -9px;
         }
-        span {
+        .radio-span {
           display: flex;
           align-items: center;
           justify-content: center;
@@ -87,7 +89,7 @@ export default class RadioPicker extends LitElement{
           padding: 9px;
           border-radius: 50%;
         }
-        span:hover {
+        .radio-span:hover {
           background-color: rgb(0 76 255 / 8%);
 
         }
@@ -96,6 +98,11 @@ export default class RadioPicker extends LitElement{
             width: 20px;
             margin: 0;
             cursor: pointer;
+        }
+        .error-message {
+        /* margin-left: 17px; */
+        color: red;
+        visibility: hidden;
         }
      `;
     }
@@ -107,7 +114,7 @@ export default class RadioPicker extends LitElement{
 
         ${this.options.map(e =>
             html`<label for="${this.name}">
-                <span>
+                <span class="radio-span">
                   <input 
                       type="radio"
                       name=${this.name} 
@@ -121,10 +128,13 @@ export default class RadioPicker extends LitElement{
                 ${e.label}
                 </label>`
         )}
-    </div>`;
+    </div>
+    <span class="error-message">${this.errormessage}</span>
+    `;
   }
 
   updateValue(e) {
+    this.shadowRoot.querySelector(".error-message").style = "visibility: hidden;"
     this.value = e.target.value;
     this.internals.setFormValue(this.value)
     this.setValidity(e.target)
@@ -137,6 +147,13 @@ export default class RadioPicker extends LitElement{
       this.internals.setValidity({customError: true}, this.errormessage)
     } else {
       this.internals.setValidity({});
+    }
+  }
+  checkValidation() {
+    const input = this.shadowRoot.querySelector("input")
+    const errorMessage = this.shadowRoot.querySelector(".error-message");
+    if(!input.checkValidity()) {
+      errorMessage.style = "visibility: visible;"
     }
   }
 }
