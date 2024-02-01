@@ -13,6 +13,13 @@ export default class Page extends LitElement{
     }
     static get styles(){
         return css`
+          :host {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
         `;
     }
     render() {

@@ -27,7 +27,7 @@ const a = (context, commands) => {
 }
     
 router.setRoutes([
-    {path: `${BASE}/`, name: "Home", component: "home-view"},
+    {path: `${BASE}/`, name: "Home", component: "login-div"},
     {path: `${BASE}/home`, name: "Home", component: "home-view"},
     {path: `${BASE}/login`, name: "Login", component: 'login-div', action: changeTitleAndAuthCheck},
     {path: `${BASE}/register`, name: "Register", component: 'register-div', action: e => document.title = e.route.name},
