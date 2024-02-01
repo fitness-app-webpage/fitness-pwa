@@ -6,7 +6,7 @@ GIT_COMMIT_MESSAGE="New build for deploy: "$(date)
 GIT_BRANCH_LOCAL="deploy"
 GIT_BRANCH_REMOTE="gh-pages"
 #GIT_REPO_REMOTE="https://github.com/<Organisation>/<Project>.git"
-GIT_REPO_REMOTE="https://github.com/HU-SD-SV2FE-studenten-2324/v2fe-eindopdracht-v2e_koninklijke_ptt_nederland.git"
+GIT_REPO_REMOTE="https://github.com/fitness-app-webpage/fitness-pwa"
 
 # abort on errors
 set -e

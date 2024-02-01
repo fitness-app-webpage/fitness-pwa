@@ -1,6 +1,6 @@
 {
     "name": "Fitness app",
-    "start_url": "/",
+    "start_url": "/fitness-pwa/",
     "icons": [
         {
             "src": "",
