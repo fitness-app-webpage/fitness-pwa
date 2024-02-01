@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit";
 import {login} from "../../service/ApiService";
-import '../components/input/inputField';
+import '../components/input/input-field';
 import '../components/page/page';
 import '../components/button/Button';
 import '../components/error/errorMessage';
