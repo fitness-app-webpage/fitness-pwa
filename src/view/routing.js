@@ -6,8 +6,6 @@ import "./pages/home"
 import "./pages/login"
 import "./pages/register"
 
-const outlet = document.querySelector("#outlet"); 
-
 
 const changeTitleAndAuthCheck = (context, commands) => {
     document.title = context.route.name;
