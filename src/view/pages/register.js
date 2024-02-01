@@ -145,6 +145,7 @@ export default class Register extends LitElement {
   }
 
   handleSubmit(e) {
+    this.shadowRoot.querySelector(".loading-color").style = "width: 100%;"    
     this._changeObjectValue(e.detail);
     this._handleRegister();
   }
