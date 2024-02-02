@@ -15,6 +15,7 @@ export default class DatePicker extends LitElement{
       validity: {type: Object},
       errormessage: {type: String},
       ariaLabel: {type: String},
+      _divs: {type: Array, state: true}
     }
   };
 
@@ -478,7 +479,7 @@ export default class DatePicker extends LitElement{
                         ${res}
                       </div>
     `];
-    this.requestUpdate();
+    // this.requestUpdate();
   }
   goMonthBack() {
     this._navCalendar--;
@@ -505,7 +506,7 @@ export default class DatePicker extends LitElement{
 
       this._makeDateDivs();
     }
-    this.requestUpdate();
+    // this.requestUpdate();
   }
   _makeYears() {
     for(let i = 1900; i <= 2099; i++) {
