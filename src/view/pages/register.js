@@ -43,7 +43,7 @@ export default class Register extends LitElement {
       html`<goal-form @back=${this.handleBack} @next=${this.handleNext}></goal-form>`,
       html`<register-form @back=${this.handleBack} @submit=${this.handleSubmit}></register-form>`
     ]
-    this._stepCounter = 1;
+    this._stepCounter = 3;
   }
 
   static get styles(){ 

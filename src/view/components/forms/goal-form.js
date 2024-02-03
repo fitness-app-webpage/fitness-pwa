@@ -1,4 +1,5 @@
 import { LitElement, html, css } from "lit";
+import "../input/selector-picker"
 
 export default class GoalForm extends LitElement {
   static get properties() {
@@ -47,6 +48,19 @@ export default class GoalForm extends LitElement {
     return html`
           <h1>Goal</h1>
           <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed} novalidate>
+            <selector-picker 
+              name="activityLevel" 
+              label="Activity level(pal)" 
+              .options=${[
+                {value: "LITTLETONONE", label: "little to none"}, 
+                {value: "UNDERAVERAGE", label: "Under average"}, 
+                {value: "AVERAGE", label: "Average"}, 
+                {value: "SLIGHTLYABOVEAVERAGE", label: "Slightly above average"}, 
+                {value: "ABOVEAVERAGE", label: "Above average"}
+              ]} 
+              required>
+            </selector-picker>
+
             <input-field type="text" name="activityLevel" label="Activity level(pal)" value="AVERAGE" required></input-field>
             <input-field type="text" name="goal" label="Goal" value="SLOWLYLOSEWEIGHT"  required></input-field>
             <input-field type="text" name="protein" label="Weight per kilo grams protein" pattern="([0-2])?([\.][0-9]?)?" required></input-field>
