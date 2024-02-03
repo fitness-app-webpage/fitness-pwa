@@ -113,7 +113,7 @@ export default class RadioPicker extends LitElement{
     <div class="background-div">
 
         ${this.options.map(e =>
-            html`<label for="${this.name}">
+            html`<label>
                 <span class="radio-span">
                   <input 
                       type="radio"
