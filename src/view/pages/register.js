@@ -5,6 +5,7 @@ import '../components/forms/userInfo-form'
 import '../components/forms/userInfo2-form'
 import '../components/forms/goal-form'
 import '../components/forms/user-form'
+import '../components/forms/activity-form'
 import { register, login, setPersonalInfo } from "../../service/ApiService";
 import {Router} from "@vaadin/router";
 import {BASE} from "../../app"
@@ -13,6 +14,7 @@ export default class Register extends LitElement {
   static get properties() {
     return{
         _registerData: {type: Object, state: true},
+        _stepCounter: {type: Number, state: true}
     }
   };
 
@@ -40,10 +42,11 @@ export default class Register extends LitElement {
       html`<user-form @login=${this.handleLogin} @next=${this.handleNext}></user-form>`,
       html`<userinfo-form @back=${this.handleBack} @next=${this.handleNext}></userinfo-form>`,
       html`<userinfo2-form @back=${this.handleBack} @next=${this.handleNext}></userinfo2-form>`,
+      html`<activity-form @back=${this.handleBack} @next=${this.handleNext}></activity-form>`,
       html`<goal-form @back=${this.handleBack} @next=${this.handleNext}></goal-form>`,
       html`<register-form @back=${this.handleBack} @submit=${this.handleSubmit}></register-form>`
     ]
-    this._stepCounter = 3;
+    this._stepCounter = 0;
   }
 
   static get styles(){ 
@@ -137,11 +140,9 @@ export default class Register extends LitElement {
     this._formsArray[this._stepCounter] = e.target;
     this._changeObjectValue(e.detail)
     this._next();
-    this.requestUpdate();
   }
   handleBack() {
     this._back();
-    this.requestUpdate();
   }
 
   handleSubmit(e) {

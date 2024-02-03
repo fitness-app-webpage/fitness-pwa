@@ -9,9 +9,6 @@ export default class SelectorPicker extends LitElement{
       name: {type: String, reflect: true},
       required: {type: Boolean, reflect: true},
       label: {type: String},
-      pattern: {type: String},
-      min: {type: String},
-      max: {type: String},
       validity: {type: Object},
       errormessage: {type: String},
       ariaLabel: {type: String},
@@ -27,9 +24,6 @@ export default class SelectorPicker extends LitElement{
     this.value = "";
     this.name = "";
     this.label = "";
-    this.pattern = "";
-    this.min = "";
-    this.max = "";
     this.ariaLabel = "";
     this.validity = {};
     this.errormessage = "Field is required";
@@ -69,6 +63,33 @@ export default class SelectorPicker extends LitElement{
   
   static get styles(){ 
     return css`
+        .background-div {
+            display: flex;
+            flex-direction: column;
+        }
+        input {
+            display: none;
+            /* background-color: red; */
+
+        }
+        label {
+            border: 2px solid #e4dfdf;
+            border-radius: 4px;
+            padding: 20px 0;
+            margin: 4px 0;
+            text-align: center;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        label:hover {
+            border-color: #bdb9b9;
+        }
+        input:checked + label {
+            border-color: #285e49c0;
+            color: #285e49c0;
+            font-weight: bold; 
+        }
+
       /* .background-div{
         display: flex;
         position: relative;
@@ -132,13 +153,6 @@ export default class SelectorPicker extends LitElement{
       color: red;
       visibility: hidden;
      }
-     .invalid-input {
-      border: 2px solid red;
-      width: 340px;
-     }
-     #invalid-input {
-      animation: shake 0.2s ease-in-out 0s 2;
-     }
 
      /* @keyframes shake {
       0% {
@@ -164,20 +178,15 @@ export default class SelectorPicker extends LitElement{
     <div class="background-div">
         ${this.options.map(e => 
             html`
-            <label for=${e.value}>
                 <input 
-                    type="checkbox"
+                    type="radio"
                     name=${this.name} 
                     id=${e.value} 
                     .value="${e.value}" 
-                    min="${this.min}" 
-                    max="${this.max}"
                     aria-label=${this.ariaLabel}
-                    @input="${this.updateValue}" 
+                    @click="${this.updateValue}" 
                     ?required="${this.required}"
-                />
-            ${e.label}
-            </label>`    
+                /><label for=${e.value}>${e.label}</label>`    
         )}
 
     </div>

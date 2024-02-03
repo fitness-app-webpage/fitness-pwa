@@ -1,7 +1,7 @@
 import { LitElement, html, css } from "lit";
 import "../input/selector-picker"
 
-export default class GoalForm extends LitElement {
+export default class ActivityForm extends LitElement {
   static get properties() {
     return{
       data: {type: Object},
@@ -46,21 +46,20 @@ export default class GoalForm extends LitElement {
 
   render() {
     return html`
-          <h1>Goal</h1>
+          <h1>Activity level(pal)</h1>
           <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed} novalidate>
             <selector-picker 
-              name="goal" 
+              name="activityLevel" 
+              label="Activity level(pal)" 
               .options=${[
-                {value: "LOSEWEIGHT", label: "Lose weight"}, 
-                {value: "SLOWLYLOSEWEIGHT", label: "Slowly lose weight"}, 
-                {value: "MAINTAINWEIGHT", label: "Maintain weight"}, 
-                {value: "SLOWLYGAINWEIGHT", label: "Slowly gain weight"}, 
-                {value: "GAINWEIGHT", label: "Gain weight"}
+                {value: "LITTLETONONE", label: "little to none"}, 
+                {value: "UNDERAVERAGE", label: "Under average"}, 
+                {value: "AVERAGE", label: "Average"}, 
+                {value: "SLIGHTLYABOVEAVERAGE", label: "Slightly above average"}, 
+                {value: "ABOVEAVERAGE", label: "Above average"}
               ]} 
               required>
             </selector-picker>
-            <!-- <input-field type="text" name="goal" label="Goal" value="SLOWLYLOSEWEIGHT"  required></input-field> -->
-            <input-field type="text" name="protein" label="Weight per kilo grams protein" pattern="([0-2])?([\.][0-9]?)?" required></input-field>
             <div class="button-container">
               <button-div value="Back" @click=${this.handleBack}></button-div>
               <button-div value="Next" @click=${this.handleSubmit}></button-div>
@@ -101,4 +100,4 @@ export default class GoalForm extends LitElement {
   }
 }
 
-customElements.define('goal-form', GoalForm);
+customElements.define('activity-form', ActivityForm);
