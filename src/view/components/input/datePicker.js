@@ -1,4 +1,5 @@
 import { LitElement, html, css } from "lit";
+import {repeat} from 'lit/directives/repeat.js';
 
 export default class DatePicker extends LitElement{
   
@@ -41,13 +42,15 @@ export default class DatePicker extends LitElement{
     this.internals = this.attachInternals();
     this._pickerStatus = false;
     this._yearStatus = false;
-    this._navCalendar = 0;
+    this._navCalendar = 0 + new Date().getMonth();
     this._divs = []
     this._monthAndYear = "";
     this._year = new Date().getFullYear()
     this._month = "";
     this._yearDivs = [];
     this._direction = "";
+    this._counter = 0;
+    this._id = "";
   }
 
   connectedCallback() {
@@ -265,7 +268,7 @@ export default class DatePicker extends LitElement{
       align-items: center;
       flex-wrap: wrap;
      }
-     .day {
+     .day, .placeholder {
       width: 40px;
       height: 40px;
      }
@@ -340,6 +343,9 @@ export default class DatePicker extends LitElement{
       left: -100%;
       right: 100%;
       transform: translate(100%)
+    }
+    .selected {
+      border: 2px solid grey;
     }
   
       `;
@@ -416,7 +422,12 @@ export default class DatePicker extends LitElement{
                 <span>S</span>
               </div>
               <div class="days">
-                ${this._divs}
+              ${repeat(this._divs,
+                          (e) => e.id,
+                          (e) => {if(e.id === this._id) {
+                            return e.value
+                          }}
+                        )}
               </div>
             </div>
           </div>
@@ -476,8 +487,12 @@ export default class DatePicker extends LitElement{
 
     const dt = new Date(`${this._year}`);
 
-    dt.setMonth(new Date().getMonth() + this._navCalendar)
-
+    dt.setMonth(this._navCalendar)
+    if(this._navCalendar == -1 || this._navCalendar === 12) {
+      this._navCalendar = dt.getMonth();
+      this._year = dt.getFullYear();
+      dt.setFullYear(this._year)
+    }
     let rowDivs = [];
     let res = [];
 
@@ -500,28 +515,44 @@ export default class DatePicker extends LitElement{
     
     paddingDays = paddingDays === 0 ? 7 : paddingDays;
 
-    for(let i = 1; i <= paddingDays + dayInMonth; i++) {
-      if(i >= paddingDays) {
-        rowDivs = [...rowDivs, html`<button class="day" @click=${this.clickDay}>${i - paddingDays + 1}</button>`]
-      } else {
-        rowDivs = [...rowDivs, html`<div class="day"></div>`]
+    this._id = (this._month + 1) + "-" + this._year;
+
+    let count = false;
+
+    this._divs.map(e => {
+      if(e.id === this._id) {
+        count = true;
       }
-      if(i - paddingDays + 1 === dayInMonth) {
-        for(let a = 0; rowDivs.length < 7; a++) {
-          rowDivs = [...rowDivs, html`<div class="day"></div>`]
+    })
+    if(!count) {
+      for(let i = 1; i <= paddingDays + dayInMonth; i++) {
+        if(i >= paddingDays) {
+          rowDivs = [...rowDivs, html`<button class="day" @click=${this.clickDay}>${i - paddingDays + 1}</button>`]
+        } else {
+          rowDivs = [...rowDivs, html`<div class="placeholder"></div>`]
+        }
+        if(i - paddingDays + 1 === dayInMonth) {
+          for(let a = 0; rowDivs.length < 7; a++) {
+            rowDivs = [...rowDivs, html`<div class="placeholder"></div>`]
+          }
+        }
+        if(rowDivs.length % 7 === 0) {
+          res = [...res, html`<div class="days-picker-row">${rowDivs}</div>`]
+          rowDivs = []
         }
       }
-      if(rowDivs.length % 7 === 0) {
-        res = [...res, html`<div class="days-picker-row">${rowDivs}</div>`]
-        rowDivs = []
-      }
     }
-    this._divs = [html`
+    if(this._divs.length === 0 || !count) {
+      this._divs = [...this._divs, {id: this._id, value: html`
                       <div class="days-number-row">
                         ${res}
                       </div>
-    `];
+    `}];
+    }
+    console.log(this._divs)
   }
+
+  
   goMonthBack() {
     this._navCalendar--;
     // this._direction = "left to-right";
@@ -563,11 +594,25 @@ export default class DatePicker extends LitElement{
     this.changeYear();
   }
   async clickDay(e) {
+    this._removeSelectedDay(this.shadowRoot.querySelectorAll(".day"))
+    e.target.classList.add("selected")
+    this._divs.map(e => {
+      if(e.id === this._id) {
+        e.value = this.shadowRoot.querySelector(".days-number-row")
+        this._divs = [e]
+      }
+    })
     let month = String(this._month + 1)
     this.value = `${e.target.textContent.length === 1 ? 0 + e.target.textContent : e.target.textContent}-${month.length === 1 ? 0 + month : month}-${this._year}`
     this.shadowRoot.querySelector(".background-div").classList.remove("invalid-input")
     this.shadowRoot.querySelector(".error-message").style = "visibility: none;"
     this.handleDatepicker();
+  }
+  _removeSelectedDay(days) {
+    for(let i of days) {
+      if(i.classList.contains("selected"))
+        i.classList.remove("selected")
+    }
   }
 }
 customElements.define('date-picker', DatePicker);
