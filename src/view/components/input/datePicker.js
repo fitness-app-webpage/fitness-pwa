@@ -602,7 +602,14 @@ export default class DatePicker extends LitElement{
   }
   _makeYears() {
     for(let i = 1900; i <= 2099; i++) {
-      this._yearDivs = [...this._yearDivs, html`<button class="year-button${this._year === i ? " selected-year" : ""}" ?disabled=${new Date().getFullYear() >= i ? false : true} @click=${this.clickOnYear}>${i}</button>`]
+      this._yearDivs = [...this._yearDivs, 
+                          html`<button 
+                            class="year-button${this._year === i ? " selected-year" : ""}" 
+                            ?disabled=${new Date().getFullYear() >= i ? false : true} 
+                            @click=${this.clickOnYear}>
+                            ${i}
+                            </button>
+      `]
     }
   }
   clickOnYear(e) {
