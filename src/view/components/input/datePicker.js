@@ -297,6 +297,9 @@ export default class DatePicker extends LitElement{
       font-size: 20px;
       border-radius: 20px;
      }
+     .year-button:disabled {
+      color: grey;
+     }
      .error-message {
       margin-left: 12px;
       color: red;
@@ -588,7 +591,6 @@ export default class DatePicker extends LitElement{
 
       this._makeDateDivs();
     }
-    // this.requestUpdate();
   }
 
   _scrollToSelectedYear(selectedYear, yearPicker) {
@@ -600,11 +602,13 @@ export default class DatePicker extends LitElement{
   }
   _makeYears() {
     for(let i = 1900; i <= 2099; i++) {
-      this._yearDivs = [...this._yearDivs, html`<button class="year-button${this._year === i ? " selected-year" : ""}" @click=${this.clickOnYear}>${i}</button>`]
+      this._yearDivs = [...this._yearDivs, html`<button class="year-button${this._year === i ? " selected-year" : ""}" ?disabled=${new Date().getFullYear() >= i ? false : true} @click=${this.clickOnYear}>${i}</button>`]
     }
   }
   clickOnYear(e) {
     this._year = e.target.textContent
+    this.shadowRoot.querySelector(".selected-year").classList.remove("selected-year")
+    e.target.classList.add("selected-year")
     this.changeYear();
   }
   async clickDay(e) {
