@@ -584,7 +584,6 @@ export default class DatePicker extends LitElement{
     if(this._yearStatus) {
       this.shadowRoot.querySelector(".body-container").style.display = "none";
       this.shadowRoot.querySelector(".year-picker").style.display = "flex"
-      this._scrollToSelectedYear(this.shadowRoot.querySelector(".selected-year"), this.shadowRoot.querySelector(".year-picker"))
     } else {
       this.shadowRoot.querySelector(".body-container").style.display = "block";
       this.shadowRoot.querySelector(".year-picker").style.display = "none";
@@ -593,27 +592,25 @@ export default class DatePicker extends LitElement{
     }
   }
 
-  _scrollToSelectedYear(selectedYear, yearPicker) {
-    const height = selectedYear.offsetHeight;
-    const selectedYearCords = selectedYear.getBoundingClientRect();
-    const setHeight = (selectedYearCords.y + (3.5 * height))
-    const setWidth = (selectedYearCords.x + (3.5 * height))
-    yearPicker.scrollTo(setHeight, setWidth)
-  }
+  // _scrollToSelectedYear(selectedYear, yearPicker) {
+  //   const height = selectedYear.offsetHeight;
+  //   const selectedYearCords = selectedYear.getBoundingClientRect();
+  //   const setHeight = (selectedYearCords.y + (3.5 * height))
+  //   const setWidth = (selectedYearCords.x + (3.5 * height))
+  //   yearPicker.scrollTo(setHeight, setWidth)
+  // }
   _makeYears() {
     for(let i = 1900; i <= 2099; i++) {
       this._yearDivs = [...this._yearDivs, 
                           html`<button 
                             class="year-button${this._year === i ? " selected-year" : ""}" 
                             ?disabled=${new Date().getFullYear() >= i ? false : true} 
-                            @click=${this.clickOnYear}>
-                            ${i}
-                            </button>
+                            @click=${this.clickOnYear}>${i}</button>
       `]
     }
   }
   clickOnYear(e) {
-    this._year = e.target.textContent
+    this._year = Number(e.target.textContent)
     this.shadowRoot.querySelector(".selected-year").classList.remove("selected-year")
     e.target.classList.add("selected-year")
     this.changeYear();
