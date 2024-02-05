@@ -278,16 +278,22 @@ export default class DatePicker extends LitElement{
      .year-picker {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
-      text-align: center;
-      align-items: center;
       overflow-y: auto;
       height: 100%;
       max-height: 100%;
+      justify-content: center;
+     }
+     .year-picker {
+      width: 100%;
+      flex-wrap: wrap;
      }
      .year-button {
-      /* margin: 10px; */
+      /* max-width: 300px; */
+      display: flex;
+      flex-basis: 20%;
+
       padding: 5px 10px;
+      margin: 0 4px;
       font-size: 20px;
       border-radius: 20px;
      }
@@ -345,6 +351,9 @@ export default class DatePicker extends LitElement{
       transform: translate(100%)
     }
     .selected {
+      border: 2px solid grey;
+    }
+    .selected-year {
       border: 2px solid grey;
     }
   
@@ -541,15 +550,12 @@ export default class DatePicker extends LitElement{
           rowDivs = []
         }
       }
-    }
-    if(this._divs.length === 0 || !count) {
       this._divs = [...this._divs, {id: this._id, value: html`
                       <div class="days-number-row">
                         ${res}
                       </div>
-    `}];
+                      `}];
     }
-    console.log(this._divs)
   }
 
   
@@ -573,9 +579,9 @@ export default class DatePicker extends LitElement{
       : "transform: rotateX(0eg)"
 
     if(this._yearStatus) {
-      this._divs = []
       this.shadowRoot.querySelector(".body-container").style.display = "none";
-      this.shadowRoot.querySelector(".year-picker").style.display = "block";
+      this.shadowRoot.querySelector(".year-picker").style.display = "flex"
+      this._scrollToSelectedYear(this.shadowRoot.querySelector(".selected-year"), this.shadowRoot.querySelector(".year-picker"))
     } else {
       this.shadowRoot.querySelector(".body-container").style.display = "block";
       this.shadowRoot.querySelector(".year-picker").style.display = "none";
@@ -584,9 +590,17 @@ export default class DatePicker extends LitElement{
     }
     // this.requestUpdate();
   }
+
+  _scrollToSelectedYear(selectedYear, yearPicker) {
+    const height = selectedYear.offsetHeight;
+    const selectedYearCords = selectedYear.getBoundingClientRect();
+    const setHeight = (selectedYearCords.y + (3.5 * height))
+    const setWidth = (selectedYearCords.x + (3.5 * height))
+    yearPicker.scrollTo(setHeight, setWidth)
+  }
   _makeYears() {
     for(let i = 1900; i <= 2099; i++) {
-      this._yearDivs = [...this._yearDivs, html`<button class="year-button" @click=${this.clickOnYear}>${i}</button>`]
+      this._yearDivs = [...this._yearDivs, html`<button class="year-button${this._year === i ? " selected-year" : ""}" @click=${this.clickOnYear}>${i}</button>`]
     }
   }
   clickOnYear(e) {
