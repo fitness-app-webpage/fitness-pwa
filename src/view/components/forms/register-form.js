@@ -37,7 +37,6 @@ export default class RegisterForm extends LitElement {
     @media only screen and (max-width: 480px) {
             h1 {
                 font-size: 24px;
-                margin-bottom: 0;
             }
     }
     `;

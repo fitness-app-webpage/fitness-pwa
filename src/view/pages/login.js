@@ -30,7 +30,7 @@ export default class LoginDiv extends LitElement {
       .login-div {
         display: flex;
         flex-direction: column;
-        margin: 100px auto auto auto;
+        margin: 200px auto auto auto;
         background-color: white;
         width: 360px;
         /* padding: 30px 50px 50px 50px; */

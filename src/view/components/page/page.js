@@ -13,6 +13,11 @@ export default class Page extends LitElement{
     }
     static get styles(){
         return css`
+        /* :host {
+            position: fixed;
+            height: 100vh;
+            width: 100vw;
+        } */
          @media only screen and (max-width: 480px) { 
             :host {
             position: fixed;

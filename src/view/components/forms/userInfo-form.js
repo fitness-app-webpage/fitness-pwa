@@ -41,8 +41,7 @@ export default class UserInfoForm extends LitElement {
 
     @media only screen and (max-width: 480px) {
             h1 {
-                font-size: 24px;
-                margin-bottom: 0;
+                font-size: 20px;
             }
     }
     `;
@@ -50,7 +49,7 @@ export default class UserInfoForm extends LitElement {
 
   render() {
     return html`
-          <h1>Personal info</h1>
+          <!-- <h1>Personal info</h1> -->
           <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed} novalidate>
             <date-picker name="birthday" label="dd-mm-yyyy" text="When is your birthday" errormessage=${"Invalid birthday date"} required></date-picker>
             <div class="radio-container">

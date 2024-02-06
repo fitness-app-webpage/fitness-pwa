@@ -78,9 +78,9 @@ export default class NumbericInput extends LitElement{
         padding: 8px;
         margin: 9px 0;
         border-radius: var(--input-field-border-radius, 30px);
-        width: var(--input-field-width, 344px);
+        width: var(--input-field-width, 340px);
         /* background-color: var(--input-field-background-color, #e4dfdf); */
-        border: #e4dfdf solid;
+        border: #b1afaf solid 2px;
       }
       label {
         position: absolute;
@@ -175,7 +175,6 @@ export default class NumbericInput extends LitElement{
      }
      .invalid-input {
       border: 2px solid red;
-      width: 340px;
      }
      #invalid-input {
       animation: shake 0.2s ease-in-out 0s 2;

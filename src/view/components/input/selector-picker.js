@@ -73,102 +73,27 @@ export default class SelectorPicker extends LitElement{
 
         }
         label {
-            border: 2px solid #e4dfdf;
-            border-radius: 4px;
-            padding: 20px 0;
-            margin: 4px 0;
-            text-align: center;
-            cursor: pointer;
-            font-size: 20px;
+          border: #b1afaf solid 2px;
+          border-radius: 4px;
+          padding: 20px 0;
+          margin: 4px 0;
+          text-align: center;
+          cursor: pointer;
+          font-size: 20px;
         }
         label:hover {
-            border-color: #bdb9b9;
+            border-color: #8d8a8a;
         }
         input:checked + label {
-            border-color: #285e49c0;
-            color: #285e49c0;
+            border-color: #4056f4;
+            color: #4056f4;
             font-weight: bold; 
         }
-
-      /* .background-div{
-        display: flex;
-        position: relative;
-        padding: 8px;
-        margin: 9px 0;
-        border-radius: var(--input-field-border-radius, 30px);
-        width: var(--input-field-width, 344px);
-        border: #e4dfdf solid;
-      } */
-      /* label {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--input-field-label-color, #545454);
-        font-weight: normal;
-        transition: .4s ease;
-        user-select: none;
-        cursor: text;
-      }
-      label, input {
-        display: flex;
-        align-items: center;
-        margin-left: 24px;
-        margin-right: 6px;
-      }
-      input {
-        position: relative;
-        top: 0px;
-        border: none;
-        outline: none;
-        padding: 0;
-        background-color: var(--input-field-background-color, inherit);
-        line-height: 2em;
-        width: 96%;
-      }
-       */
-      
-
-      /* input:focus + label,
-      :host(:not([value=""])) label {
-        top: -1.5px;
-        background-color: white;
-        padding: 0 4px;
-        margin-left: 20px;
-        font-size: 14px;
-      } */
-/*       
-      input:-webkit-autofill,
-      input:-webkit-autofill:hover, 
-      input:-webkit-autofill:focus, 
-      input:-webkit-autofill:active{
-        box-shadow: 0 0 0 30px var(--box-shadow-color, white) inset;
-      
-      }
-      input::-webkit-outer-spin-button,
-      input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-      } */
       .error-message {
       margin-left: 12px;
       color: red;
       visibility: hidden;
-     }
-
-     /* @keyframes shake {
-      0% {
-        margin-left: 0rem;
       }
-      25% {
-        margin-left: 0.5rem;
-      }
-      75% {
-        margin-left: -0.5rem;
-      }
-      100% {
-        margin-left: 0rem;
-      }
-    } */
-
       `;
     }
 

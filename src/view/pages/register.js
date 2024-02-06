@@ -54,15 +54,14 @@ export default class Register extends LitElement {
         .container {
             display: flex;
             flex-direction: column;
-            margin: 100px auto auto auto;
+            margin: 50px auto auto auto;
             background-color: white;
             width: 360px;
             padding: 0 20px;
             overflow: hidden;
-            border-radius: 10px;
-            /* box-shadow: 1px 1px 1px 1px black; */
+            /* border-radius: 10px; */
         }
-        .form-container {
+        .div-container {
           display: flex;
           align-items: center;
           justify-content: center;
@@ -80,39 +79,31 @@ export default class Register extends LitElement {
           width: 100%;
         }
         .loading-color {
-          width: 20%;
-          /* overflow: hidden; */
           position: relative;
-          background-color: #007032;
+          background-color: #4056f4;
           transition: 0.4s linear 0s;
           transform-origin: left center;
         }
-
-        /* .container {
-            height: 600px;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
+        .form-container {
+          margin-top: 50px;
+          width: 100%;
         }
-        register-form,
-        userinfo-form,
-        goal-form {
-            width: 280px;
-            position: absolute;
-            top: 100px;
-            left: 40px;
-            transition: 0.5s;
-        }
-        userinfo-form {
-            left: 450px;
-        }
-        goal-form {
-            left: 450px;
-        } */
         @media only screen and (max-width: 480px) {
             h1 {
                 font-size: 24px;
                 margin-bottom: 0;
+            }
+            .container {
+              padding: 0;
+              width: 100vw;
+            }
+            .loading-bar, .loading-color {
+              border-radius: 0;
+            } 
+            .form-container {
+              width: 360px;
+              max-width: 360px;
+              padding: 0 27px;
             }
     }
     `;
@@ -126,11 +117,13 @@ export default class Register extends LitElement {
     return html`
       <page-div ?noHeader=${true}>
         <div class="container">
-          <div class="form-container">
+          <div class="div-container">
             <div class="loading-bar">
               <div class="loading-color" style="width: ${((this._stepCounter + 1) / (this._formsArray.length + 1)) * 100}%;"></div>
             </div>
-            ${this._formsArray[this._stepCounter]}
+            <div class="form-container">
+              ${this._formsArray[this._stepCounter]}
+            </div>
           </div>
         </div>
       </page-div> 

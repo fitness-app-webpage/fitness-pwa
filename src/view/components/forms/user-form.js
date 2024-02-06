@@ -20,6 +20,7 @@ export default class UserForm extends LitElement {
     form {
       display: flex;
       flex-direction: column;
+      justify-content: center;
     }
     h1 {
       text-align: center;
@@ -35,8 +36,7 @@ export default class UserForm extends LitElement {
     }
     @media only screen and (max-width: 480px) {
             h1 {
-                font-size: 24px;
-                margin-bottom: 0;
+                font-size: 20px;
             }
     }
     `;
@@ -44,15 +44,15 @@ export default class UserForm extends LitElement {
 
   render() {
     return html`
-          <h1>Personal info</h1>
-          <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed} novalidate>
-            <input-field type="text" name="firstName" label="First name" pattern=".{1,}" required></input-field>
-            <input-field type="text" name="lastName" label="Last name" pattern=".{1,}" required></input-field>
-            <div class="button-container">
-              <button-div value="Login" @click=${this.handleBack}></button-div>
-              <button-div value="Next" @click=${this.handleSubmit}></button-div>
-            </div>
-          </form>
+          <h1>What is your first and last name?</h1>
+            <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed} novalidate>
+              <input-field type="text" name="firstName" label="First name" pattern=".{1,}" required></input-field>
+              <input-field type="text" name="lastName" label="Last name" pattern=".{1,}" required></input-field>
+              <div class="button-container">
+                <button-div value="Login" @click=${this.handleBack}></button-div>
+                <button-div value="Next" @click=${this.handleSubmit}></button-div>
+              </div>
+            </form>
   `;
   }
 

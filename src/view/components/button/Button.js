@@ -23,7 +23,7 @@ export default class Button extends LitElement{
         align-items: var(--button-div-align-items, center);
         border-radius: var(--border-raduis, 40px);
         color: var(--button-div-color, #000000);
-        background-color: var(--button-background-color, #00C300);
+        background-color: var(--button-background-color, #4f63f7);
         font-size: var(--button-div-font-size, 16px);
         transition: var(--button-div-transition, .4s ease-in);
         display: flex;
@@ -34,7 +34,7 @@ export default class Button extends LitElement{
         cursor: pointer;
       }
       button:hover {
-        background-color: var(--button-background-color, #12d112);
+        background-color: var(--button-background-color, #3648ca);
       }`;
     }
 
