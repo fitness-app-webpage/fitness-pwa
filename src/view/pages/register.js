@@ -83,7 +83,7 @@ export default class Register extends LitElement {
           width: 20%;
           /* overflow: hidden; */
           position: relative;
-          background-color: blue;
+          background-color: #007032;
           transition: 0.4s linear 0s;
           transform-origin: left center;
         }
