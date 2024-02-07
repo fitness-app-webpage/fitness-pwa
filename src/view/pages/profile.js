@@ -4,12 +4,15 @@ import "../components/page/page"
 export default class Profile extends LitElement{
     static get styles(){
         return css`
+            h1 {
+                text-align: center;
+            }
         `;
     }
     render() {
         return html`
         <page-div>
-            <h1>hello</h1>
+            <h1>Profile</h1>
             
         </page-div>`
     }

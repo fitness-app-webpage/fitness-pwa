@@ -10,7 +10,9 @@ export default class PhotoButton extends LitElement{
         useSvg: {type: Boolean},
         active: {type: Boolean, reflect: true},
         path: {type: String},
-        pathActive: {type: String}
+        pathActive: {type: String},
+        color: {type: String},
+        border: {type: Boolean}
     }
   };
   
@@ -23,6 +25,12 @@ export default class PhotoButton extends LitElement{
     this.path = "";
     this.pathActive = "";
     this.active = false;
+    this.color = "black"
+    this.border = false;
+  }
+  firstUpdated() {
+    super.firstUpdated()
+    this._checkActive();
   }
 
   static get styles(){ 
@@ -45,6 +53,17 @@ export default class PhotoButton extends LitElement{
           font-size: 70%;
           opacity: 0.6;
         }
+        .active {
+          opacity: 1;
+        }
+        .border {
+          border-radius: 50%;
+          border: 1px solid transparent;
+          outline: 1px solid #afadad;
+        }
+        .container {
+          margin: 8px 0 0 0;
+        }
       `;
     }
 
@@ -52,13 +71,13 @@ export default class PhotoButton extends LitElement{
   render() {
     return this.useSvg 
     ? 
-    html`<div @click="${this.handleClick}">
+    html`<div>
           <a href=${BASE + this.nav}>
           ${this.active ? html`<svg>
-              <path d="${this.pathActive}"></path>
+              <path d="${this.pathActive}" style="fill: ${this.color};"></path>
             </svg>`
             : html`<svg>
-              <path d="${this.path}">
+              <path d="${this.path}" style="fill: ${this.color}">
               </svg>`}
           </a>
           <span>${this.text}</span>
@@ -73,11 +92,15 @@ export default class PhotoButton extends LitElement{
     </div>
     `;
   }
-  handleClick(e) {
-    this.active = !this.active;
-    console.log(this.shadowRoot.querySelector("a"))
-    console.log(e.target.active)
-    // e.target.style = "background-color: black"
+
+  _checkActive() {
+    if(this.active) {
+      this.shadowRoot.querySelector("span").classList.add("active")
+      if(this.border) {
+        this.shadowRoot.querySelector("svg").classList.add("border")
+        this.shadowRoot.querySelector("div").classList.add("container")
+      }
+    }
   }
 }
 
