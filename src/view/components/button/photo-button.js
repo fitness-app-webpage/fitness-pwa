@@ -41,15 +41,6 @@ export default class PhotoButton extends LitElement{
         a {
           -webkit-tap-highlight-color: transparent;
         }
-        /* a {
-        font-weight: bold;
-        opacity: 0.85;
-        text-decoration: none;
-        color: black;
-      } */
-      /* a:link, a:visited {
-        color: black;
-      } */
         span {
           font-size: 70%;
           opacity: 0.6;
