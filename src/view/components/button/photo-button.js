@@ -9,8 +9,7 @@ export default class PhotoButton extends LitElement{
         nav: {type: String},
         useSvg: {type: Boolean},
         active: {type: Boolean, reflect: true},
-        path: {type: String},
-        pathActive: {type: String},
+        path: {type: Array},
         color: {type: String},
         border: {type: Boolean}
     }
@@ -22,8 +21,7 @@ export default class PhotoButton extends LitElement{
     this.text = "";
     this.nav = "";
     this.useSvg = false;
-    this.path = "";
-    this.pathActive = "";
+    this.path = [];
     this.active = false;
     this.color = "black"
     this.border = false;
@@ -42,7 +40,7 @@ export default class PhotoButton extends LitElement{
           align-items: center;
           margin: 10px 0 0 0;
         }
-        img, svg {
+        ::slotted(img), ::slotted(svg) {
           width: 34px;
           height: 34px;
         }
@@ -56,7 +54,7 @@ export default class PhotoButton extends LitElement{
         .active {
           opacity: 1;
         }
-        .border {
+        ::slotted(.border) {
           border-radius: 50%;
           border: 1px solid transparent;
           outline: 1px solid #afadad;
@@ -73,12 +71,10 @@ export default class PhotoButton extends LitElement{
     ? 
     html`<div>
           <a href=${BASE + this.nav}>
-          ${this.active ? html`<svg>
-              <path d="${this.pathActive}" style="fill: ${this.color};"></path>
-            </svg>`
-            : html`<svg>
-              <path d="${this.path}" style="fill: ${this.color}">
-              </svg>`}
+          ${this.active 
+            ? html`<slot name="activeSvg"></slot>`
+            : html `<slot name="svg"></slot>` 
+          }
           </a>
           <span>${this.text}</span>
         </div>`
@@ -97,7 +93,8 @@ export default class PhotoButton extends LitElement{
     if(this.active) {
       this.shadowRoot.querySelector("span").classList.add("active")
       if(this.border) {
-        this.shadowRoot.querySelector("svg").classList.add("border")
+        console.log(this.shadowRoot.querySelector("slot").assignedElements()[0])
+        this.shadowRoot.querySelector("slot").assignedElements()[0].classList.add("border")
         this.shadowRoot.querySelector("div").classList.add("container")
       }
     }

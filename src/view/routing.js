@@ -6,6 +6,8 @@ import "./pages/home"
 import "./pages/login"
 import "./pages/register"
 import "./pages/profile"
+import "./pages/logbook"
+import "./pages/add-product"
 
 
 const changeTitleAndAuthCheck = (context, commands) => {
@@ -31,6 +33,8 @@ router.setRoutes([
     {path: `${BASE}/login`, name: "Login", component: 'login-div', action: changeTitleAndAuthCheck},
     {path: `${BASE}/register`, name: "Register", component: 'register-div', action: e => document.title = e.route.name},
     {path: `${BASE}/profile`, name: "Profile", component: 'profile-page'},
+    {path: `${BASE}/logbook`, name: "Logbook", component: 'logbook-page'},
+    {path: `${BASE}/addproduct`, name: "Logbook", component: 'addproduct-page'}, 
 //     {path: `${BASE}/logout`, action: logout, redirect: `${BASE}/login`},
 //     {path: `${BASE}/home`, name: "Home", component: 'travel-type-nav', action: changeTitleAndAuthCheck},
 //     {path: `${BASE}/register-trip`, name: "Register trip", component: 'travel-type-nav', action: changeTitleAndAuthCheck},
