@@ -65,7 +65,7 @@ export default class LoginDiv extends LitElement {
 
   render() {
     return html`
-      <page-div ?noHeader=${true}>
+      <page-div ?nonavigation=${true}>
         <div class="main-div">
           <div class="login-div" @keyup=${this.enterKeyPressed}>
             <h1>Login</h1>
@@ -77,6 +77,7 @@ export default class LoginDiv extends LitElement {
           <div class="other-links">
             <hr>
             <a href=${BASE + "/register"}>or register here</a>
+            <a href=${BASE + "/home"}>home</a>
           </div>
         </div>
       </page-div> 

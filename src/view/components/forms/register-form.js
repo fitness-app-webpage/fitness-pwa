@@ -38,6 +38,9 @@ export default class RegisterForm extends LitElement {
             h1 {
                 font-size: 24px;
             }
+            button-div {
+              width: 150px;
+            }
             .button-container {
               position: fixed;
               display: flex;

@@ -54,7 +54,7 @@ export default class Register extends LitElement {
         .container {
             display: flex;
             flex-direction: column;
-            margin: 50px auto auto auto;
+            margin: 150px auto auto auto;
             background-color: white;
             width: 360px;
             padding: 0 20px;
@@ -94,6 +94,7 @@ export default class Register extends LitElement {
                 margin-bottom: 0;
             }
             .container {
+              margin: 50px auto auto auto;
               padding: 0;
               width: 100vw;
             }
@@ -114,7 +115,7 @@ export default class Register extends LitElement {
 
   render() {
     return html`
-      <page-div ?noHeader=${true}>
+      <page-div ?nonavigation=${true}>
         <div class="container">
           <div class="div-container">
             <div class="loading-bar">

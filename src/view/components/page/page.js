@@ -1,15 +1,16 @@
 import { LitElement, html, css } from "lit";
+import "../navigation/footer-nav"
 
 export default class Page extends LitElement{
     static get properties() {
         return{
-            noHeader: {type: Boolean},
+            nonavigation: {type: Boolean},
         }
     }
 
     constructor() {
         super();
-        this.noHeader = false;
+        this.nonavigation = false;
     }
     static get styles(){
         return css`
@@ -29,24 +30,19 @@ export default class Page extends LitElement{
     }
         `;
     }
-    render() {
-        return html`
-        <main>
-            <slot></slot>             
-        </main>`
-    }
     
-    // render(){
-    //     return this.noHeader 
-    //     ? html `<main>
-    //                 <slot></slot>
-    //             </main>.`
-    //     : html`
-    //     <header-nav></header-nav>
-    //     <main>
-    //         <slot></slot>
-    //     </main>
-    //     `;
-    // };
+    render(){
+        return this.nonavigation 
+        ? html `<main>
+                    <slot></slot>
+                </main>.`
+        : html`
+        <!-- <header-nav></header-nav> -->
+        <main>
+            <slot></slot>
+        </main>
+        <footer-nav></footer-nav>
+        `;
+    };
 }
 customElements.define('page-div', Page); 

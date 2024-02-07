@@ -43,6 +43,9 @@ export default class UserInfoForm extends LitElement {
             h1 {
                 font-size: 20px;
             }
+            button-div {
+              width: 150px;
+            }
             .button-container {
               position: fixed;
               display: flex;
