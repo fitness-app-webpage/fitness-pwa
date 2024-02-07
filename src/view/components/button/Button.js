@@ -33,8 +33,10 @@ export default class Button extends LitElement{
         user-select: none;
         cursor: pointer;
       }
-      button:hover {
+      @media (hover: hover) {
+        button:hover {
         background-color: var(--button-background-color, #3648ca);
+        }
       }`;
     }
 

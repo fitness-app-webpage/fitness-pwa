@@ -95,7 +95,7 @@ export default class DatePicker extends LitElement{
         padding: 8px;
         margin: 9px 0;
         border-radius: var(--input-field-border-radius, 30px);
-        /* width: var(--date-picker-width, 100%); */
+        width: var(--date-picker-width);
         /* background-color: var(--input-field-background-color, #e4dfdf); */
         border: #b1afaf solid 2px;
       }

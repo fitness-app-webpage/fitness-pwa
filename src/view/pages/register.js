@@ -100,10 +100,9 @@ export default class Register extends LitElement {
             .loading-bar, .loading-color {
               border-radius: 0;
             } 
-            .form-container {
-              width: 360px;
-              max-width: 360px;
+            .form-container div{
               padding: 0 27px;
+              
             }
     }
     `;
@@ -122,7 +121,9 @@ export default class Register extends LitElement {
               <div class="loading-color" style="width: ${((this._stepCounter + 1) / (this._formsArray.length + 1)) * 100}%;"></div>
             </div>
             <div class="form-container">
+              <div>
               ${this._formsArray[this._stepCounter]}
+              </div>
             </div>
           </div>
         </div>

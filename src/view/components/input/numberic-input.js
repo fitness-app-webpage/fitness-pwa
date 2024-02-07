@@ -78,7 +78,7 @@ export default class NumbericInput extends LitElement{
         padding: 8px;
         margin: 9px 0;
         border-radius: var(--input-field-border-radius, 30px);
-        width: var(--input-field-width, 340px);
+        width: var(--input-field-width);
         /* background-color: var(--input-field-background-color, #e4dfdf); */
         border: #b1afaf solid 2px;
       }
@@ -106,7 +106,7 @@ export default class NumbericInput extends LitElement{
         padding: 0;
         background-color: var(--input-field-background-color, inherit);
         line-height: 2em;
-        width: 96%;
+        width: calc(100% - 48px);
       }
       .abbreviate {
         display: flex;

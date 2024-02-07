@@ -38,6 +38,15 @@ export default class UserForm extends LitElement {
             h1 {
                 font-size: 20px;
             }
+            .button-container {
+              position: fixed;
+              display: flex;
+              justify-content: space-between;
+              margin: 0;
+              bottom: 0;
+              width: calc(100% - 54px);
+              padding: 40px 0;               
+            }
     }
     `;
   }
