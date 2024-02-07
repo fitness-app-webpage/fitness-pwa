@@ -13,7 +13,6 @@ export default class home extends LitElement{
         return html`
         <page-div>
             <h1>Home</h1>
-            
         </page-div>`
     }
 }

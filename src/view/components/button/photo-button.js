@@ -54,13 +54,20 @@ export default class PhotoButton extends LitElement{
         .active {
           opacity: 1;
         }
-        ::slotted(.border) {
+        .border {
           border-radius: 50%;
           border: 1px solid transparent;
           outline: 1px solid #afadad;
         }
         .container {
           margin: 8px 0 0 0;
+        }
+        img {
+            width: 34px;
+            height: 34px;
+            object-fit: cover;
+            border-radius: 50%;
+
         }
       `;
     }
@@ -71,10 +78,12 @@ export default class PhotoButton extends LitElement{
     ? 
     html`<div>
           <a href=${BASE + this.nav}>
-          ${this.active 
-            ? html`<slot name="activeSvg"></slot>`
-            : html `<slot name="svg"></slot>` 
-          }
+            <div class="img-container">
+              ${this.active 
+                ? html`<slot name="activeSvg"></slot>`
+                : html `<slot name="svg"></slot>` 
+              }
+            </div>
           </a>
           <span>${this.text}</span>
         </div>`
@@ -82,7 +91,9 @@ export default class PhotoButton extends LitElement{
     html`
     <div>
       <a href=${BASE + this.nav}>
-        <img src=${this.src}>
+        <div class="img-container">
+          <img src=${BASE + this.src}>
+        </div>
       </a>
       <span>${this.text}</span>
     </div>
@@ -93,8 +104,7 @@ export default class PhotoButton extends LitElement{
     if(this.active) {
       this.shadowRoot.querySelector("span").classList.add("active")
       if(this.border) {
-        console.log(this.shadowRoot.querySelector("slot").assignedElements()[0])
-        this.shadowRoot.querySelector("slot").assignedElements()[0].classList.add("border")
+        this.shadowRoot.querySelector(".img-container").classList.add("border")
         this.shadowRoot.querySelector("div").classList.add("container")
       }
     }

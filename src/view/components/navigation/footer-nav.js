@@ -1,17 +1,19 @@
 import { LitElement, html, css } from "lit";
+import {until} from 'lit/directives/until.js';
 import '../button/photo-button'
 import {BASE, router} from "../../../app"
 
 export default class FooterNav extends LitElement {
   static get properties() {
     return{
-      
+      profilePhoto: {}
     }
   };
 
   constructor() {
     super();
-    this.data = {};
+    this.profilePhoto = fetch("profile_photo.jpg").then(e => e.blob());
+    
   }
   firstUpdated() {
     super.firstUpdated();
@@ -52,6 +54,7 @@ export default class FooterNav extends LitElement {
             width: 100%;
             height: 100px;
             border-top: 1px solid #afadad;
+            /* background-color: #ffffff; */
         }
         nav {
             display: flex;
@@ -113,7 +116,16 @@ export default class FooterNav extends LitElement {
                   <path d="M17 0C7.57273 0 0 7.57273 0 17C0 26.4273 7.57273 34 17 34C26.4273 34 34 26.4273 34 17C34 7.57273 26.4273 0 17 0ZM24.7273 20.0909H20.0909V24.7273C20.0909 26.4273 18.7 27.8182 17 27.8182C15.3 27.8182 13.9091 26.4273 13.9091 24.7273V20.0909H9.27273C7.57273 20.0909 6.18182 18.7 6.18182 17C6.18182 15.3 7.57273 13.9091 9.27273 13.9091H13.9091V9.27273C13.9091 7.57273 15.3 6.18182 17 6.18182C18.7 6.18182 20.0909 7.57273 20.0909 9.27273V13.9091H24.7273C26.4273 13.9091 27.8182 15.3 27.8182 17C27.8182 18.7 26.4273 20.0909 24.7273 20.0909Z"/>
                 </svg>
                 </photo-button>
-                <photo-button 
+                ${until(this.profilePhoto.then(e => {
+                  return html `<photo-button 
+                    text="Profile"
+                    ?border="${true}"
+                    nav="/profile" 
+                    ?useSvg=${false}
+                    src="${URL.createObjectURL(e)}"
+                ></photo-button>`
+                
+                }), html`<photo-button 
                     text="Profile"
                     ?border="${true}"
                     nav="/profile" 
@@ -125,7 +137,7 @@ export default class FooterNav extends LitElement {
                 <svg slot="activeSvg" style="fill: #C6DAE6">
                   <path d="M17 0C7.61016 0 0 7.61016 0 17C0 26.3898 7.61016 34 17 34C26.3898 34 34 26.3898 34 17C34 7.61016 26.3898 0 17 0ZM17 8.5C19.641 8.5 21.7812 10.6409 21.7812 13.2812C21.7812 15.9216 19.643 18.0625 17 18.0625C14.3597 18.0625 12.2188 15.9216 12.2188 13.2812C12.2188 10.6409 14.357 8.5 17 8.5ZM17 29.75C13.4851 29.75 10.2996 28.3203 7.98867 26.012C9.06445 23.2355 11.7207 21.25 14.875 21.25H19.125C22.282 21.25 24.9382 23.2342 26.0113 26.012C23.7004 28.3223 20.5129 29.75 17 29.75Z">
                   </svg>
-                </photo-button>
+                </photo-button>`)}
             </nav>
           </footer>
   `;
