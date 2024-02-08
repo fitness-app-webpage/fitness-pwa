@@ -96,7 +96,7 @@ export default class PhotoButton extends LitElement{
     <div>
       <a href=${BASE + this.nav}>
         <div class="img-container">
-          <img src=${BASE + this.src}>
+          <img src=${this.src}>
         </div>
       </a>
       <span>${this.text}</span>

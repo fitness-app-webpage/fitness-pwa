@@ -6,7 +6,7 @@ import {BASE, router} from "../../../app"
 export default class FooterNav extends LitElement {
   static get properties() {
     return{
-      profilePhoto: {}
+      profilePhoto: {state: true}
     }
   };
 
@@ -17,7 +17,6 @@ export default class FooterNav extends LitElement {
   }
   firstUpdated() {
     super.firstUpdated();
-    this._checkIfIconIsActive();
   }  
 
   static get styles(){ 
