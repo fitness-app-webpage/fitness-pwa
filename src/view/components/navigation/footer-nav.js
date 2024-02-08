@@ -17,11 +17,12 @@ export default class FooterNav extends LitElement {
     
   }
 
-  firstUpdated() {
+  async firstUpdated() {
     super.firstUpdated();
     if(localStorage.getItem("profileImage") === null 
     || localStorage.getItem("profileImage") === undefined) {
-      getProfilePicture();
+      await getProfilePicture();
+      this._profilePhoto = JSON.parse(localStorage.getItem("profileImage"))
     }
   }  
 
