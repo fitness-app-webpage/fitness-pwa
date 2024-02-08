@@ -124,7 +124,6 @@ export default class FooterNav extends LitElement {
                     ?useSvg=${false}
                     src="${URL.createObjectURL(e)}"
                 ></photo-button>`
-                
                 }), html`<photo-button 
                     text="Profile"
                     ?border="${true}"
@@ -142,14 +141,13 @@ export default class FooterNav extends LitElement {
           </footer>
   `;
   }
-  _checkIfIconIsActive() {
-    this.shadowRoot.querySelectorAll("photo-button").forEach(e => {
-        if((BASE + e.nav) === router.location.pathname) {
-            e.setAttribute("active", true)
-        }
-    })
-    console.log()
-  }
+  // _checkIfIconIsActive() {
+  //   this.shadowRoot.querySelectorAll("photo-button").forEach(e => {
+  //       if((BASE + e.nav) === router.location.pathname) {
+  //           e.setAttribute("active", true)
+  //       }
+  //   })
+  // }
 }
 
 customElements.define('footer-nav', FooterNav);

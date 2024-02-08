@@ -1,5 +1,5 @@
 import { LitElement, html, css } from "lit";
-import {BASE} from '../../../app'
+import {BASE, router} from "../../../app"
 export default class PhotoButton extends LitElement{
   
   static get properties() {
@@ -25,6 +25,10 @@ export default class PhotoButton extends LitElement{
     this.active = false;
     this.color = "black"
     this.border = false;
+  }
+  connectedCallback() {
+    super.connectedCallback()
+    this.active = BASE + this.nav === router.location.pathname
   }
   firstUpdated() {
     super.firstUpdated()
