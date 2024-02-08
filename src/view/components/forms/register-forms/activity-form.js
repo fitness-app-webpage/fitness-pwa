@@ -1,5 +1,5 @@
 import { LitElement, html, css } from "lit";
-import "../input/selector-picker"
+import "../../input/selector-picker"
 
 export default class ActivityForm extends LitElement {
   static get properties() {

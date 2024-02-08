@@ -140,6 +140,34 @@ function getImages(url) {
         })
 }
 
+function uploadImage(url, data) {
+    var fetchOptions = {
+        method: "POST",
+        headers: {
+            "Authorization": "Bearer " + storage.getAccessToken(),
+        },
+        body: data,
+    };
+    return fetch(api_url + url, fetchOptions)
+        .then(response => {
+            if(response.ok) {
+                return response.text();
+            }
+            if(response.status === 401) {
+                return checkUnAuth(url, fetchOptions)
+                    .then(res => {
+                        return res.text();
+                    }).catch(error => {
+                        throw error;
+                    });
+            }
+            throw new Error("error!");
+        }).then(e => {
+            localStorage.setItem("profileImage", JSON.stringify({imageBase64: e, date: new Date()}))
+            location.reload();
+        })
+}
+
 function getRequest(url) {
     var fetchOptions = {
         method: "GET",
@@ -250,4 +278,7 @@ export function setPersonalInfo(data) {
 }
 export function getProfilePicture() {
     return getImages("/userinfo/profile-picture")
+}
+export function uploadProfilePhoto(data) {
+    return uploadImage("/userinfo/profile-picture", data)
 }

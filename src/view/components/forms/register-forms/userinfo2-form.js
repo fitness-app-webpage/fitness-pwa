@@ -1,5 +1,5 @@
 import { LitElement, html, css } from "lit";
-import '../input/numberic-input'
+import '../../input/numberic-input'
 
 export default class UserInfoForm2 extends LitElement {
   static get properties() {

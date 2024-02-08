@@ -1,11 +1,11 @@
 import { LitElement, html, css } from "lit";
 import '../components/page/page';
-import '../components/forms/register-form'
-import '../components/forms/userInfo-form'
-import '../components/forms/userInfo2-form'
-import '../components/forms/goal-form'
-import '../components/forms/user-form'
-import '../components/forms/activity-form'
+import '../components/forms/register-forms/register-form'
+import '../components/forms/register-forms/userInfo-form'
+import '../components/forms/register-forms/userinfo2-form'
+import '../components/forms/register-forms/goal-form'
+import '../components/forms/register-forms/user-form'
+import '../components/forms/register-forms/activity-form'
 import { register, login, setPersonalInfo } from "../../service/ApiService";
 import {Router} from "@vaadin/router";
 import {BASE} from "../../app"

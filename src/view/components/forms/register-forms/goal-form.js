@@ -1,8 +1,7 @@
 import { LitElement, html, css } from "lit";
-import '../input/radio-picker'
-import '../input/datePicker'
+import "../../input/selector-picker"
 
-export default class UserInfoForm extends LitElement {
+export default class GoalForm extends LitElement {
   static get properties() {
     return{
       data: {type: Object},
@@ -35,13 +34,10 @@ export default class UserInfoForm extends LitElement {
     button-div {
       width: 120px;
     }
-    .radio-container {
-      padding-left: 12px;
-    }
 
     @media only screen and (max-width: 480px) {
             h1 {
-                font-size: 20px;
+                font-size: 24px;
             }
             button-div {
               width: 150px;
@@ -61,12 +57,21 @@ export default class UserInfoForm extends LitElement {
 
   render() {
     return html`
-          <!-- <h1>Personal info</h1> -->
+          <h1>Goal</h1>
           <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed} novalidate>
-            <date-picker name="birthday" label="dd-mm-yyyy" text="When is your birthday" errormessage=${"Invalid birthday date"} required></date-picker>
-            <div class="radio-container">
-              <radio-picker name="sex" .options=${[{label: "Male", value: "MALE"}, {label: "Female", value: "FEMALE"}]} required></radio-picker>
-            </div>
+            <selector-picker 
+              name="goal" 
+              .options=${[
+                {value: "LOSEWEIGHT", label: "Lose weight"}, 
+                {value: "SLOWLYLOSEWEIGHT", label: "Slowly lose weight"}, 
+                {value: "MAINTAINWEIGHT", label: "Maintain weight"}, 
+                {value: "SLOWLYGAINWEIGHT", label: "Slowly gain weight"}, 
+                {value: "GAINWEIGHT", label: "Gain weight"}
+              ]} 
+              required>
+            </selector-picker>
+            <!-- <input-field type="text" name="goal" label="Goal" value="SLOWLYLOSEWEIGHT"  required></input-field> -->
+            <input-field type="text" name="protein" label="Weight per kilo grams protein" pattern="([0-2])?([\.][0-9]?)?" required></input-field>
             <div class="button-container">
               <button-div value="Back" @click=${this.handleBack}></button-div>
               <button-div value="Next" @click=${this.handleSubmit}></button-div>
@@ -97,7 +102,6 @@ export default class UserInfoForm extends LitElement {
   handleSubmit(e) {
     this.shadowRoot.querySelector("form").requestSubmit();
   }
-
   handleBack(e) {
     this.dispatchEvent(new Event('back'));
   }
@@ -108,4 +112,4 @@ export default class UserInfoForm extends LitElement {
   }
 }
 
-customElements.define('userinfo-form', UserInfoForm);
+customElements.define('goal-form', GoalForm);
