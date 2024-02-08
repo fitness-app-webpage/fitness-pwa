@@ -113,6 +113,33 @@ export function register(formData) {
         })
 }
 
+function getImages(url) {
+    var fetchOptions = {
+        method: "GET",
+        headers: {
+          "Authorization": "Bearer " + storage.getAccessToken(),
+        },
+    };
+    return fetch(api_url + url, fetchOptions)
+        .then(response => {
+            if(response.ok) {
+                return response.text()
+            }
+            if(response.status === 401) {
+                return checkUnAuth(url, fetchOptions)
+                    .then(res => {
+                        return res.text();
+                    }).catch(error => {
+                        throw error;
+                    });
+            } else {
+                return null;
+            }
+        }).then(e => {
+            localStorage.setItem("profileImage", JSON.stringify({imageBase64: e, date: new Date()}))
+        })
+}
+
 function getRequest(url) {
     var fetchOptions = {
         method: "GET",
@@ -220,4 +247,7 @@ function deleteRequest(url) {
 }
 export function setPersonalInfo(data) {
     return postRequest("/userinfo", data)
+}
+export function getProfilePicture() {
+    return getImages("/userinfo/profile-picture")
 }
