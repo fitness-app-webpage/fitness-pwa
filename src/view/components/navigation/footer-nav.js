@@ -45,12 +45,10 @@ export default class FooterNav extends LitElement {
         }
         nav {
             display: flex;
-            /* flex-shrink: 0; */
-            /* justify-content: space-evenly; */
-            
+            justify-content: space-evenly;
         }
         photo-button {
-          width: 100%;
+          width: 70px;
         }
     }
     @media only screen and (max-width: 1024px) and (orientation: landscape) {
@@ -66,7 +64,6 @@ export default class FooterNav extends LitElement {
         nav {
             display: flex;
             justify-content: space-evenly;
-            
         }
         photo-button {
           width: 70px;

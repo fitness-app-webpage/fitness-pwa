@@ -4,12 +4,14 @@ export default class Button extends LitElement{
   static get properties() {
     return{
         value: {type: String},
+        disabled: {type: Boolean, Reflect: true}
     }
   };
   
   constructor() {
     super();
     this.value = "Button";
+    this.disabled = false;
   }
   
   static get styles(){ 
@@ -43,7 +45,7 @@ export default class Button extends LitElement{
 
   render() {
     return html`
-    <button type="button">
+    <button type="button" ?disabled=${this.disabled}>
         ${this.value}
     </button>
     `;

@@ -114,7 +114,7 @@ export function register(formData) {
         })
 }
 
-function getImages(url) {
+function getProfileImage(url) {
     var fetchOptions = {
         method: "GET",
         headers: {
@@ -171,7 +171,7 @@ function uploadImage(url, data) {
             throw new Error("Invalid image");
         }).then(e => {
             localStorage.setItem("profileImage", JSON.stringify({imageBase64: e, date: new Date()}))
-            location.reload();
+            // location.reload();
         }).catch(error => {
             localStorage.setItem("profileImage", null)
             throw error;
@@ -286,7 +286,7 @@ export function setPersonalInfo(data) {
     return postRequest("/userinfo", data)
 }
 export function getProfilePicture() {
-    return getImages("/userinfo/profile-picture")
+    return getProfileImage("/userinfo/profile-picture")
 }
 export function uploadProfilePhoto(data) {
     return uploadImage("/userinfo/profile-picture", data)
