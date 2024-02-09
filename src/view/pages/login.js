@@ -77,7 +77,6 @@ export default class LoginDiv extends LitElement {
           <div class="other-links">
             <hr>
             <a href=${BASE + "/register"}>or register here</a>
-            <a href=${BASE + "/home"}>home</a>
           </div>
         </div>
       </page-div> 

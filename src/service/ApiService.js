@@ -25,7 +25,7 @@ export function checkAuth() {
     let decodedJwtToken = jwtDecode(token);
     return (
         new Date(decodedJwtToken.exp * 1000) > new Date() &&
-        decodedJwtToken.iss === "nl-kpn-backend"
+        decodedJwtToken.iss === "fitness-kcal-api"
     )
 }
 
@@ -71,6 +71,12 @@ function checkUnAuth(url, fetchOptions) {
         }).catch(error => {
             return error
         })
+}
+
+export function logout() {
+    localStorage.removeItem("auth");
+    localStorage.removeItem("refresh");
+    localStorage.removeItem("profileImage")
 }
 
 
