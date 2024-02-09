@@ -91,7 +91,7 @@ export default class UploadProfileImage extends LitElement {
   }
   handleChange(e) {
     const fileSizeInMB = (e.target.files[0].size  / 1024 / 1024).toFixed(4)
-    if(fileSizeInMB >  1) {
+    if(fileSizeInMB >  4) {
       this._disabled = true;
       this._error = "Image is to big"
       return;
