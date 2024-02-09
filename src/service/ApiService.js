@@ -132,11 +132,12 @@ function getImages(url) {
                     }).catch(error => {
                         throw error;
                     });
-            } else {
-                return null;
             }
+            throw Error("There is no profile picture set")
         }).then(e => {
             localStorage.setItem("profileImage", JSON.stringify({imageBase64: e, date: new Date()}))
+        }) .catch(error => {
+            localStorage.setItem("profileImage", null)
         })
 }
 
