@@ -1,5 +1,5 @@
 import { LitElement, html, css } from "lit";
-import {uploadProfilePhoto} from "../../../service/ApiService"
+import {uploadProfilePhoto, getProfilePicture} from "../../../service/ApiService"
 import "../error/errorMessage"
 
 export default class UploadProfileImage extends LitElement {
@@ -19,6 +19,15 @@ export default class UploadProfileImage extends LitElement {
     this._profilePicture = JSON.parse(localStorage.getItem("profileImage"))
     this._disabled = true;
   }
+
+  async firstUpdated() {
+    super.firstUpdated();
+    if(localStorage.getItem("profileImage") === null 
+    || localStorage.getItem("profileImage") === undefined) {
+      await getProfilePicture();
+      this._profilePicture = JSON.parse(localStorage.getItem("profileImage"))
+    }
+  }  
 
   static get styles(){ 
     return css`
