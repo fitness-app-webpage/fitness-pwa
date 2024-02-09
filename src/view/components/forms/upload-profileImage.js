@@ -44,7 +44,8 @@ export default class UploadProfileImage extends LitElement {
         align-items: center;
         flex-direction: column;
       }
-      label::before {
+      label {
+        -webkit-tap-highlight-color: transparent;
         content: "";
         position: absolute;
         right: 105px;
@@ -54,7 +55,7 @@ export default class UploadProfileImage extends LitElement {
         background: url("plus.svg") center / contain no-repeat;
       }
       input {
-        display: none;
+        display: none;      
       }
       button-div {
         margin: 10px 0 0 0;

@@ -171,7 +171,7 @@ function uploadImage(url, data) {
             throw new Error("Invalid image");
         }).then(e => {
             localStorage.setItem("profileImage", JSON.stringify({imageBase64: e, date: new Date()}))
-            // location.reload();
+            location.reload();
         }).catch(error => {
             localStorage.setItem("profileImage", null)
             throw error;
