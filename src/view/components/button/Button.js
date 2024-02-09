@@ -27,6 +27,7 @@ export default class Button extends LitElement{
         color: var(--button-div-color, #000000);
         background-color: var(--button-background-color, #4f63f7);
         font-size: var(--button-div-font-size, 16px);
+        font-weight: var(--button-div-font-weight, normal);
         transition: var(--button-div-transition, .4s ease-in);
         display: flex;
         padding: var(--button-div-padding, 10px 0);
