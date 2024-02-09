@@ -128,16 +128,19 @@ function getImages(url) {
             if(response.status === 401) {
                 return checkUnAuth(url, fetchOptions)
                     .then(res => {
-                        return res.text();
+                        if(res.ok) {
+                            return res.text();
+                        }
                     }).catch(error => {
                         throw error;
                     });
             }
-            throw Error("There is no profile picture set")
+            throw new Error("There is no profile picture set")
         }).then(e => {
             localStorage.setItem("profileImage", JSON.stringify({imageBase64: e, date: new Date()}))
-        }) .catch(error => {
+        }).catch(error => {
             localStorage.setItem("profileImage", null)
+            throw error;
         })
 }
 
@@ -157,15 +160,20 @@ function uploadImage(url, data) {
             if(response.status === 401) {
                 return checkUnAuth(url, fetchOptions)
                     .then(res => {
-                        return res.text();
+                        if(res.ok) {
+                            return res.text();
+                        }
                     }).catch(error => {
                         throw error;
                     });
             }
-            throw new Error("error!");
+            throw new Error("Invalid image");
         }).then(e => {
             localStorage.setItem("profileImage", JSON.stringify({imageBase64: e, date: new Date()}))
-            location.reload();
+            // location.reload();
+        }).catch(error => {
+            localStorage.setItem("profileImage", null)
+            throw error;
         })
 }
 
@@ -207,7 +215,6 @@ function postRequest(url, data) {
     };
     return fetch(api_url + url, fetchOptions)
         .then(response => {
-            console.log(response)
             if(response.ok) {
                 return response;
             }
