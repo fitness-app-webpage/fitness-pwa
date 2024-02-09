@@ -26,7 +26,7 @@ router.setRoutes([
     {path: `${BASE}/`, redirect: service.checkAuth() ? `${BASE}/home` : `${BASE}/login`},
     {path: `${BASE}/home`, name: "Home", component: "home-view", action: changeTitleAndAuthCheck},
     {path: `${BASE}/login`, name: "Login", component: 'login-div', action: changeTitleAndAuthCheck},
-    {path: `${BASE}/logout`, action: logout},
+    {path: `${BASE}/logout`, action: logout, redirect: `${BASE}/login`},
     {path: `${BASE}/register`, name: "Register", component: 'register-div', action: e => document.title = e.route.name},
     {path: `${BASE}/profile`, name: "Profile", component: 'profile-page', action: changeTitleAndAuthCheck},
     {path: `${BASE}/logbook`, name: "Logbook", component: 'logbook-page', action: changeTitleAndAuthCheck},
