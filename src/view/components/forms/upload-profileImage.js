@@ -36,8 +36,8 @@ export default class UploadProfileImage extends LitElement {
         height: 200px;
         border-radius: 50%;
       }
-    @media only screen and (max-width: 480px) and (orientation: portrait){
-        path, img {
+    @media only screen and (max-width: 480px) {
+        img {
         width: 200px;
         height: 200px;
         border-radius: 50%;
@@ -53,15 +53,17 @@ export default class UploadProfileImage extends LitElement {
         align-items: center;
         flex-direction: column;
       }
-      label {
+      .plus {
         -webkit-tap-highlight-color: transparent;
         content: "";
         position: absolute;
-        right: 105px;
-        bottom: 59px;
-        width: 50px;
-        height: 50px;
+        right: 107px;
+        bottom: 65px;
+        width: 40px;
+        height: 40px;
         background: url("plus.svg") center / contain no-repeat;
+        background-color: white;
+        border-radius: 50%;
       }
       input {
         display: none;      
@@ -78,8 +80,9 @@ export default class UploadProfileImage extends LitElement {
   render() {
     return html`
           <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed} enctype="multipart/form-data" novalidate>
-          ${this._profilePicture !== null 
-          ? html`<img src="data:image/png;base64,${this._profilePicture.imageBase64}" />`
+          <label for="fileImage">${this._profilePicture !== null 
+          ? html`<img src="data:image/png;base64,${this._profilePicture.imageBase64}" />
+                  <svg class="plus"></svg>`
           : html`<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g clip-path="url(#clip0_1_2)">
                   <rect width="200" height="200" fill="white"/>
@@ -90,8 +93,9 @@ export default class UploadProfileImage extends LitElement {
                   <rect width="200" height="200" fill="white"/>
                   </clipPath>
                   </defs>
-                </svg>`}
-            <label for="fileImage"></label>
+                </svg>
+                <svg class="plus"></svg>`}
+                </label>
             <input type="file" name="fileImage" id="fileImage" accept="image/*" @change="${this.handleChange}"/>
             <button-div ?disabled="${this._disabled}" value="Submit" @click=${this.handleSubmit}></button-div>
           </form>
