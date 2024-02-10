@@ -110,31 +110,6 @@ export default class InputField extends LitElement{
         width: calc(100% - 48px);
       }
       
-      
-      @media screen and (max-width: 430px){
-        input[type="date"]::-webkit-calendar-picker-indicator {
-        background: transparent;
-        bottom: 0;
-        color: transparent;
-        cursor: pointer;
-        height: auto;
-        left: 0;
-        position: absolute;
-        right: 0; 
-        top: 0;
-        width: auto;
-       }
-
-      }
-
-      @media screen and (min-width: 431px){
-        input[type="date"]::-webkit-calendar-picker-indicator {
-        cursor: pointer;
-        height: 25px;
-        width: 25px;
-        }
-      }
-      
 
       input[type="date"]{
         font-size: 16px;
@@ -173,19 +148,23 @@ export default class InputField extends LitElement{
      }
 
      @keyframes shake {
-      0% {
-        margin-left: 0rem;
+        0% {
+          margin-left: 0rem;
+          margin-right: 0;
+        }
+        25% {
+          margin-left: 0.5rem;
+          margin-right: -0.5rem;
+        }
+        75% {
+          margin-left: -0.5rem;
+          margin-right: 0.5rem
+        }
+        100% {
+          margin-left: 0rem;
+          margin-right: 0;
+        }
       }
-      25% {
-        margin-left: 0.5rem;
-      }
-      75% {
-        margin-left: -0.5rem;
-      }
-      100% {
-        margin-left: 0rem;
-      }
-    }
 
       `;
     }

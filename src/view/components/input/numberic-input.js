@@ -181,19 +181,23 @@ export default class NumbericInput extends LitElement{
      }
 
      @keyframes shake {
-      0% {
-        margin-left: 0rem;
+        0% {
+          margin-left: 0rem;
+          margin-right: 0;
+        }
+        25% {
+          margin-left: 0.5rem;
+          margin-right: -0.5rem;
+        }
+        75% {
+          margin-left: -0.5rem;
+          margin-right: 0.5rem
+        }
+        100% {
+          margin-left: 0rem;
+          margin-right: 0;
+        }
       }
-      25% {
-        margin-left: 0.5rem;
-      }
-      75% {
-        margin-left: -0.5rem;
-      }
-      100% {
-        margin-left: 0rem;
-      }
-    }
 
       `;
     }
