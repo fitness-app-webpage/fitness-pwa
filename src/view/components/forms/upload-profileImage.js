@@ -36,7 +36,7 @@ export default class UploadProfileImage extends LitElement {
         height: 200px;
         border-radius: 50%;
       }
-    @media only screen and (max-width: 480px) {
+    @media only screen and (max-width: 480px) and (orientation: portrait) {
         img {
         width: 200px;
         height: 200px;
@@ -52,6 +52,9 @@ export default class UploadProfileImage extends LitElement {
         justify-content: center;
         align-items: center;
         flex-direction: column;
+      }
+      label {
+        -webkit-tap-highlight-color: transparent;
       }
       .plus {
         -webkit-tap-highlight-color: transparent;

@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit";
 import "../components/page/page"
+import "../components/forms/product-from"
 
 export default class AddProduct extends LitElement{
     static get styles(){
@@ -13,7 +14,7 @@ export default class AddProduct extends LitElement{
         return html`
         <page-div>
             <h1>Product</h1>
-            
+            <product-form></product-form>
         </page-div>`
     }
 }

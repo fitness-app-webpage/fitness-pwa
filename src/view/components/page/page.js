@@ -26,6 +26,7 @@ export default class Page extends LitElement{
             left: 0;
             right: 0;
             bottom: 0;
+            height: calc(100% - 101px);
         }
     }
         `;
