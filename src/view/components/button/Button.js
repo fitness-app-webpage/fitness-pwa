@@ -54,6 +54,9 @@ export default class Button extends LitElement{
         border-top-color: #ffffff;
         animation: button-loading 1s ease infinite;
       }
+      :host([disabled]) .loading[disabled] {
+        background-color: #3648ca;
+      }
       @keyframes button-loading{
         from {
           transform: rotate(0turn)

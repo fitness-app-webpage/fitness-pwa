@@ -94,7 +94,7 @@ export default class LoginDiv extends LitElement {
   }
   _login() {
       if(this.inputFieldsAreEmpty()) {
-        this._loadingEnabled = true;
+        this._loadingEnabled = true; this._disabled = true;
         login(this.loginData)
           .then(response => {
             Router.go(`${BASE}/home`);
@@ -102,7 +102,7 @@ export default class LoginDiv extends LitElement {
           .catch(error => {
           this._errorMessage =  error.message;
       }).then(() => {
-        this._loadingEnabled = false;
+        this._loadingEnabled = false; this._disabled = false;
       });
       
      }
