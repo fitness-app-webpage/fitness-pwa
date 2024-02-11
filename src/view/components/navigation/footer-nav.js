@@ -31,8 +31,10 @@ export default class FooterNav extends LitElement {
     super.firstUpdated();
     if(localStorage.getItem("profileImage") === null 
     || localStorage.getItem("profileImage") === undefined) {
-      await getProfilePicture();
-      this._profilePhoto = JSON.parse(localStorage.getItem("profileImage"))
+      await getProfilePicture().then(() => {
+        this._profilePhoto = JSON.parse(localStorage.getItem("profileImage"))
+      }).catch(error => {
+      });
     }
   } 
 
@@ -159,7 +161,6 @@ export default class FooterNav extends LitElement {
   //   })
   // }
   _onLocalStorageChange(e) {
-    console.log(e)
     this._profilePhoto = JSON.parse(e.newValue)
   }
 

@@ -24,8 +24,10 @@ export default class UploadProfileImage extends LitElement {
     super.firstUpdated();
     if(localStorage.getItem("profileImage") === null 
     || localStorage.getItem("profileImage") === undefined) {
-      await getProfilePicture();
-      this._profilePicture = JSON.parse(localStorage.getItem("profileImage"))
+      await getProfilePicture().then(() => {
+        this._profilePicture = JSON.parse(localStorage.getItem("profileImage"))
+      }).catch(error => {
+      });
     }
   }  
 
