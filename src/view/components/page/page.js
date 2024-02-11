@@ -41,7 +41,7 @@ export default class Page extends LitElement{
         return this.nonavigation 
         ? html `<main>
                     <slot></slot>
-                </main>.`
+                </main>`
         : html`
         <!-- <header-nav></header-nav> -->
         <main>

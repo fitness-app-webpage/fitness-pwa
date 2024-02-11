@@ -11,14 +11,18 @@ export default class LoginDiv extends LitElement {
   static get properties() {
     return{
       loginData: {type: Object},
-      disabled: {reflect: true, type: Boolean}
+      _disabled: {type: Boolean, state: true},
+      _errorMessage: {type: String, state: true},
+      _loadingEnabled: {type: Boolean, state: true}
     }
   };
 
   constructor() {
     super();
     this.loginData = {};
-    this.disabled = true;
+    this._disabled = true;
+    this._errorMessage = "";
+    this._loadingEnabled = false
   }
 
   static get styles(){ 
@@ -71,8 +75,8 @@ export default class LoginDiv extends LitElement {
             <h1>Login</h1>
             <input-field type="email" name="email" @input-changed="${this.listenerInput}" class="email-input" label="Email"></input-field>
             <input-field type="password" name="password" @input-changed="${this.listenerInput}" class="pass-input" label="Password"></input-field>
-            <error-message></error-message>
-            <button-div @click="${this._login}" value="Login" ?disabled=${this.disabled}></button-div>
+            <error-message message="${this._errorMessage}"></error-message>
+            <button-div @click="${this._login}" value="Login" ?disabled=${this._disabled} ?loadingEnabled=${this._loadingEnabled}></button-div>
           </div>
           <div class="other-links">
             <hr>
@@ -90,21 +94,25 @@ export default class LoginDiv extends LitElement {
   }
   _login() {
       if(this.inputFieldsAreEmpty()) {
+        this._loadingEnabled = true;
         login(this.loginData)
           .then(response => {
             Router.go(`${BASE}/home`);
           })
           .catch(error => {
-          this.shadowRoot.querySelector("error-message").message = error.message;
+          this._errorMessage =  error.message;
+      }).then(() => {
+        this._loadingEnabled = false;
       });
+      
      }
   }
   listenerInput(e) {
     this.loginData[e.target.name] = e.target.value;
 
-    this.shadowRoot.querySelector("error-message").message = "";
+    this._errorMessage = "";
     
-    this.disabled = !this.inputFieldsAreEmpty();
+    this._disabled = !this.inputFieldsAreEmpty();
   }
 
   inputFieldsAreEmpty() {

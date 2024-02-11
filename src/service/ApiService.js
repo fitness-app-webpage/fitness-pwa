@@ -97,7 +97,7 @@ export function login(formData) {
               window.localStorage.setItem("refresh", refreshToken)
             }
             else {
-              throw new Error("Incorrect email or password")
+              throw new Error("Incorrect email or password");
             }
         })
 }
