@@ -78,7 +78,7 @@ export default class NumbericInput extends LitElement{
         padding: 8px;
         margin: 9px 0;
         border-radius: var(--input-field-border-radius, 30px);
-        width: var(--input-field-width);
+        width: var(--input-width);
         /* background-color: var(--input-field-background-color, #e4dfdf); */
         border: #b1afaf solid 2px;
       }
@@ -117,36 +117,6 @@ export default class NumbericInput extends LitElement{
         justify-content: center;
         align-self: center;
       }
-      
-      
-      @media screen and (max-width: 430px){
-        input[type="date"]::-webkit-calendar-picker-indicator {
-        background: transparent;
-        bottom: 0;
-        color: transparent;
-        cursor: pointer;
-        height: auto;
-        left: 0;
-        position: absolute;
-        right: 0; 
-        top: 0;
-        width: auto;
-       }
-
-      }
-
-      @media screen and (min-width: 431px){
-        input[type="date"]::-webkit-calendar-picker-indicator {
-        cursor: pointer;
-        height: 25px;
-        width: 25px;
-        }
-      }
-      
-
-      input[type="date"]{
-        font-size: 16px;
-      }
 
       input:focus + label,
       :host(:not([value=""])) label {
@@ -169,9 +139,10 @@ export default class NumbericInput extends LitElement{
         -webkit-appearance: none;
       }
       .error-message {
-      margin-left: 12px;
-      color: red;
-      visibility: hidden;
+        margin-left: 12px;
+        margin-right: 12px;
+        color: red;
+        visibility: hidden;
      }
      .invalid-input {
       border: 2px solid red;

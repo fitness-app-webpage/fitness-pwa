@@ -79,7 +79,7 @@ export default class InputField extends LitElement{
         padding: 8px;
         margin: 9px 0;
         border-radius: var(--input-field-border-radius, 30px);
-        width: var(--input-field-width);
+        width: var(--input-width);
         /* background-color: var(--input-field-background-color, #e4dfdf); */
         border: #b1afaf solid 2px;
       }
@@ -137,6 +137,7 @@ export default class InputField extends LitElement{
       }
       .error-message {
       margin-left: 12px;
+      margin-right: 12px;
       color: red;
       visibility: hidden;
      }

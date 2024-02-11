@@ -40,18 +40,28 @@ export default class ProductForm extends LitElement {
         overflow: auto;
         height: calc(100vh - 180px);
       }
-      input-field, numberic-input {
-        width: calc((100% / 2) - 40px);
+      numberic-input, input-field {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+        --input-width: calc((100vw / 2) - 60px);
         /* padding: 0 20px; */
       }
+      /* input-field {
+        width: calc((100% / 2) - 20px);
+      } */
       button-div {
         margin: 20px 0 0 0;
         width: calc((100% / 2) - 40px);
       }
       .first-row, .second-row,
       .third-row, .fourth-row {
+        width: 100%;
         display: flex;
-        justify-content: space-evenly;
+        justify-content: center;
+        align-items: center;
       }
     }
     `;
