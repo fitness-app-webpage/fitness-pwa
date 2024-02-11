@@ -33,10 +33,6 @@ export default class ProductForm extends LitElement {
       text-align: center;
     }
     @media only screen and (max-width: 480px) and (orientation: portrait) {
-      .container {
-        height: 100%; 
-        overflow: auto;
-      }
       h1 {
         padding: 0 0 100px 0;
       }
@@ -74,7 +70,6 @@ export default class ProductForm extends LitElement {
 
   render() {
     return html`
-        <div class="container">
           <h1>Product</h1>
           <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed} enctype="multipart/form-data" novalidate>
             <input-field name="victualsType" label="Victuals type" pattern=".{1,}" errormessage="Field cannot be empty" required></input-field>
@@ -96,8 +91,7 @@ export default class ProductForm extends LitElement {
             </div>
             <button-div ?disabled="${this._disabled}" value="Submit" @click=${this.handleSubmit}></button-div>
           </form>
-        </div>
-        <error-message message="${this._error}"></error-message>
+          <error-message message="${this._error}"></error-message>
   `;
   }
   handleChange(e) {

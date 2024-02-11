@@ -31,7 +31,7 @@ export default class Page extends LitElement{
         }
         main {
             height: calc(100% - 101px);
-            /* height: 100%; */
+            overflow: auto;
         }
     }
         `;
