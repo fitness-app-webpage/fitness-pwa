@@ -37,8 +37,6 @@ export default class FooterNav extends LitElement {
     @media only screen and (max-width: 480px) and (orientation: portrait){
         footer{
             display: block;
-            position: fixed;
-            bottom: 0;  
             width: 100%;
             height: 100px;
             border-top: 1px solid #afadad;
@@ -54,12 +52,9 @@ export default class FooterNav extends LitElement {
     @media only screen and (max-width: 1024px) and (orientation: landscape) {
         footer{
             display: block;
-            position: fixed;
-            bottom: 0;  
             width: 100%;
             height: 100px;
             border-top: 1px solid #afadad;
-            /* background-color: #ffffff; */
         }
         nav {
             display: flex;

@@ -28,9 +28,18 @@ export default class ProductForm extends LitElement {
         display: flex;
         flex-direction: column;
         overflow: auto;
-        height: calc(100vh - 180px);
       }
+    h1 {
+      text-align: center;
+    }
     @media only screen and (max-width: 480px) and (orientation: portrait) {
+      .container {
+        height: 100%; 
+        overflow: auto;
+      }
+      h1 {
+        padding: 0 0 100px 0;
+      }
       form {
         width: 100%;
         display: flex;
@@ -38,7 +47,7 @@ export default class ProductForm extends LitElement {
         justify-content: center;
         align-items: center;
         overflow: auto;
-        height: calc(100vh - 180px);
+        margin: 0 0 20px 0;
       }
       numberic-input, input-field {
         width: 100%;
@@ -47,11 +56,7 @@ export default class ProductForm extends LitElement {
         text-align: center;
         align-items: center;
         --input-width: calc((100vw / 2) - 60px);
-        /* padding: 0 20px; */
       }
-      /* input-field {
-        width: calc((100% / 2) - 20px);
-      } */
       button-div {
         margin: 20px 0 0 0;
         width: calc((100% / 2) - 40px);
@@ -69,6 +74,8 @@ export default class ProductForm extends LitElement {
 
   render() {
     return html`
+        <div class="container">
+          <h1>Product</h1>
           <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed} enctype="multipart/form-data" novalidate>
             <input-field name="victualsType" label="Victuals type" pattern=".{1,}" errormessage="Field cannot be empty" required></input-field>
             <div class="first-row">
@@ -89,7 +96,8 @@ export default class ProductForm extends LitElement {
             </div>
             <button-div ?disabled="${this._disabled}" value="Submit" @click=${this.handleSubmit}></button-div>
           </form>
-          <error-message message="${this._error}"></error-message>
+        </div>
+        <error-message message="${this._error}"></error-message>
   `;
   }
   handleChange(e) {

@@ -13,7 +13,6 @@ export default class AddProduct extends LitElement{
     render() {
         return html`
         <page-div>
-            <h1>Product</h1>
             <product-form></product-form>
         </page-div>`
     }
