@@ -16,6 +16,16 @@ export default class FooterNav extends LitElement {
     this._profilePhoto = JSON.parse(localStorage.getItem("profileImage"))
     
   }
+  connectedCallback() {
+    super.connectedCallback()
+    this.main = this.getRootNode().querySelector("main")
+    this.main.addEventListener('storage', this._onLocalStorageChange.bind(this))
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback()
+    this.main.removeEventListener('storage', this._onLocalStorageChange.bind(this))
+  }
 
   async firstUpdated() {
     super.firstUpdated();
@@ -24,7 +34,7 @@ export default class FooterNav extends LitElement {
       await getProfilePicture();
       this._profilePhoto = JSON.parse(localStorage.getItem("profileImage"))
     }
-  }  
+  } 
 
   static get styles(){ 
     return css`
@@ -148,6 +158,11 @@ export default class FooterNav extends LitElement {
   //       }
   //   })
   // }
+  _onLocalStorageChange(e) {
+    console.log(e)
+    this._profilePhoto = JSON.parse(e.newValue)
+  }
+
 }
 
 customElements.define('footer-nav', FooterNav);

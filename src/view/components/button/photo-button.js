@@ -4,7 +4,7 @@ export default class PhotoButton extends LitElement{
   
   static get properties() {
     return{
-        src: {type: String},
+        src: {type: String, reflect: true},
         text: {type: String},
         nav: {type: String},
         useSvg: {type: Boolean},

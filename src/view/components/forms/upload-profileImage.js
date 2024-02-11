@@ -123,9 +123,16 @@ export default class UploadProfileImage extends LitElement {
     e.preventDefault();
     const form = e.target;
     this.data = new FormData(form);
+    localStorage.setItem("profileImage", JSON.stringify(this._profilePicture))
     uploadProfilePhoto(this.data).catch(error => {
       this._error = error.message
     })
+    this.dispatchEvent(new StorageEvent('storage', {
+      key: "profileImage",
+      newValue: JSON.stringify(this._profilePicture),
+      bubbles: true,
+      composed: true
+    }))
   }
 
   handleSubmit(e) {
