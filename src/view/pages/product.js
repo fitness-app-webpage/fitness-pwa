@@ -34,7 +34,25 @@ export default class Product extends LitElement{
                 text-align: center;
             }
             .nutritions {
+                width: 100%;
+            }
+            .first-row, .second-row{
                 display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                height: 100px;
+
+            }
+            .first-row > div, .second-row > div {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                width: 100%;
+                height: 90%;
+                border: 2px solid black;
+                
             }
             .container > span {
                 margin: 20px;
@@ -58,11 +76,30 @@ export default class Product extends LitElement{
                                 <img src="${e.image}">
                                 <span>${e.quantity} gram</span>
                                 <div class="nutritions">
-                                    <span>${e.nutritions.calories} cal</span>
-                                    <span>Fat: ${e.nutritions.fat}</span>
-                                    <span>Carbs: ${e.nutritions.carbs}</span>
-                                    <span>Protein: ${e.nutritions.protein}</span>
-                                    <span>Salt: ${e.nutritions.salt}</span>
+                                    <div class="first-row">
+                                        <div>
+                                            <span>${e.nutritions.calories}</span>
+                                            <span>Calories</span>
+                                        </div>
+                                        <div>
+                                            <span>${e.nutritions.protein}</span>
+                                            <span>Protein</span>
+                                        </div>
+                                    </div>
+                                    <div class="second-row">
+                                        <div>
+                                            <span>${e.nutritions.fat}</span>
+                                            <span>Fat</span>
+                                        </div>
+                                        <div>
+                                            <span>${e.nutritions.carbs}</span>
+                                            <span>Carbs</span>
+                                        </div>
+                                        <div>
+                                            <span>${e.nutritions.salt}</span>
+                                            <span>Salt</span>
+                                        </div>
+                	                </div>
                                 </div>
                                 <!-- <span>Unit: ${e.unit.unit}</span> -->
                             </div>`
