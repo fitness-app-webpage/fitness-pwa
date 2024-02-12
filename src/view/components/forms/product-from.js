@@ -105,7 +105,7 @@ export default class ProductForm extends LitElement {
               Select image
               <span>Optional</span>
             </label>
-            <input type="file" name="productImage" id="image" accept="image/*"/>
+            <input type="file" name="image" id="image" accept="image/*"/>
             <button-div ?disabled="${this._disabled}" value="Submit" @click=${this.handleSubmit}></button-div>
           </form>
           <error-message message="${this._error}"></error-message>
@@ -129,12 +129,17 @@ export default class ProductForm extends LitElement {
     e.preventDefault();
     const form = e.target;
     if(form.checkValidity()) {
-      const formData = new FormData(form);
-      addProduct(formData)
-      this.data = Object.fromEntries(formData.entries())
+      this.data = new FormData(form);
+      addProduct(this.data).then(response => {
+        if(response.ok)
+        this._error = "Product added"
+      }).catch(error => {
+        this._error = error.message
+      })
     } else {
       let firstInvalidInput = false;
       Array.from(form.elements).map(e => {
+        if(e.id === "image") return;
         e.checkValidation()
         if(!firstInvalidInput && !e.checkValidation()) {
           firstInvalidInput = true;

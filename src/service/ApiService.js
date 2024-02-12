@@ -231,7 +231,7 @@ function postRequestAddProduct(url, data) {
                         throw error;
                     });
             }
-            throw new Error("error!");
+            throw new Error("Error cannot add product");
         })
 }
 
