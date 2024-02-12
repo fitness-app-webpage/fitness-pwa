@@ -108,6 +108,7 @@ export default class ProductForm extends LitElement {
             <input type="file" name="image" id="image" accept="image/*"/>
             <button-div ?disabled="${this._disabled}" value="Submit" @click=${this.handleSubmit}></button-div>
           </form>
+          <a href="/products">Products</a>
           <error-message message="${this._error}"></error-message>
   `;
   }

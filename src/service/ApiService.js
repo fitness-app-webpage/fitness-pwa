@@ -199,15 +199,14 @@ function getRequest(url) {
             if(response.status === 401) {
                 return checkUnAuth(url, fetchOptions)
                     .then(res => {
-                        return res.json();
+                        if(res.ok) return res.json();
                     }).catch(error => {
                         throw error;
                     });
-            } else {
-                response.json().then(e => {
-                    throw new Error(e.error)
-                })
             }
+            return response.json().then(e => {
+                throw new Error(e.message)
+            })
         })
 }
 function postRequestAddProduct(url, data) {
@@ -323,4 +322,10 @@ export function uploadProfilePhoto(data) {
 }
 export function addProduct(data) {
     return postRequestAddProduct("/product", data)
+}
+export function getProducts() {
+    return getRequest("/product")
+}
+export function getProductByName(name) {
+    return getRequest("/product/" + name)
 }

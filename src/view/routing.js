@@ -8,6 +8,8 @@ import "./pages/register"
 import "./pages/profile"
 import "./pages/logbook"
 import "./pages/add-product"
+import "./pages/products"
+import "./pages/product"
 
 
 const changeTitleAndAuthCheck = (context, commands) => {
@@ -30,7 +32,9 @@ router.setRoutes([
     {path: `${BASE}/register`, name: "Register", component: 'register-div', action: e => document.title = e.route.name},
     {path: `${BASE}/profile`, name: "Profile", component: 'profile-page', action: changeTitleAndAuthCheck},
     {path: `${BASE}/logbook`, name: "Logbook", component: 'logbook-page', action: changeTitleAndAuthCheck},
-    {path: `${BASE}/addproduct`, name: "Logbook", component: 'addproduct-page', action: changeTitleAndAuthCheck}, 
+    {path: `${BASE}/addproduct`, name: "Add a product", component: 'addproduct-page', action: changeTitleAndAuthCheck}, 
+    {path: `${BASE}/products`, name: "Products", component: 'products-page', action: changeTitleAndAuthCheck},
+    {path: `${BASE}/products/:product`, name: "Product", component: 'product-page', action: changeTitleAndAuthCheck},
 //     {path: `${BASE}/dashboard-manager`, name: "Dashboard manager", component: 'manager-dashboard', action: changeTitleAndAuthCheck},
 //     {path: `${BASE}/dashboard-employee`, name: "Dashboard employee", component: 'employee-dashboard', action: changeTitleAndAuthCheck},
 //     {path: `${BASE}/report-generation`, name: "Report Generation", component: 'report-generation', action: changeTitleAndAuthCheck},
