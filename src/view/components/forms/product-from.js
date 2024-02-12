@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit";
-import {uploadProfilePhoto, getProfilePicture} from "../../../service/ApiService"
 import "../error/errorMessage"
+import { addProduct } from "../../../service/ApiService";
 
 export default class ProductForm extends LitElement {
   static get properties() {
@@ -34,7 +34,7 @@ export default class ProductForm extends LitElement {
     }
     @media only screen and (max-width: 480px) and (orientation: portrait) {
       h1 {
-        padding: 0 0 100px 0;
+        padding: 0 0 75px 0;
       }
       form {
         width: 100%;
@@ -60,9 +60,21 @@ export default class ProductForm extends LitElement {
       .first-row, .second-row,
       .third-row, .fourth-row {
         width: 100%;
+        height: 105px;
         display: flex;
         justify-content: center;
         align-items: center;
+      }
+      .photo-icon {
+        -webkit-tap-highlight-color: transparent;
+        background: url("add_photo_icon.svg") center / contain no-repeat;
+        width: 40px;
+        height: 40px;
+        /* background-color: #4f63f7; */
+        /* border-radius: 50%; */
+      }
+      input[type="file"] {
+        display: none
       }
     }
     `;
@@ -89,6 +101,11 @@ export default class ProductForm extends LitElement {
                 <numberic-input name="protein" label="Protein" pattern="([0-9]{1,3})?([\.][0-9][0-9]?)?" errormessage="Protein cannot be more than 2000" abbreviateType="g" required></numberic-input>
                 <numberic-input name="salt" label="Salt" pattern="([0-9]{1,3})?([\.][0-9][0-9]?)?" errormessage="Salt cannot be more than 100" abbreviateType="g" required></numberic-input>
             </div>
+            <label for="image">
+              Select image
+              <span>Optional</span>
+            </label>
+            <input type="file" name="productImage" id="image" accept="image/*"/>
             <button-div ?disabled="${this._disabled}" value="Submit" @click=${this.handleSubmit}></button-div>
           </form>
           <error-message message="${this._error}"></error-message>
@@ -113,8 +130,8 @@ export default class ProductForm extends LitElement {
     const form = e.target;
     if(form.checkValidity()) {
       const formData = new FormData(form);
+      addProduct(formData)
       this.data = Object.fromEntries(formData.entries())
-      this.dispatchEvent(new CustomEvent('next', {detail: this.data}));
     } else {
       let firstInvalidInput = false;
       Array.from(form.elements).map(e => {

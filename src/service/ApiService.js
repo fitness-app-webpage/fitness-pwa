@@ -210,6 +210,30 @@ function getRequest(url) {
             }
         })
 }
+function postRequestAddProduct(url, data) {
+    var fetchOptions = {
+        method: "POST",
+        headers: {
+            "Authorization": "Bearer " + storage.getAccessToken(),
+        },
+        body: data,
+    };
+    return fetch(api_url + url, fetchOptions)
+        .then(response => {
+            if(response.ok) {
+                return response;
+            }
+            if(response.status === 401) {
+                return checkUnAuth(url, fetchOptions)
+                    .then(res => {
+                        return res;
+                    }).catch(error => {
+                        throw error;
+                    });
+            }
+            throw new Error("error!");
+        })
+}
 
 function postRequest(url, data) {
     var fetchOptions = {
@@ -296,4 +320,7 @@ export function getProfilePicture() {
 }
 export function uploadProfilePhoto(data) {
     return uploadImage("/userinfo/profile-picture", data)
+}
+export function addProduct(data) {
+    return postRequestAddProduct("/product", data)
 }
