@@ -51,7 +51,6 @@ export default class ProductView extends LitElement{
                 flex-direction: column;
                 width: 100%;
                 height: 100%;
-                /* margin: 4px;  */
             }
             .calories {
                 border: 2px solid #EF9437; 
@@ -90,7 +89,6 @@ export default class ProductView extends LitElement{
                             <div class="container">
                                 <!-- <span>Type: ${e.victualsType}</span> -->
                                 <h1>${e.name}, ${e.brand}</h1>
-                                <!-- <h2>${e.brand}</h2> -->
                                 <img src="${e.image}">
                                 <span>${e.quantity} gram</span>
                                 <div class="nutritions">

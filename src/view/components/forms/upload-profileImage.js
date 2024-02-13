@@ -126,7 +126,9 @@ export default class UploadProfileImage extends LitElement {
     const form = e.target;
     this.data = new FormData(form);
     localStorage.setItem("profileImage", JSON.stringify(this._profilePicture))
-    uploadProfilePhoto(this.data).catch(error => {
+    uploadProfilePhoto(this.data).then(e => {
+      this._error = e;
+    }).catch(error => {
       this._error = error.message
     })
     this.dispatchEvent(new StorageEvent('storage', {
@@ -135,6 +137,9 @@ export default class UploadProfileImage extends LitElement {
       bubbles: true,
       composed: true
     }))
+    setTimeout(() => {
+      this._error = "";
+    }, 2000);
   }
 
   handleSubmit(e) {
