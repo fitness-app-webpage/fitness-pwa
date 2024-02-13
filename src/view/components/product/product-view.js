@@ -1,12 +1,13 @@
 import { LitElement, html, css } from "lit";
 import { getProductByName } from "../../../service/ApiService";
 import {until} from 'lit/directives/until.js';
+import "../charts/circle-bar"
 
 export default class ProductView extends LitElement{
     static get properties() {
         return{
             _data: {type: Object, state: true},
-            location: {type: String}
+            location: {type: String},
         }
     }
 
@@ -32,45 +33,21 @@ export default class ProductView extends LitElement{
             }
             .nutritions {
                 display: flex;
-                flex-direction: column;
-                gap: 10px;
+                flex-direction: row;
+                align-items: flex-end;
                 width: 100%;
             }
-            .first-row, .second-row{
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                text-align: center;
-                height: 100px;
-                gap: 10px;
-            }
-            .first-row > div, .second-row > div {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-direction: column;
-                width: 100%;
-                height: 100%;
-            }
-            .calories {
-                border: 2px solid #EF9437; 
-                color: #EF9437;
-            }
-            .protein {
-                border: 2px solid #32A8F0; 
+            .percentage-protein {
                 color: #32A8F0;
             }
 
-            .fat {
-                border: 2px solid #F02F2F; 
+            .percentage-fat {
                 color: #F02F2F;
             }
-            .carbs {
-                border: 2px solid #42ca5b; 
+            .percentage-carbs {
                 color: #42ca5b;
             }
-            .salt {
-               border: 2px solid #6E1FF0;
+            .percentage-salt {
                color: #6E1FF0;
             }
             .container > span {
@@ -79,45 +56,68 @@ export default class ProductView extends LitElement{
             h1, h2 {
                 margin: 10px 0; 
             }
+            .nutrition-type {
+                opacity: 0.5;
+            }
+            .nutritions div {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                margin-bottom: 30px;
+            }
+            .nutritions div span:nth-child(1) {
+                font-size: 12px;
+            }
+            .nutritions div span:nth-child(2) {
+                font-size: 16px;
+                font-weight: bold;
+            }
+
         `;
     }
     
     render(){
         return html`
             ${until(getProductByName(this.location).then(e => {
+                let total = 0;
+                Object.values(e.nutritions).map(v => {
+                    if(v !== e.nutritions.calories)
+                    total += v
+                })
+                console.log(total)
                 return html`
                             <div class="container">
-                                <!-- <span>Type: ${e.victualsType}</span> -->
                                 <h1>${e.name}, ${e.brand}</h1>
                                 <img src="${e.image}">
                                 <span>${e.quantity} gram</span>
                                 <div class="nutritions">
-                                    <div class="first-row">
-                                        <div class="calories">
-                                            <span>${e.nutritions.calories}</span>
-                                            <span>Calories</span>
-                                        </div>
+                                    <circle-bar .data="${[
+                                        {value: e.nutritions.protein, color: "#32A8F0", label: "Protein"},
+                                        {value: e.nutritions.fat, color: "#F02F2F", label: "Fat"},
+                                        {value: e.nutritions.carbs, color: "#42ca5b", label: "Carbs"},
+                                        {value: e.nutritions.salt, color: "#6E1FF0", label: "Salt"}
+                                        ]}" title="nitritions" text="${e.nutritions.calories}" secondtext="Cal" textcolor="#EF9437"></circle-bar>
                                         <div class="protein">
-                                            <span>${e.nutritions.protein}</span>
-                                            <span>Protein</span>
+                                            <span class="percentage-protein">${(e.nutritions.protein / total * 100).toFixed(1)}%</span>
+                                            <span>${e.nutritions.protein} g</span>
+                                            <span class="nutrition-type">Protein</span>
                                         </div>
-                                    </div>
-                                    <div class="second-row">
                                         <div class="fat">
-                                            <span>${e.nutritions.fat}</span>
-                                            <span>Fat</span>
+                                            <span class="percentage-fat">${(e.nutritions.fat / total * 100).toFixed(1)}%</span>
+                                            <span>${e.nutritions.fat} g</span>
+                                            <span class="nutrition-type">Fat</span>
                                         </div>
                                         <div class="carbs">
-                                            <span>${e.nutritions.carbs}</span>
-                                            <span>Carbs</span>
+                                            <span class="percentage-carbs">${(e.nutritions.carbs / total * 100).toFixed(1)}%</span>
+                                            <span>${e.nutritions.carbs} g</span>
+                                            <span class="nutrition-type">Carbs</span>
                                         </div>
                                         <div class="salt">
-                                            <span>${e.nutritions.salt}</span>
-                                            <span>Salt</span>
+                                            <span class="percentage-salt">${(e.nutritions.salt / total * 100).toFixed(1)}%</span>
+                                            <span>${e.nutritions.salt} g</span>
+                                            <span class="nutrition-type">Salt</span>
                                         </div>
-                	                </div>
                                 </div>
-                                <!-- <span>Unit: ${e.unit.unit}</span> -->
                             </div>`
             }).catch(error => {
                 return html`<span>${error.message}</span>` 
