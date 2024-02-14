@@ -74,27 +74,20 @@ export default class Products extends LitElement{
                     (e) => html`
                             <div class="product-card">
                                 <div class="product-container">
-                                <!-- <span>Type: ${e.victualsType}</span> -->
                                 <div class="a">
                                     <span class="name">${e.name}</span>
-                                    <!-- <span>Brand: ${e.brand}</span> -->
                                     <div class="product-info">
                                         <span>${e.quantity} gram,</span>
                                         <span>${e.nutritions.calories} cal</span>
                                     </div>
                                 </div>
                                 <span class="button" @click="${this.handleClick}" id="${e.name}">X</span>
-
-                                <!-- <span>Fat: ${e.nutritions.fat}</span>
-                                    <span>Carbs: ${e.nutritions.carbs}</span>
-                                    <span>Protein: ${e.nutritions.protein}</span> -->
-                                <!-- <span>Salt: ${e.nutritions.salt}</span> -->
-                                <!-- <span>Unit: ${e.unit.unit}</span> -->
-                                <!-- <img src="${e.image}">                         -->
                                 </div>
                             </div>
                                 `
                 )
+            }).catch(error => {
+                return html`<span>${error.message}</span>`
             }),
                 html`<span>Loading...</span>`
             )}

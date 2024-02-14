@@ -2,6 +2,7 @@ import { LitElement, html, css } from "lit";
 import { getProductByName } from "../../../service/ApiService";
 import {until} from 'lit/directives/until.js';
 import "../charts/circle-bar"
+import {Task} from '@lit/task';
 
 export default class ProductView extends LitElement{
     static get properties() {
@@ -23,6 +24,35 @@ export default class ProductView extends LitElement{
 
         }
     }
+    _myTask = new Task(this, {
+        task: async ([location], {signal}) => {
+            return await getProductByName(location, signal).then(e => {
+                this._name = e.name;
+                this._brand = e.brand;
+                this._image = e.image;
+                this._quantity = e.quantity;
+                this._calories = e.nutritions.calories;
+                this._protein = e.nutritions.protein;
+                this._carbs = e.nutritions.carbs;
+                this._fat = e.nutritions.fat;
+                this._salt = e.nutritions.salt;
+    
+                this._calperg = e.nutritions.calories / e.quantity;
+                this._proteinperg = e.nutritions.protein / e.quantity;
+                this._carbsperg = e.nutritions.carbs / e.quantity;
+                this._fatperg = e.nutritions.fat / e.quantity;
+                this._saltperg = e.nutritions.salt / e.quantity;
+                Object.values(e.nutritions).map(v => {
+                    if(v !== e.nutritions.calories)
+                    this._total += v
+                })
+                return e;
+            }).catch(error => {
+                throw new Error(error.message)
+            })
+        },
+        args: () => [this.location]
+    })
 
     constructor() {
         super();
@@ -35,7 +65,6 @@ export default class ProductView extends LitElement{
     connectedCallback() {
         super.connectedCallback()
         self.addEventListener("submitProduct", this._handleSubmitProduct.bind(this))
-        this.renderProduct();
     }
     disconnectedCallback() {
         super.disconnectedCallback()
@@ -97,26 +126,54 @@ export default class ProductView extends LitElement{
                 font-size: 16px;
                 font-weight: bold;
             }
+            .image-form {
+                display: flex;
+                text-align: center;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .serving {
+                display: flex;
+                height: 20px;
+                margin: 20px 0;
+                justify-content: space-between;
+                border-bottom: 1px solid #dbd8d8;
+            }
+            .serving > span {
+                margin:0 10px;
+            }
+            
             circle-bar {
                 --circle-width: 100px;
                 --circle-height: 100px;
                 margin-left: 10px;
+            }
+            numberic-input {
+                --input-width: 160px;
+                --input-field-border-radius: 4px;
             }
 
         `;
     }
     
     render(){
-        return html`
-            ${until(this.data.then(e => {
-                return html`
-                            <div class="container">
+        return this._myTask.render({
+            pending: () => html`<span>Loading...</span>`,
+            complete: (e) => html`
+                        <div class="container">
                                 <h1>${this._name}, ${this._brand}</h1>
-                                <img src="${this._image}">
-                                <input type="number" name="amount" value=${this._quantity} @change=${this.handleInput}/>
-                                <input type="hidden" name="mealType" value="${this._mealtype}"/>
-                                <input type="hidden" name="name" value="${this._name}"/>
-                                <span>${this._quantity} gram</span>
+                                <div class="image-form">
+                                    <img src="${this._image}">
+                                        <form @submit="${this.handleSubmit}" novalidate>
+                                        <numberic-input type="number" value=${this._quantity} @input-changed="${this.handleInput}" label="amount" name="amount" abbreviateType="gram(s)"></numberic-input>
+                                        <input type="hidden" name="mealType" value="${this._mealtype}"/>
+                                        <input type="hidden" name="name" value="${this._name}"/>
+                                    </form>
+                                </div>
+                                <div class="serving">
+                                    <span>Serving size</span>
+                                    <span>${e.quantity} gram</span>
+                                </div>
                                 <div class="nutritions">
                                     <circle-bar .data="${[
                                         {value: this._protein, color: "#32A8F0", label: "Protein"},
@@ -145,14 +202,11 @@ export default class ProductView extends LitElement{
                                             <span class="nutrition-type">Salt</span>
                                         </div>
                                 </div>
-                            </div>`
-                            }).catch(error => {
-                                return html`<span>${error.message}</span>` 
-                            }),
-                html`<span>Loading...</span>`
-            )}
-        `
+                            </div>`,
+        error: (error) => html`<span>${error.message}</span>` 
+                            })
     };
+
     handleInput(e) {
         const value = Number(e.target.value)
         if(value > 0) {
@@ -163,6 +217,7 @@ export default class ProductView extends LitElement{
             this._fat = this._roundNumber((this._fatperg * value).toFixed(2));
             this._salt = this._roundNumber((this._saltperg * value).toFixed(2));
             this._total = Number(this._protein) + Number(this._carbs) + Number(this._fat) + Number(this._salt);
+            this.shadowRoot.querySelector("circle-bar").updateChart()
         }   
     }
     _roundNumber(data) {
@@ -176,42 +231,18 @@ export default class ProductView extends LitElement{
     handleSubmit(e) {
         e.preventDefault();
         const form = e.target;
-        console.log(form)
         const formData = new FormData(form);
-        console.log(formData)
         this.formData = Object.fromEntries(formData.entries())
-        console.log(this.formData)
+        this.formData = {
+            time: "09:30:00", 
+            mealType: this.formData.mealType, productNameAndAmount: {
+                name: this.formData.name,
+                amount: this.formData.amount
+            }
+        }
     }
     _handleSubmitProduct() {
         this.shadowRoot.querySelector("form").requestSubmit();
-        const inputs = this.shadowRoot.querySelectorAll("input");
-        for(let i of inputs) {
-            console.log(i)
-        }
-    }
-
-    async renderProduct() {
-        await getProductByName(this.location).then(e =>{
-            this._name = e.name;
-            this._brand = e.brand;
-            this._image = e.image;
-            this._quantity = e.quantity;
-            this._calories = e.nutritions.calories;
-            this._protein = e.nutritions.protein;
-            this._carbs = e.nutritions.carbs;
-            this._fat = e.nutritions.fat;
-            this._salt = e.nutritions.salt;
-
-            this._calperg = e.nutritions.calories / e.quantity;
-            this._proteinperg = e.nutritions.protein / e.quantity;
-            this._carbsperg = e.nutritions.carbs / e.quantity;
-            this._fatperg = e.nutritions.fat / e.quantity;
-            this._saltperg = e.nutritions.salt / e.quantity;
-            Object.values(e.nutritions).map(v => {
-                if(v !== e.nutritions.calories)
-                this._total += v
-            })
-        })
     }
 }
 customElements.define('product-view', ProductView); 

@@ -186,7 +186,7 @@ export default class NumbericInput extends LitElement{
         min="${this.min}" 
         max="${this.max}"
         aria-label=${this.ariaLabel}
-        @input="${this.updateValue}" 
+        @change="${this.updateValue}" 
         ?required="${this.required}"
         />
 

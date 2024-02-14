@@ -330,3 +330,6 @@ export function getProducts() {
 export function getProductByName(name) {
     return getRequest("/product/" + name)
 }
+export function createIntake(data) {
+    return postRequest("/intake", data);
+}

@@ -20,7 +20,7 @@ export default class CircleBar extends LitElement{
         this.secondtext = "second text"
         this.textcolor = "#000000"
     }
-    firstUpdated() {
+    firstUpdated() { 
         super.firstUpdated()
         this._renderGraph();
     }
@@ -126,6 +126,10 @@ export default class CircleBar extends LitElement{
             },
             plugins: [canvasBackgroundColor, ChartDataLabels]
         });
+    }
+    updateChart() {
+        this._chart.destroy();
+        this._renderGraph();
     }
 }
 customElements.define('circle-bar', CircleBar); 
