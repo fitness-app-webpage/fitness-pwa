@@ -117,7 +117,6 @@ export default class ProductView extends LitElement{
                 display: flex;
                 flex-direction: column;
                 width: 100%;
-                /* margin-bottom: 30px; */
             }
             .nutritions div span:nth-child(1) {
                 font-size: 12px;
@@ -237,7 +236,7 @@ export default class ProductView extends LitElement{
             if(e.ok) {
                 setTimeout(() => {
                     Router.go(`${BASE}/logbook`)
-                }, 1000);
+                }, 250);
             }
         }).catch(error => {
             console.log(error)
