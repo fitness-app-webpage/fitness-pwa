@@ -1,7 +1,6 @@
 import { LitElement, html, css } from "lit";
 import "../components/page/page"
 import "../components/product/product-view"
-import { getProductByName } from "../../service/ApiService";
 
 export default class Product extends LitElement{
     static get properties() {
@@ -28,7 +27,7 @@ export default class Product extends LitElement{
     render(){
         return html`
         <page-div headerbar>
-            <product-view location=${this._location} .data=${getProductByName(this._location)}></product-view>
+            <product-view location=${this._location}></product-view>
         </page-div>
         `
     };

@@ -1,14 +1,12 @@
 import { LitElement, html, css } from "lit";
-import { getProductByName } from "../../../service/ApiService";
-import {until} from 'lit/directives/until.js';
+import { getProductByName, createIntake} from "../../../service/ApiService";
 import "../charts/circle-bar"
 import {Task} from '@lit/task';
 
 export default class ProductView extends LitElement{
     static get properties() {
         return{
-            data: {type: Object},
-            formData: {type: Object},
+            _data: {type: Object, state: true},
             location: {type: String},
             _name: {type: String, state: true},
             _brand: {type: String, state: true},
@@ -56,8 +54,7 @@ export default class ProductView extends LitElement{
 
     constructor() {
         super();
-        this.data = {};
-        this.formData = {}
+        this._data = {};
         this.location = "";
         this._total = 0;
         this._mealtype = "breakfast";
@@ -232,14 +229,15 @@ export default class ProductView extends LitElement{
         e.preventDefault();
         const form = e.target;
         const formData = new FormData(form);
-        this.formData = Object.fromEntries(formData.entries())
-        this.formData = {
+        this._data = Object.fromEntries(formData.entries())
+        this._data = {
             time: "09:30:00", 
-            mealType: this.formData.mealType, productNameAndAmount: {
-                name: this.formData.name,
-                amount: this.formData.amount
-            }
+            mealType: this._data.mealType, productNameAndAmount: [{
+                name: this._data.name,
+                amount: this._data.amount
+            }]
         }
+        createIntake(this._data)
     }
     _handleSubmitProduct() {
         this.shadowRoot.querySelector("form").requestSubmit();
