@@ -42,9 +42,10 @@ export default class ProductView extends LitElement{
                 this._carbsperg = e.nutritions.carbs / e.quantity;
                 this._fatperg = e.nutritions.fat / e.quantity;
                 this._saltperg = e.nutritions.salt / e.quantity;
-                Object.values(e.nutritions).map(v => {
-                    if(v !== e.nutritions.calories)
-                    this._total += v
+                Object.entries(e.nutritions).map(([k, v]) => {
+                    if(k !== "calories") {
+                        this._total += v
+                    }
                 })
                 return e;
             }).catch(error => {
