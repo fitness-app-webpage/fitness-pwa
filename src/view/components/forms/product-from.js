@@ -91,7 +91,7 @@ export default class ProductForm extends LitElement {
                 <input-field name="brand" label="Brand name" pattern=".{1,}" errormessage="Field cannot be empty" required></input-field>
             </div>
             <div class="second-row">            
-                <numberic-input name="quantity" label="Amount" pattern="([0-9]{1,3})?([\.][0-9][0-9]?)?" errormessage="Quantity cannot be more than '10000'" abbreviateType="g" required></numberic-input>
+                <numberic-input name="quantity" label="Amount" pattern="([0-9]{1,3})?([\.][0-9][0-9]?)?" errormessage="Quantity cannot be more than '10000'" abbreviateType="g" value="100" required></numberic-input>
                 <numberic-input name="calories" label="Calories" pattern="([0-9]{1,3})?([\.][0-9][0-9]?)?" errormessage="Calories cannot be more than 10000" abbreviateType="kcal" required></numberic-input>
             </div>
             <div class="third-row">

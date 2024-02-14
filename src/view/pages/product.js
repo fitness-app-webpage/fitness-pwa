@@ -1,11 +1,12 @@
 import { LitElement, html, css } from "lit";
 import "../components/page/page"
 import "../components/product/product-view"
+import { getProductByName } from "../../service/ApiService";
 
 export default class Product extends LitElement{
     static get properties() {
         return{
-            _location: {type: String, state: true}
+            _location: {type: String, state: true},
         }
     }
 
@@ -16,6 +17,7 @@ export default class Product extends LitElement{
 
     onBeforeEnter(location, commands, router) {
         this._location = location.params.product;
+
     }
     static get styles(){
         return css`
@@ -26,7 +28,7 @@ export default class Product extends LitElement{
     render(){
         return html`
         <page-div>
-            <product-view location=${this._location}></product-view>
+            <product-view location=${this._location} .data=${getProductByName(this._location)}></product-view>
         </page-div>
         `
     };
