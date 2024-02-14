@@ -1,6 +1,7 @@
 import { LitElement, html, css } from "lit";
 import "../error/errorMessage"
 import { addProduct } from "../../../service/ApiService";
+import "../input/selector-picker"
 
 export default class ProductForm extends LitElement {
   static get properties() {
@@ -76,6 +77,17 @@ export default class ProductForm extends LitElement {
       input[type="file"] {
         display: none
       }
+      .victuals-type {
+        width: 100%;
+      }
+      selector-picker {
+        --flex-direction: row;
+        --border-radius: 30px;
+        --width: 100px;
+        --padding: 5px 0;
+        --font-size: 18px;
+        --justify-content: space-around;
+      }
     }
     `;
   }
@@ -84,7 +96,16 @@ export default class ProductForm extends LitElement {
     return html`
           <h1>Product</h1>
           <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed} enctype="multipart/form-data" novalidate>
-            <input-field name="victualsType" label="Victuals type" pattern=".{1,}" errormessage="Field cannot be empty" required></input-field>
+            <div class="victuals-type">
+            <selector-picker 
+              name="victualsType" 
+              .options="${[
+                {value: "FOOD", label: "Food"},
+                {value: "DRINK", label: "Drink"}
+              ]}"
+              required>
+            </selector-picker>
+            </div>
             <div class="first-row">
                 <input-field name="name" label="Product name" pattern=".{1,}" errormessage="Field cannot be empty" required></input-field>
                 <input-field name="brand" label="Brand name" pattern=".{1,}" errormessage="Field cannot be empty" required></input-field>

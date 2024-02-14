@@ -65,7 +65,8 @@ export default class SelectorPicker extends LitElement{
     return css`
         .background-div {
             display: flex;
-            flex-direction: column;
+            flex-direction: var(--flex-direction, column);
+            justify-content: var(--justify-content);
         }
         input {
             display: none;
@@ -74,12 +75,13 @@ export default class SelectorPicker extends LitElement{
         }
         label {
           border: #b1afaf solid 2px;
-          border-radius: 4px;
-          padding: 20px 0;
+          border-radius: var(--border-radius, 4px);
+          padding: var(--padding, 20px 0);
           margin: 4px 0;
           text-align: center;
           cursor: pointer;
-          font-size: 20px;
+          font-size: var(--font-size, 20px);
+          width: var(--width);
         }
         label:hover {
             border-color: #8d8a8a;
