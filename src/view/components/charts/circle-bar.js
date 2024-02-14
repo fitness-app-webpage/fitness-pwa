@@ -112,13 +112,13 @@ export default class CircleBar extends LitElement{
                        },
                        color: '#fff',
                     },
-                    title: {
-                        display: true,
-                        text: this.title,
-                        font: {weight: 'bolder'}
-                    },
+                    // title: {
+                    //     display: true,
+                    //     text: this.title,
+                    //     font: {weight: 'bolder'}
+                    // },
                     legend: {
-                        display: true,
+                        display: false,
                         position: "top",
                         align: "center",
                       }

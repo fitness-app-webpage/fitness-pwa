@@ -7,6 +7,7 @@ export default class ProductView extends LitElement{
     static get properties() {
         return{
             data: {type: Object},
+            formData: {type: Object},
             location: {type: String},
             _name: {type: String, state: true},
             _brand: {type: String, state: true},
@@ -26,12 +27,19 @@ export default class ProductView extends LitElement{
     constructor() {
         super();
         this.data = {};
+        this.formData = {}
         this.location = "";
         this._total = 0;
+        this._mealtype = "breakfast";
     }
     connectedCallback() {
         super.connectedCallback()
+        self.addEventListener("submitProduct", this._handleSubmitProduct.bind(this))
         this.renderProduct();
+    }
+    disconnectedCallback() {
+        super.disconnectedCallback()
+        self.removeEventListener("submitProduct", this._handleSubmitProduct.bind(this))
     }
 
 
@@ -50,7 +58,8 @@ export default class ProductView extends LitElement{
             .nutritions {
                 display: flex;
                 flex-direction: row;
-                align-items: flex-end;
+                align-items: center;
+                justify-content: center;
                 width: 100%;
             }
             .percentage-protein {
@@ -79,7 +88,7 @@ export default class ProductView extends LitElement{
                 display: flex;
                 flex-direction: column;
                 width: 100%;
-                margin-bottom: 30px;
+                /* margin-bottom: 30px; */
             }
             .nutritions div span:nth-child(1) {
                 font-size: 12px;
@@ -87,6 +96,11 @@ export default class ProductView extends LitElement{
             .nutritions div span:nth-child(2) {
                 font-size: 16px;
                 font-weight: bold;
+            }
+            circle-bar {
+                --circle-width: 100px;
+                --circle-height: 100px;
+                margin-left: 10px;
             }
 
         `;
@@ -99,7 +113,9 @@ export default class ProductView extends LitElement{
                             <div class="container">
                                 <h1>${this._name}, ${this._brand}</h1>
                                 <img src="${this._image}">
-                                <input value=${this._quantity} @change=${this.handleInput}/>
+                                <input type="number" name="amount" value=${this._quantity} @change=${this.handleInput}/>
+                                <input type="hidden" name="mealType" value="${this._mealtype}"/>
+                                <input type="hidden" name="name" value="${this._name}"/>
                                 <span>${this._quantity} gram</span>
                                 <div class="nutritions">
                                     <circle-bar .data="${[
@@ -139,9 +155,6 @@ export default class ProductView extends LitElement{
     };
     handleInput(e) {
         const value = Number(e.target.value)
-           //fat * 9 
-            //carbs * 4 
-            //protein * 4
         if(value > 0) {
             this._quantity = value;
             this._calories = (this._calperg * value).toFixed(0);
@@ -154,8 +167,27 @@ export default class ProductView extends LitElement{
     }
     _roundNumber(data) {
         const stringValue = data.toString()
-        const lastDigit = parseInt(stringValue[stringValue.length - 1]);
-        return lastDigit !== 0 ? data : data * 100 / 100;
+        const lastDecDigit = parseInt(stringValue[stringValue.length - 1]);
+        const firstDecDigit = parseInt(stringValue[stringValue.length - 2]);
+        if(firstDecDigit !== 0 && lastDecDigit !== 0 || firstDecDigit == 0 && lastDecDigit !== 0) return data;
+        if(firstDecDigit !== 0 && lastDecDigit === 0) return data * 100 / 100;
+        return Math.round(data * 10) / 10;
+    }
+    handleSubmit(e) {
+        e.preventDefault();
+        const form = e.target;
+        console.log(form)
+        const formData = new FormData(form);
+        console.log(formData)
+        this.formData = Object.fromEntries(formData.entries())
+        console.log(this.formData)
+    }
+    _handleSubmitProduct() {
+        this.shadowRoot.querySelector("form").requestSubmit();
+        const inputs = this.shadowRoot.querySelectorAll("input");
+        for(let i of inputs) {
+            console.log(i)
+        }
     }
 
     async renderProduct() {

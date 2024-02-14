@@ -27,7 +27,7 @@ export default class Product extends LitElement{
     
     render(){
         return html`
-        <page-div>
+        <page-div headerbar>
             <product-view location=${this._location} .data=${getProductByName(this._location)}></product-view>
         </page-div>
         `

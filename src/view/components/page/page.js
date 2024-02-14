@@ -1,16 +1,19 @@
-import { LitElement, html, css } from "lit";
+import { LitElement, html, css, noChange } from "lit";
 import "../navigation/footer-nav"
+import "../navigation/header-bar"
 
 export default class Page extends LitElement{
     static get properties() {
         return{
             nonavigation: {type: Boolean},
+            headerbar: {type: Boolean}
         }
     }
 
     constructor() {
         super();
         this.nonavigation = false;
+        this.headerbar = false;
     }
     static get styles(){
         return css`
@@ -43,7 +46,7 @@ export default class Page extends LitElement{
                     <slot></slot>
                 </main>`
         : html`
-        <!-- <header-nav></header-nav> -->
+        ${this.headerbar ? html`<header-bar></header-bar>` : noChange}
         <main>
             <slot></slot>
         </main>
