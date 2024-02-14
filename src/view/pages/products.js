@@ -56,7 +56,7 @@ export default class Products extends LitElement{
                 margin: 0 4px 0 0;
 
             }
-            .a {
+            .product-column {
                 display: flex;
                 flex-direction: column;
                 width: calc(100% - 40px);
@@ -74,7 +74,7 @@ export default class Products extends LitElement{
                     (e) => html`
                             <div class="product-card">
                                 <div class="product-container">
-                                <div class="a">
+                                <div class="product-column">
                                     <span class="name">${e.name}</span>
                                     <div class="product-info">
                                         <span>${e.quantity} gram,</span>

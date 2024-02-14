@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit";
 import "../components/page/page"
+import { BASE } from "../../app";
 
 export default class Logbook extends LitElement{
     static get styles(){
@@ -13,7 +14,7 @@ export default class Logbook extends LitElement{
         return html`
         <page-div>
             <h1>Logbook</h1>
-            
+            <a href="${BASE}/products">Products</a>
         </page-div>`
     }
 }

@@ -1,5 +1,7 @@
 import { LitElement, html, css } from "lit";
 import { getProductByName, createIntake} from "../../../service/ApiService";
+import { BASE } from "../../../app";
+import { Router } from "@vaadin/router";
 import "../charts/circle-bar"
 import {Task} from '@lit/task';
 
@@ -57,7 +59,7 @@ export default class ProductView extends LitElement{
         this._data = {};
         this.location = "";
         this._total = 0;
-        this._mealtype = "breakfast";
+        this.mealtype = "breakfast";
     }
     connectedCallback() {
         super.connectedCallback()
@@ -161,11 +163,7 @@ export default class ProductView extends LitElement{
                                 <h1>${this._name}, ${this._brand}</h1>
                                 <div class="image-form">
                                     <img src="${this._image}">
-                                        <form @submit="${this.handleSubmit}" novalidate>
-                                        <numberic-input type="number" value=${this._quantity} @input-changed="${this.handleInput}" label="amount" name="amount" abbreviateType="gram(s)"></numberic-input>
-                                        <input type="hidden" name="mealType" value="${this._mealtype}"/>
-                                        <input type="hidden" name="name" value="${this._name}"/>
-                                    </form>
+                                    <numberic-input type="number" value=${this._quantity} @input-changed="${this.handleInput}" label="amount" name="amount" abbreviateType="gram(s)"></numberic-input>
                                 </div>
                                 <div class="serving">
                                     <span>Serving size</span>
@@ -225,22 +223,24 @@ export default class ProductView extends LitElement{
         if(firstDecDigit !== 0 && lastDecDigit === 0) return data * 100 / 100;
         return Math.round(data * 10) / 10;
     }
-    handleSubmit(e) {
-        e.preventDefault();
-        const form = e.target;
-        const formData = new FormData(form);
-        this._data = Object.fromEntries(formData.entries())
+    _handleSubmitProduct() {
+        const gramValue = this.shadowRoot.querySelector("numberic-input").value;
         this._data = {
             time: "09:30:00", 
-            mealType: this._data.mealType, productNameAndAmount: [{
-                name: this._data.name,
-                amount: this._data.amount
+            mealType: this.mealtype, productNameAndAmount: [{
+                name: this.location,
+                amount: gramValue
             }]
         }
-        createIntake(this._data)
-    }
-    _handleSubmitProduct() {
-        this.shadowRoot.querySelector("form").requestSubmit();
+        createIntake(this._data).then(e => {
+            if(e.ok) {
+                setTimeout(() => {
+                    Router.go(`${BASE}/logbook`)
+                }, 1000);
+            }
+        }).catch(error => {
+            console.log(error)
+        })
     }
 }
 customElements.define('product-view', ProductView); 
