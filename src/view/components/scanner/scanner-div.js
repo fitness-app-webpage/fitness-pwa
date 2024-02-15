@@ -18,6 +18,10 @@ export default class ScannerDiv extends LitElement{
         super.firstUpdated()
         this._openScanner();
     }
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        this._scanner.clear();
+    }
     static get styles(){
         return css`
             h1 {
