@@ -333,3 +333,6 @@ export function getProductByName(name) {
 export function createIntake(data) {
     return postRequest("/intake", data);
 }
+export function findProductByBarcode(data) {
+    return getRequest("/product/barcode/" + data)
+}

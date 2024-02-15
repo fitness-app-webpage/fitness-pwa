@@ -1,9 +1,10 @@
 import { LitElement, html, css } from "lit";
-import { getProducts } from "../../../service/ApiService";
+import { getProducts, findProductByBarcode } from "../../../service/ApiService";
 import {until} from 'lit/directives/until.js';
 import {repeat} from 'lit/directives/repeat.js';
 import { Router } from "@vaadin/router";
 import { BASE } from "../../../app";
+import "../scanner/scanner-div"
 
 export default class ProductsList extends LitElement{
     static get properties() {
@@ -65,6 +66,9 @@ export default class ProductsList extends LitElement{
     }
     render() {
         return html`
+            <div class="search-container">
+                <scanner-div @getBarcode="${this.findProduct}"></scanner-div>
+            </div>
             <div class="containter">
             ${until(this._products.then(e => {
                 return repeat(e, 
@@ -93,7 +97,17 @@ export default class ProductsList extends LitElement{
         `
     }
     handleClick(e) {
-        Router.go(`${BASE}/products/${e.target.id}`)
+        this._goTo(e.target.value)
+    }
+    findProduct(e) {
+        findProductByBarcode(e.detail).then(e => {
+            this._goTo(e.name)
+        }).catch(error => {
+            console.log(error)
+        })
+    }
+    _goTo(name) {
+        Router.go(`${BASE}/products/${name}`)
     }
 }
 customElements.define('products-list', ProductsList); 
