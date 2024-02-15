@@ -26,7 +26,7 @@ export default class Product extends LitElement{
     
     render(){
         return html`
-        <page-div headerbar>
+        <page-div headerbar headerbartitle="Add product" checkicon location="/products">
             <product-view location=${this._location}></product-view>
         </page-div>
         `

@@ -6,7 +6,10 @@ export default class Page extends LitElement{
     static get properties() {
         return{
             nonavigation: {type: Boolean},
-            headerbar: {type: Boolean}
+            headerbar: {type: Boolean},
+            headerbartitle: {type: String},
+            checkicon: {type: Boolean},
+            location: {type: String}
         }
     }
 
@@ -14,6 +17,10 @@ export default class Page extends LitElement{
         super();
         this.nonavigation = false;
         this.headerbar = false;
+        this._checkicon = true;
+        this.headerbartitle = ""
+        this.checkicon = false;
+        this.location = "";
     }
     static get styles(){
         return css`
@@ -46,7 +53,7 @@ export default class Page extends LitElement{
                     <slot></slot>
                 </main>`
         : html`
-        ${this.headerbar ? html`<header-bar></header-bar>` : noChange}
+        ${this.headerbar ? html`<header-bar title="${this.headerbartitle}" .checkicon="${this.checkicon}" href="${this.location}"></header-bar>` : noChange}
         <main>
             <slot></slot>
         </main>

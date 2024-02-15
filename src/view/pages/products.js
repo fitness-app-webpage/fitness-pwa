@@ -60,7 +60,7 @@ export default class Products extends LitElement{
     }
     render() {
         return html`
-        <page-div>
+        <page-div headerbar headerbartitle="Products" location="/logbook">
             <products-list></products-list>
         </page-div>`
     }
