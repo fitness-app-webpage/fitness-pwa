@@ -57,11 +57,10 @@ export default class InputField extends LitElement{
     this.shadowRoot.querySelector('input').focus()
   }
 
-  // updated() {
-  //   console.log(this.value)
-  //   this.internals.setFormValue(this.value)
-  //   this.setValidity(this.shadowRoot.querySelector("input"));
-  // }
+  updated() {
+    this.internals.setFormValue(this.value)
+    this.setValidity(this.shadowRoot.querySelector("input"));
+  }
 
   formResetCallback() {
     this.value = "";
@@ -202,7 +201,7 @@ export default class InputField extends LitElement{
   }
   setValidity(input) {
     if(!input.checkValidity()) {
-      this.validity = input.validity;
+      // this.validity = input.validity;
       this.internals.setValidity({customError: true}, this.errormessage)
     } else {
       this.internals.setValidity({});

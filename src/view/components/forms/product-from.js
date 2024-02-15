@@ -2,13 +2,15 @@ import { LitElement, html, css } from "lit";
 import "../error/errorMessage"
 import { addProduct } from "../../../service/ApiService";
 import "../input/selector-picker"
+import "../scanner/scanner-div"
 
 export default class ProductForm extends LitElement {
   static get properties() {
     return{
       data: {type: Object},
       _error: {type: String},
-      _disabled: {type: Boolean, state: true}
+      _disabled: {type: Boolean, state: true},
+      _barcode: {type: String, state: true}
     }
   };
 
@@ -16,6 +18,7 @@ export default class ProductForm extends LitElement {
     super();
     this.data = {};
     this._error = "";
+    this._barcode = "";
     this._disabled = false;
   }
 
@@ -96,15 +99,17 @@ export default class ProductForm extends LitElement {
     return html`
           <h1>Product</h1>
           <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed} enctype="multipart/form-data" novalidate>
+            <scanner-div @getBarcode=${this._setBarcode}></scanner-div>
+            <input-field class="barcode" name="barcode" label="Barcode" pattern=".{1,}" errormessage="Field cannot be empty" value=${this._barcode} required></input-field>
             <div class="victuals-type">
-            <selector-picker 
-              name="victualsType" 
-              .options="${[
-                {value: "FOOD", label: "Food"},
-                {value: "DRINK", label: "Drink"}
-              ]}"
-              required>
-            </selector-picker>
+              <selector-picker 
+                name="victualsType" 
+                .options="${[
+                  {value: "FOOD", label: "Food"},
+                  {value: "DRINK", label: "Drink"}
+                ]}"
+                required>
+              </selector-picker>
             </div>
             <div class="first-row">
                 <input-field name="name" label="Product name" pattern=".{1,}" errormessage="Field cannot be empty" required></input-field>
@@ -149,6 +154,7 @@ export default class ProductForm extends LitElement {
   submitForm(e) {
     e.preventDefault();
     const form = e.target;
+    console.log(form.checkValidity())
     if(form.checkValidity()) {
       this.data = new FormData(form);
       addProduct(this.data).then(response => {
@@ -172,6 +178,11 @@ export default class ProductForm extends LitElement {
 
   handleSubmit(e) {
     this.shadowRoot.querySelector("form").requestSubmit();
+  }
+
+  _setBarcode(e) {
+    this._barcode = e.detail
+    this.shadowRoot.querySelector(".barcode").focus();
   }
 }
 
