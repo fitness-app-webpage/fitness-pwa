@@ -12,6 +12,7 @@
     "@lit/task": "^1.0.0",
     "@vaadin/router": "^1.7.5",
     "chart.js": "^4.4.1",
+    "html5-qrcode": "https://gitpkg.now.sh/bilal-elchami/html5-qrcode/dist?mobee",
     "jwt-decode": "^4.0.0",
     "lit": "^3.1.0"
   },
