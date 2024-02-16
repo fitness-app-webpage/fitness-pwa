@@ -70,7 +70,7 @@ export default class Products extends LitElement{
     }
     render() {
         return html`
-        <page-div headerbar headerbartitle="Products" location="/dairy">
+        <page-div headerbar headerbartitle="Products" location="/dairy" paramsoff>
             <product-searchbar></product-searchbar>
             ${this._productsTask.render({
                 pending: () => html`<span>Loading...</span>`,

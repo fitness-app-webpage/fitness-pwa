@@ -1,5 +1,5 @@
 import { LitElement, html, css } from "lit";
-import { BASE } from "../../../app";
+import { BASE, router } from "../../../app";
 import "../scanner/scanner-div"
 import "../input/search-bar"
 
@@ -11,6 +11,7 @@ export default class ProductSearchbar extends LitElement{
     }
     constructor() {
         super();
+        this._param = router.location.params.mealtype === undefined ? "" : "/" + router.location.params.mealtype;
         // this._products = getProducts();
     }
     static get styles(){
@@ -33,7 +34,7 @@ export default class ProductSearchbar extends LitElement{
         return html`
             <div class="search-container">
                 <search-bar></search-bar>
-                <a class="icon-button" href="${BASE}/scan/product">
+                <a class="icon-button" href="${BASE}/scan/product${this._param}">
                     <svg>
                         <path d="M1.5625 6.25V3.75H4.6875" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M23.4375 6.25V3.75H20.3125" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>

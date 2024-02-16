@@ -1,8 +1,7 @@
 import { LitElement, html, css } from "lit";
 import "../components/page/page"
-import { BASE } from "../../app";
 import '../components/diary/dairy-list'
-import { getProducts, getIntakes } from "../../service/ApiService";
+import { getIntakes } from "../../service/ApiService";
 import {Task} from '@lit/task';
 
 export default class Dairy extends LitElement{
@@ -93,19 +92,22 @@ export default class Dairy extends LitElement{
         return html`
         <page-div>
             <div class="container">
-            <h1>Dairy</h1>
-            <div class="container-dairy">
-                ${this._breakFastTask.render({
-                    pending: () => html`<span>Loading...</span>`,
-                    complete: (e) => html`
-                        <dairy-list title="Breakfast" .data=${this._breakfast}></dairy-list>
-                        <dairy-list title="Lunch" .data=${this._lunch}></dairy-list>
-                        <dairy-list title="Diner" .data=${this._diner}></dairy-list>
-                        <dairy-list title="Snack" .data=${this._snack}></dairy-list>
-                        `,
-                    error: (e) => html`<span>${e.error}</span>`
-                })}
-            </div>
+                <h1>Dairy</h1>
+                <div class="container-dairy">
+                    ${this._breakFastTask.render({
+                        pending: () => html`<span>Loading...</span>`,
+                        complete: (e) => html`
+                            <dairy-list title="Breakfast" .data=${this._breakfast}></dairy-list>
+                            <dairy-list title="Lunch" .data=${this._lunch}></dairy-list>
+                            <dairy-list title="Diner" .data=${this._diner}></dairy-list>
+                            <dairy-list title="Snack" .data=${this._snack}></dairy-list>
+                            `,
+                        error: (e) => html`<dairy-list title="Breakfast" .data=${this._breakfast}></dairy-list>
+                            <dairy-list title="Lunch" .data=${this._lunch}></dairy-list>
+                            <dairy-list title="Diner" .data=${this._diner}></dairy-list>
+                            <dairy-list title="Snack" .data=${this._snack}></dairy-list>`
+                    })}
+                </div>
             </div>
         </page-div>`
     }

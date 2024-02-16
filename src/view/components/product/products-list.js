@@ -5,6 +5,7 @@ import { BASE } from "../../../app";
 import "../scanner/scanner-div"
 import "../input/search-bar"
 import "./product-searchbar"
+import { router } from "../../../app";
 
 export default class ProductsList extends LitElement{
     static get properties() {
@@ -15,6 +16,7 @@ export default class ProductsList extends LitElement{
     constructor() {
         super();
         this._products = "";
+        this._param = router.location.params.mealtype === undefined ? "" : "/" + router.location.params.mealtype;
     }
     static get styles(){
         return css`
@@ -85,7 +87,7 @@ export default class ProductsList extends LitElement{
             }`
     }
     handleClick(e) {
-        Router.go(`${BASE}/products/${e.target.id}`)
+        Router.go(`${BASE}/product${this._param}/${e.target.id}`)
     }
 }
 customElements.define('products-list', ProductsList); 

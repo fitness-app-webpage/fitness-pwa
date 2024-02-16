@@ -1,6 +1,6 @@
 import { LitElement, html, css } from "lit";
 import { getProductByName, createIntake} from "../../../service/ApiService";
-import { BASE } from "../../../app";
+import { BASE, router } from "../../../app";
 import { Router } from "@vaadin/router";
 import "../charts/circle-bar"
 import {Task} from '@lit/task';
@@ -20,6 +20,8 @@ export default class ProductView extends LitElement{
             _fat: {type: Number, state: true},
             _salt: {type: Number, state: true},
             _total: {type: Number, state: true},
+            date: {type: String},
+            mealtype: {type: String}
             
 
         }
@@ -60,11 +62,12 @@ export default class ProductView extends LitElement{
         this._data = {};
         this.location = "";
         this._total = 0;
-        this.mealtype = "breakfast";
+        this.date = new Date(new Date().getTime() - (new Date().getTimezoneOffset() * 60000 )).toISOString().split("T")[0];
+        this.mealtype = "";
     }
     connectedCallback() {
         super.connectedCallback()
-        self.addEventListener("submitProduct", this._handleSubmitProduct.bind(this))
+        self.addEventListener("submitProduct", this._handleSubmitProduct.bind(this), {once: true})
     }
     disconnectedCallback() {
         super.disconnectedCallback()
@@ -226,7 +229,7 @@ export default class ProductView extends LitElement{
     _handleSubmitProduct() {
         const gramValue = this.shadowRoot.querySelector("numberic-input").value;
         this._data = {
-            time: "09:30:00", 
+            date: this.date, 
             mealType: this.mealtype, productNameAndAmount: [{
                 name: this.location,
                 amount: gramValue
@@ -235,7 +238,7 @@ export default class ProductView extends LitElement{
         createIntake(this._data).then(e => {
             if(e.ok) {
                 setTimeout(() => {
-                    Router.go(`${BASE}/logbook`)
+                    Router.go(`${BASE}/dairy`)
                 }, 250);
             }
         }).catch(error => {

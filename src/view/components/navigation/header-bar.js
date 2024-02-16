@@ -9,7 +9,8 @@ export default class HeaderBar extends LitElement {
     return{
       title: {type: String},
       checkicon: {type: Boolean},
-      href: {type: String}
+      href: {type: String},
+      paramsoff: {type: Boolean}
     }
   };
 
@@ -18,6 +19,8 @@ export default class HeaderBar extends LitElement {
     this.title = "default"
     this.checkicon = true;
     this.href = "/home"
+    this.paramsoff = false;
+    this._param = router.location.params.mealtype === undefined ? "" : "/" + router.location.params.mealtype;
   }
 
 
@@ -69,7 +72,7 @@ export default class HeaderBar extends LitElement {
     return html`
         <header>
           <nav>
-          <a href="${BASE + this.href}">
+          <a href="${BASE + this.href + (this.paramsoff ? "" :  this._param)}">
             <svg class="back">
               <path d="M15 5.90938L14.0297 5L6 12.5L14.0297 20L15 19.0953L7.94531 12.5L15 5.90938Z" fill="black"/>
             </svg>
@@ -90,7 +93,7 @@ export default class HeaderBar extends LitElement {
   handleClick(e) {
     self.dispatchEvent(new CustomEvent("submitProduct", {
       bubbles: true,
-      composed: true
+      composed: true,
     }))
   }
 
