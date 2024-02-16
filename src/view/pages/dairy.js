@@ -2,7 +2,7 @@ import { LitElement, html, css } from "lit";
 import "../components/page/page"
 import { BASE } from "../../app";
 import '../components/diary/dairy-list'
-import { getProducts } from "../../service/ApiService";
+import { getProducts, getIntakes } from "../../service/ApiService";
 import {Task} from '@lit/task';
 
 export default class Dairy extends LitElement{
@@ -13,35 +13,36 @@ export default class Dairy extends LitElement{
 
     _breakFastTask = new Task(this, {
         task: async () => {
-            return await getProducts().then(e => {
-                return e;
-            })
-        },
-        args: () => []
-    })
-
-    _lunchTask = new Task(this, {
-        task: async () => {
-            return await getProducts().then(e => {
-                return e;
-            })
-        },
-        args: () => []
-    })
-
-    _dinerTask = new Task(this, {
-        task: async () => {
-            return await getProducts().then(e => {
-                return e;
-            })
-        },
-        args: () => []
-    })
-
-    _snackTask = new Task(this, {
-        task: async () => {
-            return await getProducts().then(e => {
-                return e;
+            var dateString = new Date(new Date().getTime() - (new Date().getTimezoneOffset() * 60000 ))
+                .toISOString()
+                .split("T")[0];
+            return await getIntakes(dateString).then(e => {
+                return e.map(data => {
+                    if(data.mealType === "BREAKFAST") {    
+                        data.products.map(data => {
+                            this._breakfast = [...this._breakfast, data]
+                            return;
+                        })
+                    }
+                    if(data.mealType === "LUNCH") {    
+                        data.products.map(data => {
+                            this._lunch = [...this._lunch, data]
+                            return;
+                        })
+                    }
+                    if(data.mealType === "DINER") {    
+                        data.products.map(data => {
+                            this._diner = [...this._diner, data]
+                            return;
+                        })
+                    }
+                    if(data.mealType === "SNACK") {    
+                        data.products.map(data => {
+                            this._snack = [...this._snack, data]
+                            return;
+                        })
+                    }
+                })
             })
         },
         args: () => []
@@ -49,21 +50,40 @@ export default class Dairy extends LitElement{
 
     constructor() {
         super();
+        this._breakfast = [];
+        this._lunch = [];
+        this._diner = [];
+        this._snack = [];
     }
 
     static get styles(){
         return css`
             h1 {
                 text-align: center;
+                padding: 20px 0;
+                margin: auto;
+                background-color: white;
             }
             .container {
+                height: 100%;
+                background-color: #eceaea;
+            }
+            .container-dairy {
                 display: flex;
                 flex-direction: column;
                 background-color: #eceaea;
             }
-            .container > dairy-list {
+            .container-dairy > dairy-list {
                 margin: 10px 0;
                 background-color: white;
+            }
+            .container-dairy > :first-child {
+                margin-top: 20px;
+            }
+            .container-dairy > :last-child{
+                margin-bottom: 20px;
+                /* margin-bottom: auto; */
+
             }
         `;
     }
@@ -72,28 +92,20 @@ export default class Dairy extends LitElement{
     render() {
         return html`
         <page-div>
-            <h1>Dairy</h1>
             <div class="container">
+            <h1>Dairy</h1>
+            <div class="container-dairy">
                 ${this._breakFastTask.render({
                     pending: () => html`<span>Loading...</span>`,
-                    complete: (e) => html`<dairy-list title="Breakfast" .data=${e}></dairy-list>`,
+                    complete: (e) => html`
+                        <dairy-list title="Breakfast" .data=${this._breakfast}></dairy-list>
+                        <dairy-list title="Lunch" .data=${this._lunch}></dairy-list>
+                        <dairy-list title="Diner" .data=${this._diner}></dairy-list>
+                        <dairy-list title="Snack" .data=${this._snack}></dairy-list>
+                        `,
                     error: (e) => html`<span>${e.error}</span>`
                 })}
-                ${this._lunchTask.render({
-                    pending: () => html`<span>Loading...</span>`,
-                    complete: (e) => html`<dairy-list title="Lunch" .data=${e}></dairy-list>`,
-                    error: (e) => html`<span>${e.error}</span>`
-                })}
-                ${this._dinerTask.render({
-                    pending: () => html`<span>Loading...</span>`,
-                    complete: (e) => html`<dairy-list title="Diner" .data=${e}></dairy-list>`,
-                    error: (e) => html`<span>${e.error}</span>`
-                })}
-                ${this._snackTask.render({
-                    pending: () => html`<span>Loading...</span>`,
-                    complete: (e) => html`<dairy-list title="Snack" .data=${e}></dairy-list>`,
-                    error: (e) => html`<span>${e.error}</span>`
-                })}
+            </div>
             </div>
         </page-div>`
     }

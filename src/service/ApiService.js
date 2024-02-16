@@ -336,3 +336,6 @@ export function createIntake(data) {
 export function findProductByBarcode(data) {
     return getRequest("/product/barcode/" + data)
 }
+export function getIntakes(date) {
+    return getRequest("/intake/" + date)
+}

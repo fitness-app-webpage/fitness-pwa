@@ -76,7 +76,7 @@ export default class DairyProductList extends LitElement{
                                             <div class="product-column">
                                                 <span class="name">${e.name}</span>
                                                 <div class="product-info">
-                                                    <span>${e.quantity} gram</span>
+                                                    <span>${e.gramsEaten} gram</span>
                                                 </div>
                                             </div>
                                             <span id="${e.name}" @click="${this.handleClick}">${e.nutritions.calories}</span>
