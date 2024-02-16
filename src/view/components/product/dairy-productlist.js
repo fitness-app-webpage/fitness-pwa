@@ -6,7 +6,7 @@ import "../scanner/scanner-div"
 import "../input/search-bar"
 import "./product-searchbar"
 
-export default class ProductsList extends LitElement{
+export default class DairyProductList extends LitElement{
     static get properties() {
         return{
             products: {type: Array},
@@ -14,7 +14,7 @@ export default class ProductsList extends LitElement{
     }
     constructor() {
         super();
-        this._products = "";
+        this.products = [];
     }
     static get styles(){
         return css`
@@ -28,18 +28,14 @@ export default class ProductsList extends LitElement{
             .product-card {
                 height: 50px;
                 width: 100%;
-                margin: 12px 0;
+                /* margin: 12px 0; */
 
             }
             .product-container {
                 display: flex;
                 flex-direction: row;
                 height: 100%;
-                margin: 0 10px;
                 padding: 5px 0 5px 10px;
-                border-radius: 10px;
-                box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-                /* justify-content: center; */
                 align-items: center;
             }
             .food-info {
@@ -56,6 +52,12 @@ export default class ProductsList extends LitElement{
                 margin: 0 4px 0 0;
 
             }
+            .name {
+                opacity: 0.85;
+            }
+            span {
+                opacity: 0.7;
+            }
             .product-column {
                 display: flex;
                 flex-direction: column;
@@ -68,18 +70,19 @@ export default class ProductsList extends LitElement{
             ${repeat(this.products, 
                     (e) => e.id,
                     (e) => html`
-                            <div class="product-card">
-                                <div class="product-container">
-                                <div class="product-column">
-                                    <span class="name">${e.name}</span>
-                                    <div class="product-info">
-                                        <span>${e.quantity} gram,</span>
-                                        <span>${e.nutritions.calories} cal</span>
+                                <div class="container">
+                                    <div class="product-card">
+                                        <div class="product-container">
+                                            <div class="product-column">
+                                                <span class="name">${e.name}</span>
+                                                <div class="product-info">
+                                                    <span>${e.quantity} gram</span>
+                                                </div>
+                                            </div>
+                                            <span id="${e.name}" @click="${this.handleClick}">${e.nutritions.calories}</span>
+                                        </div>
                                     </div>
                                 </div>
-                                <span class="button" @click="${this.handleClick}" id="${e.name}">X</span>
-                                </div>
-                            </div>
                                 `
                 )
             }`
@@ -88,4 +91,4 @@ export default class ProductsList extends LitElement{
         Router.go(`${BASE}/products/${e.target.id}`)
     }
 }
-customElements.define('products-list', ProductsList); 
+customElements.define('dairy-productlist', DairyProductList); 
