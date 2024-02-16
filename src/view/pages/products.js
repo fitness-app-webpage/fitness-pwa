@@ -1,12 +1,22 @@
 import { LitElement, html, css } from "lit";
 import "../components/page/page"
 import "../components/product/products-list"
+import { getProducts } from "../../service/ApiService";
+import {Task} from '@lit/task';
 
 export default class Products extends LitElement{
     static get properties() {
         return{
         }
     }
+
+    _productsTask = new Task(this, {
+        task: async () => {
+            return getProducts().then(e => e)
+        },
+        args: () => []
+    })
+    
     constructor() {
         super();
     }
@@ -60,8 +70,13 @@ export default class Products extends LitElement{
     }
     render() {
         return html`
-        <page-div headerbar headerbartitle="Products" location="/logbook">
-            <products-list></products-list>
+        <page-div headerbar headerbartitle="Products" location="/dairy">
+            <product-searchbar></product-searchbar>
+            ${this._productsTask.render({
+                pending: () => html`<span>Loading...</span>`,
+                complete: (e) => html`<products-list .products="${e}"></products-list>`
+            })}
+            
         </page-div>`
     }
 }

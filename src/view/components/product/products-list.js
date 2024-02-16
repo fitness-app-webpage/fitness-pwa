@@ -6,16 +6,17 @@ import { Router } from "@vaadin/router";
 import { BASE } from "../../../app";
 import "../scanner/scanner-div"
 import "../input/search-bar"
+import "./product-searchbar"
 
 export default class ProductsList extends LitElement{
     static get properties() {
         return{
-            _products: {type: Object, state: true},
+            products: {type: Array},
         }
     }
     constructor() {
         super();
-        this._products = getProducts();
+        this._products = "";
     }
     static get styles(){
         return css`
@@ -62,47 +63,11 @@ export default class ProductsList extends LitElement{
                 flex-direction: column;
                 width: calc(100% - 40px);
             }
-            .search-container {
-                margin-top: 20px;
-                display: flex;
-            }
-            svg {
-                width: 25px;
-                height: 20px;
-            }
-            .icon-button {
-                background-color: transparent;
-                border: 0px;
-            }
         `;
     }
     render() {
         return html`
-            <div class="search-container">
-            <search-bar></search-bar>
-            <a class="icon-button" href="${BASE}/scan/product">
-                <svg>
-                    <path d="M1.5625 6.25V3.75H4.6875" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M23.4375 6.25V3.75H20.3125" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M1.5625 13.75V16.25H4.6875" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M23.4375 13.75V16.25H20.3125" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M4.6875 5.625V9.375" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M8.59375 5.625V9.375" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M20.3125 5.625V9.375" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M16.4062 5.625V9.375" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M12.5 5.625V9.375" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M1.5625 11.25H23.4375" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M4.6875 13.125V14.375" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M8.59375 13.125V13.75" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M20.3125 13.125V14.375" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M16.4062 13.125V13.75" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M12.5 13.125V13.75" stroke="black" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </a>
-            </div>
-            <div class="containter">
-            ${until(this._products.then(e => {
-                return repeat(e, 
+            ${repeat(this.products, 
                     (e) => e.id,
                     (e) => html`
                             <div class="product-card">
@@ -119,11 +84,7 @@ export default class ProductsList extends LitElement{
                             </div>
                                 `
                 )
-            }).catch(error => {
-                return html`<span>${error.message}</span>`
-            }),
-                html`<span>Loading...</span>`
-            )}
+            }
             </div>`
     }
     handleClick(e) {

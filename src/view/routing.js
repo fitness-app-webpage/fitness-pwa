@@ -6,7 +6,7 @@ import "./pages/home"
 import "./pages/login"
 import "./pages/register"
 import "./pages/profile"
-import "./pages/logbook"
+import "./pages/dairy"
 import "./pages/add-product"
 import "./pages/products"
 import "./pages/product"
@@ -32,7 +32,7 @@ router.setRoutes([
     {path: `${BASE}/logout`, action: logout, redirect: `${BASE}/login`},
     {path: `${BASE}/register`, name: "Register", component: 'register-div', action: e => document.title = e.route.name},
     {path: `${BASE}/profile`, name: "Profile", component: 'profile-page', action: changeTitleAndAuthCheck},
-    {path: `${BASE}/logbook`, name: "Logbook", component: 'logbook-page', action: changeTitleAndAuthCheck},
+    {path: `${BASE}/dairy`, name: "Dairy", component: 'dairy-page', action: changeTitleAndAuthCheck},
     {path: `${BASE}/addproduct`, name: "Add a product", component: 'addproduct-page', action: changeTitleAndAuthCheck}, 
     {path: `${BASE}/products`, name: "Products", component: 'products-page', action: changeTitleAndAuthCheck},
     {path: `${BASE}/products/:product`, name: "Product", component: 'product-page', action: changeTitleAndAuthCheck},

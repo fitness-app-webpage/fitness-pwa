@@ -97,7 +97,7 @@ export default class FooterNav extends LitElement {
               </photo-button>
                 <photo-button
                     text="Dairy"
-                    nav="/logbook"
+                    nav="/dairy"
                     ?useSvg=${true}
                 >
                 <svg slot="svg">
