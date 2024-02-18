@@ -19,8 +19,10 @@ export default class ScanPage extends LitElement{
 
     onBeforeEnter(location, commands, router) {
         this._location = location.params.product;
-        this._mealtype = location.params.mealtype === undefined ? "" : "/" + location.params.mealtype;
-
+        this._mealtype = location.search
+        this._mealtype = this._mealtype === "" 
+                ? "" 
+                : this._mealtype.slice(1) + "&";
     }
     static get styles(){
         return css`
@@ -37,7 +39,7 @@ export default class ScanPage extends LitElement{
     };
     findProduct(e) {
         findProductByBarcode(e.detail).then(e => {
-            Router.go(`${BASE}/product${this._mealtype}/${e.name}`)
+            Router.go(`${BASE}/product/search?${this._mealtype}productname=${e.name}`)
         }).catch(error => {
             console.log(error)
         })
