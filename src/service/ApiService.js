@@ -339,3 +339,6 @@ export function findProductByBarcode(data) {
 export function getIntakes(date) {
     return getRequest("/intake/" + date)
 }
+export function getDailyGoal() {
+    return getRequest("/daily");
+}

@@ -1,17 +1,20 @@
 import { LitElement, html, css } from "lit";
 import "../components/page/page"
 import '../components/diary/dairy-list'
+import '../components/diary/daily-goalinfo'
 
 export default class Dairy extends LitElement{
     static get properties() {
         return{
-            _totalCal: {type: Number, state: true}
+            _totalCalEaten: {type: Number, state: true},
+            _totalDailyCal: {type: Number, state: true},
         }
     }
 
     constructor() {
         super();
-        this._totalCal = 0;
+        this._totalCalEaten = 0;
+        this._totalDailyCal = 0;
     }
 
     static get styles(){
@@ -52,18 +55,18 @@ export default class Dairy extends LitElement{
         <page-div>
             <div class="container">
                 <h1>Dairy</h1>
-                <h2>${this._totalCal}</h2>
+                <daily-goalinfo></daily-goalinfo>
                 <div class="container-dairy">
-                    <dairy-list title="Breakfast" mealtype="BREAKFAST" @getTotalCal="${this._setTotalCal}"></dairy-list>
-                    <dairy-list title="Lunch" mealtype="LUNCH" @getTotalCal="${this._setTotalCal}"></dairy-list>
-                    <dairy-list title="Diner" mealtype="DINER" @getTotalCal="${this._setTotalCal}"></dairy-list>
-                    <dairy-list title="Snack" mealtype="SNACK" @getTotalCal="${this._setTotalCal}"></dairy-list>
+                    <dairy-list title="Breakfast" mealtype="BREAKFAST" @getTotalCal="${this._setTotalCalEaten}"></dairy-list>
+                    <dairy-list title="Lunch" mealtype="LUNCH" @getTotalCal="${this._setTotalCalEaten}"></dairy-list>
+                    <dairy-list title="Diner" mealtype="DINER" @getTotalCal="${this._setTotalCalEaten}"></dairy-list>
+                    <dairy-list title="Snack" mealtype="SNACK" @getTotalCal="${this._setTotalCalEaten}"></dairy-list>
                 </div>
             </div>
         </page-div>`
     }
-    _setTotalCal(e) {
-        this._totalCal += e.detail
+    _setTotalCalEaten(e) {
+        this._totalCalEaten += e.detail
     }
 
 }
