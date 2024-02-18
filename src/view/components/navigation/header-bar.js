@@ -10,7 +10,6 @@ export default class HeaderBar extends LitElement {
       title: {type: String},
       checkicon: {type: Boolean},
       href: {type: String},
-      paramsoff: {type: Boolean}
     }
   };
 
@@ -19,8 +18,14 @@ export default class HeaderBar extends LitElement {
     this.title = "default"
     this.checkicon = true;
     this.href = "/home"
-    this.paramsoff = false;
-    this._param = router.location.params.mealtype === undefined ? "" : "/" + router.location.params.mealtype;
+  }
+  connectedCallback() {
+    super.connectedCallback()
+    const mealtype = new URLSearchParams(router.location.search).get("mealtype")
+    const productName = new URLSearchParams(router.location.search).get("productname")
+    this._param = mealtype === null || productName === null 
+      ? "" 
+      : "/search?mealtype=" + mealtype;
   }
 
 
@@ -72,7 +77,7 @@ export default class HeaderBar extends LitElement {
     return html`
         <header>
           <nav>
-          <a href="${BASE + this.href + (this.paramsoff ? "" :  this._param)}">
+          <a href="${BASE + this.href + this._param}">
             <svg class="back">
               <path d="M15 5.90938L14.0297 5L6 12.5L14.0297 20L15 19.0953L7.94531 12.5L15 5.90938Z" fill="black"/>
             </svg>

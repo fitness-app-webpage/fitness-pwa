@@ -10,7 +10,6 @@ export default class Page extends LitElement{
             headerbartitle: {type: String},
             checkicon: {type: Boolean},
             location: {type: String},
-            paramsoff: {type: Boolean}
         }
     }
 
@@ -22,7 +21,6 @@ export default class Page extends LitElement{
         this.headerbartitle = ""
         this.checkicon = false;
         this.location = "";
-        this.paramsoff = false;
     }
     static get styles(){
         return css`
@@ -55,7 +53,7 @@ export default class Page extends LitElement{
                     <slot></slot>
                 </main>`
         : html`
-        ${this.headerbar ? html`<header-bar title="${this.headerbartitle}" .checkicon="${this.checkicon}" href="${this.location}" .paramsoff=${this.paramsoff}></header-bar>` : noChange}
+        ${this.headerbar ? html`<header-bar title="${this.headerbartitle}" .checkicon="${this.checkicon}" href="${this.location}"></header-bar>` : noChange}
         <main>
             <slot></slot>
         </main>

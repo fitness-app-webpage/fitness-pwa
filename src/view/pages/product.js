@@ -17,8 +17,8 @@ export default class Product extends LitElement{
     }
 
     onBeforeEnter(location, commands, router) {
-        this._location = location.params.product;
-        this._mealtype = location.params.mealtype === undefined ? "" : location.params.mealtype;
+        this._location = new URLSearchParams(location.search).get("productname");
+        this._mealtype = new URLSearchParams(location.search).get("mealtype")
     }
     static get styles(){
         return css`

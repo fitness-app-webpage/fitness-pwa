@@ -87,7 +87,14 @@ export default class ProductsList extends LitElement{
             }`
     }
     handleClick(e) {
-        Router.go(`${BASE}/product${this._param}/${e.target.id}`)
+        if(Object.values(router.location).length !== 0 
+            && router.location.params.search === "search") {
+            const param = router.location.params.search;
+            const queryParma = router.location.search;
+            Router.go(`${BASE}/product/${param + queryParma}&productname=${e.target.id}`)
+            return;
+        }
+        Router.go(`${BASE}/product/${e.target.id}`)
     }
 }
 customElements.define('products-list', ProductsList); 
