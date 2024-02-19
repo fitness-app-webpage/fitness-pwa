@@ -113,6 +113,7 @@ export default class SelectorPicker extends LitElement{
                     aria-label=${this.ariaLabel}
                     @click="${this.updateValue}" 
                     ?required="${this.required}"
+                    ?checked="${e.checked}"
                 /><label for=${e.value}>${e.label}</label>`    
         )}
 

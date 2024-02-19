@@ -108,7 +108,7 @@ export default class ProductForm extends LitElement {
               <selector-picker 
                 name="victualsType" 
                 .options="${[
-                  {value: "FOOD", label: "Food"},
+                  {value: "FOOD", label: "Food", checked: true},
                   {value: "DRINK", label: "Drink"}
                 ]}"
                 required>
