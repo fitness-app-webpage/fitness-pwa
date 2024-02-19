@@ -9,6 +9,8 @@ import { getDailyGoal } from '../../../service/ApiService';
 export default class DailyGoalInfo extends LitElement {
     static get properties() {
         return{
+            _date: {type: String, state: true},
+            consumed: {type: Number},
         }
       };
       _dailyGoalTask = new Task(this, {
@@ -22,6 +24,18 @@ export default class DailyGoalInfo extends LitElement {
     
     constructor() {
         super();
+        this._date = new Date(new Date().getTime() - (new Date().getTimezoneOffset() * 60000 ))
+                .toISOString()
+                .split("T")[0];
+        this.consumed = 0;
+    }
+    connectedCallback() {
+        super.connectedCallback()
+        self.addEventListener("changedDate", this._changedDate.bind(this))
+    }
+    disconnectedCallback() {
+        super.disconnectedCallback()
+        self.removeEventListener("changedDate", this._changedDate.bind(this))
     }
 
     static get styles() {
@@ -61,21 +75,21 @@ export default class DailyGoalInfo extends LitElement {
                 pending: () => html`<span>Loading...</span>`,
                 complete: (e) => html`   <div class="calories">
                     <div class="goal">
-                        <p>${e.dailyIntake.kcal}</p>
+                        <p>${e.kcal}</p>
                         <span>Goal</span>
                     </div>
                     <div class="minus">
                         <p>-</p>
                     </div>
                     <div class="consumed">
-                        <p>${e.consumed.kcal}</p>
+                        <p>${this.consumed}</p>
                         <span>Consumed</span>
                     </div>
                     <div class="equal">
                         <p>=</p>
                     </div>
                     <div class="remaining">
-                        <p>${e.remaining.kcal}</p>
+                        <p>${e.kcal - this.consumed}</p>
                         <span>Remaining</span>
                     </div>
                     
@@ -85,6 +99,9 @@ export default class DailyGoalInfo extends LitElement {
     }
     handleClick() {
         Router.go(`${BASE}/products/search?mealtype=${this.title.toUpperCase()}`)
+    }
+    _changedDate(e) {
+        this._date = e.detail
     }
 }
 

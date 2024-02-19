@@ -11,43 +11,52 @@ export default class DairyList extends LitElement {
     static get properties() {
         return{
             title: {type: String},
-            _data: {type: Array, state: true},
+            data: {type: Array},
             _total: {type: Number, state: true},
-            mealtype: {type: String}
-
+            mealtype: {type: String},
+            _date: {type: String, state: true}
         }
       };
-      _dairyTask = new Task(this, {
-        task: async ([mealtype]) => {
-            var dateString = new Date(new Date().getTime() - (new Date().getTimezoneOffset() * 60000 ))
-                .toISOString()
-                .split("T")[0];
-            return await getIntakes(dateString).then(e => {
-                e.map(data => {
-                    if(data.mealType === mealtype) {   
-                        data.products.map(data => {
-                            this._data = [...this._data, data]
-                            this._total += data.nutritions.calories
-                        })
-                    }
-                })
-                this.dispatchEvent(new CustomEvent("getTotalCal", 
-                    {detail: this._total}
-                ))
-                return e;
-            })
-        },
-        args: () => [this.mealtype]
-    })
+
+    //   _dairyTask = new Task(this, {
+    //     task: async ([dateString, mealtype]) => {
+    //         return await getIntakes(dateString).then(e => {
+    //             e.intakes.map(data => {
+    //                 if(data.mealType === mealtype) {   
+    //                     data.products.map(data => {
+    //                         this._data = [...this._data, data]
+    //                         this._total += data.nutritions.calories
+    //                     })
+    //                 }
+    //             })
+    //             this.dispatchEvent(new CustomEvent("getTotalCal", 
+    //                 {detail: this._total}
+    //             ))
+    //             return e;
+    //         })
+    //     },
+    //     args: () => [this._date, this.mealtype]
+    // })
     
     constructor() {
         super();
         this.title = "default"
-        this._data = [];
+        this.data = [];
         this._total = 0;
         this.mealtype = "";
+        this._date = new Date(new Date().getTime() - (new Date().getTimezoneOffset() * 60000 ))
+                .toISOString()
+                .split("T")[0];
     }
 
+    connectedCallback() {
+        super.connectedCallback()
+        self.addEventListener("changedDate", this._changedDate.bind(this))
+    }
+    disconnectedCallback() {
+        super.disconnectedCallback()
+        self.removeEventListener("changedDate", this._changedDate.bind(this))
+    }
     static get styles() {
         return css`
         .container {
@@ -88,11 +97,7 @@ export default class DairyList extends LitElement {
                     <span>${this._total}</span>
                 </div>
                 <div class="products">
-                    ${this._dairyTask.render({
-                        pending: () => html`<span>Loading...</span>`,
-                        complete: (e) => html`<dairy-productlist .products=${this._data}></dairy-productlist>`,
-                        error: (e) => html`<dairy-productlist></dairy-productlist>`
-                    })}
+                    <dairy-productlist .products=${this.data}></dairy-productlist>
                 </div>
                 <div class="add-product" @click="${this.handleClick}">
                     <span>Add a product</span>
@@ -102,6 +107,11 @@ export default class DairyList extends LitElement {
     }
     handleClick() {
         Router.go(`${BASE}/products?mealtype=${this.title.toUpperCase()}`)
+    }
+    _changedDate(e) {
+        this._data = [];
+        this._total = 0;
+        this._date = e.detail
     }
 }
 
