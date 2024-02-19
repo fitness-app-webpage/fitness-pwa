@@ -22,9 +22,11 @@ export default class HeaderBar extends LitElement {
   connectedCallback() {
     super.connectedCallback()
     const mealtype = new URLSearchParams(router.location.search).get("mealtype")
+    const productName = new URLSearchParams(router.location.search).get("productname")
     this._param = mealtype === null || this.href === "/dairy"
       ? "" 
       : "?mealtype=" + mealtype;
+    this.checkicon = mealtype !== null && productName !== null;
   }
 
 

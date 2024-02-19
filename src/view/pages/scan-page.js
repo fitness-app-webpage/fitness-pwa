@@ -43,7 +43,6 @@ export default class ScanPage extends LitElement{
         `
     };
     findProduct(e) {
-        console.log("a")
         this._error = e.detail.error
     }
 }
