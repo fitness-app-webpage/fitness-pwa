@@ -67,6 +67,9 @@ export default class HeaderBar extends LitElement {
         border: 0;
         padding: 0;
       }
+      a, button {
+        -webkit-tap-highlight-color: transparent;
+      }
     }
     @media only screen and (max-width: 1024px) and (orientation: landscape) {
        
