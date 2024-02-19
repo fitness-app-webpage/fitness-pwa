@@ -2,25 +2,16 @@ import { LitElement, html, css } from 'lit';
 import "../product/dairy-productlist"
 import { Router } from '@vaadin/router';
 import { BASE } from '../../../app';
-import {Task} from '@lit/task';
-import { getDailyGoal } from '../../../service/ApiService';
-
 
 export default class DailyGoalInfo extends LitElement {
     static get properties() {
         return{
             _date: {type: String, state: true},
             consumed: {type: Number},
+            daily: {type: Number},
+            remaining: {type: Number}
         }
       };
-      _dailyGoalTask = new Task(this, {
-        task: async () => {
-            return await getDailyGoal().then(e => {
-                return e;
-            })
-        },
-        args: () => []
-    })
     
     constructor() {
         super();
@@ -28,14 +19,8 @@ export default class DailyGoalInfo extends LitElement {
                 .toISOString()
                 .split("T")[0];
         this.consumed = 0;
-    }
-    connectedCallback() {
-        super.connectedCallback()
-        self.addEventListener("changedDate", this._changedDate.bind(this))
-    }
-    disconnectedCallback() {
-        super.disconnectedCallback()
-        self.removeEventListener("changedDate", this._changedDate.bind(this))
+        this.daily = 0;
+        this.remaining = 0;
     }
 
     static get styles() {
@@ -71,11 +56,9 @@ export default class DailyGoalInfo extends LitElement {
 
     render(){
         return html`
-            ${this._dailyGoalTask.render({
-                pending: () => html`<span>Loading...</span>`,
-                complete: (e) => html`   <div class="calories">
+               <div class="calories">
                     <div class="goal">
-                        <p>${e.kcal}</p>
+                        <p>${this.daily}</p>
                         <span>Goal</span>
                     </div>
                     <div class="minus">
@@ -89,12 +72,11 @@ export default class DailyGoalInfo extends LitElement {
                         <p>=</p>
                     </div>
                     <div class="remaining">
-                        <p>${e.kcal - this.consumed}</p>
+                        <p>${this.remaining}</p>
                         <span>Remaining</span>
                     </div>
                     
-                </div>`
-            })}
+                </div>
         `;
     }
     handleClick() {

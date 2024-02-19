@@ -4,7 +4,7 @@ import '../components/diary/dairy-list'
 import '../components/diary/daily-goalinfo'
 import '../components/diary/date-selector'
 import {Task} from '@lit/task';
-import { getIntakes } from "../../service/ApiService";
+import { getIntakes, getDailyGoal } from "../../service/ApiService";
 
 export default class Dairy extends LitElement{
     static get properties() {
@@ -22,10 +22,6 @@ export default class Dairy extends LitElement{
         this._date = new Date(new Date().getTime() - (new Date().getTimezoneOffset() * 60000 ))
                 .toISOString()
                 .split("T")[0];
-        this._breakfast = [];
-        this._lunch = [];
-        this._diner = [];
-        this._snack = [];
     }
 
     _dairyTask = new Task(this, {
@@ -35,6 +31,16 @@ export default class Dairy extends LitElement{
             })
         },
         args: () => [this._date]
+    })
+
+    _dailyGoalTask = new Task(this, {
+        task: async () => {
+            return await getDailyGoal().then(e => {
+                this._totalCalories = e.kcal
+                return e;
+            })
+        },
+        args: () => []
     })
 
     static get styles(){
@@ -74,11 +80,18 @@ export default class Dairy extends LitElement{
         return html`
         <page-div>
             <div class="container">
-                <date-selector @changedDate="${this._removeTotal}"></date-selector>
+                <date-selector @changedDate="${this._changeDate}"></date-selector>
                 <!-- <h1>Dairy</h1> -->
                 ${this._dairyTask.render({
-                    pending: () => html`<span>Loading...</span>`,
-                    complete: (e) => html`<daily-goalinfo consumed=${e.totalCalories}></daily-goalinfo>
+                    pending: () => html`
+                    <daily-goalinfo></daily-goalinfo>
+                    <div class="container-dairy">
+                                        <dairy-list title="Breakfast"></dairy-list>
+                                        <dairy-list title="Lunch"></dairy-list>
+                                        <dairy-list title="Diner"></dairy-list>
+                                        <dairy-list title="Snack"></dairy-list>
+                                    </div>`,
+                    complete: (e) => html`<daily-goalinfo consumed=${e.totalCalories} daily="${this._totalCalories}" remaining="${this._totalCalories - e.totalCalories}"></daily-goalinfo>
                                     <div class="container-dairy">
                                         <dairy-list title="Breakfast" .data="${this._makeIntakeData(e.intakes, "BREAKFAST")}"></dairy-list>
                                         <dairy-list title="Lunch" .data="${this._makeIntakeData(e.intakes, "LUNCH")}"></dairy-list>
@@ -105,12 +118,8 @@ export default class Dairy extends LitElement{
         })
         return data;
     }
-    _setTotalCalEaten(e) {
-        this._totalCalEaten += e.detail
-    }
-    _removeTotal(e) {
+    _changeDate(e) {
         this._date = e.detail
-        this._totalCalEaten = 0;
     }
 
 }

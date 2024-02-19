@@ -48,15 +48,6 @@ export default class DairyList extends LitElement {
                 .toISOString()
                 .split("T")[0];
     }
-
-    connectedCallback() {
-        super.connectedCallback()
-        self.addEventListener("changedDate", this._changedDate.bind(this))
-    }
-    disconnectedCallback() {
-        super.disconnectedCallback()
-        self.removeEventListener("changedDate", this._changedDate.bind(this))
-    }
     static get styles() {
         return css`
         .container {
