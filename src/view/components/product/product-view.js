@@ -62,16 +62,18 @@ export default class ProductView extends LitElement{
         this._data = {};
         this.location = "";
         this._total = 0;
+        this._abortController = new AbortController();
         this.date = new Date(new Date().getTime() - (new Date().getTimezoneOffset() * 60000 )).toISOString().split("T")[0];
         this.mealtype = "";
     }
     connectedCallback() {
         super.connectedCallback()
-        self.addEventListener("submitProduct", this._handleSubmitProduct.bind(this), {once: true})
+        self.addEventListener("submitProduct", this._handleSubmitProduct.bind(this), {once: true, signal: this._abortController.signal})
     }
     disconnectedCallback() {
         super.disconnectedCallback()
         self.removeEventListener("submitProduct", this._handleSubmitProduct.bind(this))
+        this._abortController.abort();
     }
 
 
