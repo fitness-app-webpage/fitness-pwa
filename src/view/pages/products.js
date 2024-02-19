@@ -65,6 +65,30 @@ export default class Products extends LitElement{
                 flex-direction: column;
                 width: calc(100% - 40px);
             }
+            .slide {
+                position: relative;
+                right: -100%;
+                width: 100%;
+                -webkit-animation: slide 0.5s forwards;
+                animation: slide 0.5s forwards;
+            }
+
+            .back {
+                position: relative;
+                left: 0;
+                background-color: red;
+                width: 100%;
+                -webkit-animation: slide 0.5s forwards;
+                animation: slide 0.5s forwards;
+            }
+
+            @-webkit-keyframes slide {
+                100% { right: 0; }
+            }
+
+            @keyframes slide {
+                100% { right: 0; }
+            }
             
         `;
     }
