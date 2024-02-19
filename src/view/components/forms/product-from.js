@@ -159,9 +159,6 @@ export default class ProductForm extends LitElement {
     const form = e.target;
     if(form.checkValidity()) {
       this.data = new FormData(form);
-      console.log(this.data)
-      const a = Object.fromEntries(this.data.entries())
-      console.log(a)
       addProduct(this.data).then(response => {
         if(response.ok)
         this._error = "Product added"

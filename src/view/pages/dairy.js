@@ -16,7 +16,7 @@ export default class Dairy extends LitElement{
         this._totalCalEaten = 0;
         this._totalDailyCal = 0;
     }
-
+    
     static get styles(){
         return css`
             h1 {

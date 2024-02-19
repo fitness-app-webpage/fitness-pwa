@@ -88,7 +88,7 @@ export default class DairyProductList extends LitElement{
             }`
     }
     handleClick(e) {
-        Router.go(`${BASE}/products/${e.target.id}`)
+        Router.go(`${BASE}/product?productname=${e.target.id}`)
     }
 }
 customElements.define('dairy-productlist', DairyProductList); 

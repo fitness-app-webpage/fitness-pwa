@@ -11,7 +11,7 @@ export default class ProductSearchbar extends LitElement{
     }
     constructor() {
         super();
-        this._param = router.location.params.search === undefined ? "" : "/search" + router.location.search;
+        this._param = router.location.search;
     }
     static get styles(){
         return css`

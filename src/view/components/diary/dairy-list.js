@@ -101,7 +101,7 @@ export default class DairyList extends LitElement {
         `;
     }
     handleClick() {
-        Router.go(`${BASE}/products/search?mealtype=${this.title.toUpperCase()}`)
+        Router.go(`${BASE}/products?mealtype=${this.title.toUpperCase()}`)
     }
 }
 
