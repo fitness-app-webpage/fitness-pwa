@@ -15,7 +15,7 @@ export default class ErrorMessage extends LitElement {
         return css`
         span {
             position: relative;
-            left: .8rem;
+            left: var(--left, .8rem);
             padding: 0 2px;
             font-size: 16px;
             color: #EB0000;

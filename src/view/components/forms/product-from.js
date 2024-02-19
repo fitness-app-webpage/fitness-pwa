@@ -183,7 +183,7 @@ export default class ProductForm extends LitElement {
   }
 
   _setBarcode(e) {
-    this._barcode = e.detail
+    this._barcode = e.detail.barcode
     this.shadowRoot.querySelector(".barcode").focus();
   }
   handleClick() {

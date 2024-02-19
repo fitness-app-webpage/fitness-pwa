@@ -1,11 +1,15 @@
 import { LitElement, html, css } from "lit";
-import { Html5QrcodeScanner, Html5Qrcode } from "html5-qrcode";
+import { Html5QrcodeScanner } from "html5-qrcode";
+import { findProductByBarcode } from "../../../service/ApiService";
+import { Router } from "@vaadin/router";
+import { BASE } from "../../../app";
 
 export default class ScannerDiv extends LitElement{
     static get properties() {
         return{
             _decodedText: {type: String, state: true},
             _scanner: {state: true},
+            mealtype: {type: String}
         }
     }
 
@@ -13,6 +17,7 @@ export default class ScannerDiv extends LitElement{
         super();
         this._decodedText = "";
         this.scannericon = false;
+        this.mealtype = "";
     }
     firstUpdated() {
         super.firstUpdated()
@@ -67,9 +72,13 @@ export default class ScannerDiv extends LitElement{
         const onScanSuccess = (decodedText, decodedResult) => {
             this._decodedText = decodedText;
             this._scanner.clear();
-            this.dispatchEvent(new CustomEvent("getBarcode", {
-                detail: decodedText
-            }))
+            findProductByBarcode(decodedText).then(e => {
+                Router.go(`${BASE}/product?${this.mealtype}productname=${e.name}`)
+            }).catch(error => {
+                this.dispatchEvent(new CustomEvent("getBarcode", {
+                    detail: {barcode: decodedText, error: error.message}
+                }))
+            })
         };
     
         const onScanFailure = (errorMessage, error) => {

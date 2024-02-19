@@ -1,27 +1,35 @@
 import { LitElement, html, css } from "lit";
 import "../components/page/page"
 import "../components/scanner/scanner-div"
-import { findProductByBarcode } from "../../service/ApiService";
-import { Router } from "@vaadin/router";
-import { BASE } from "../../app";
+import "../components/error/errorMessage"
 
 export default class ScanPage extends LitElement{
     static get properties() {
         return{
+            _error: {type: String, state: true},
+            _mealtype: {type: String, state: true}
         }
     }
 
     constructor() {
         super();
+        this._error = ""
+        this._mealtype = "";
     }
 
     onBeforeEnter(location, commands, router) {
         this._mealtype = location.search === "" 
                 ? "" 
-                : location.search + "&";
+                : location.search.slice(1) + "&";
     }
     static get styles(){
         return css`
+        error-message {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            --left: 0;
+        }
         `;
     }
 
@@ -29,16 +37,14 @@ export default class ScanPage extends LitElement{
     render(){
         return html`
         <page-div headerbar headerbartitle="Scan barcode" location="/products">
-            <scanner-div @getBarcode="${this.findProduct}"></scanner-div>
+            <scanner-div @getBarcode="${this.findProduct}" mealtype="${this._mealtype}"></scanner-div>
+            <error-message message="${this._error}"></error-message>
         </page-div>
         `
     };
     findProduct(e) {
-        findProductByBarcode(e.detail).then(e => {
-            Router.go(`${BASE}/product${this._mealtype}productname=${e.name}`)
-        }).catch(error => {
-            console.log(error)
-        })
+        console.log("a")
+        this._error = e.detail.error
     }
 }
 customElements.define('scan-page', ScanPage); 
