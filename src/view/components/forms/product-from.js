@@ -159,6 +159,9 @@ export default class ProductForm extends LitElement {
     const form = e.target;
     if(form.checkValidity()) {
       this.data = new FormData(form);
+      console.log(this.data)
+      const a = Object.fromEntries(this.data.entries())
+      console.log(a)
       addProduct(this.data).then(response => {
         if(response.ok)
         this._error = "Product added"
@@ -168,7 +171,7 @@ export default class ProductForm extends LitElement {
     } else {
       let firstInvalidInput = false;
       Array.from(form.elements).map(e => {
-        if(e.id === "image") return;
+        if(e.id === "image" || e.type === "button") return;
         e.checkValidation()
         if(!firstInvalidInput && !e.checkValidation()) {
           firstInvalidInput = true;
