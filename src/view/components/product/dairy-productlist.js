@@ -55,11 +55,15 @@ export default class DairyProductList extends LitElement{
     }
 
     _touchEnd(e) {
-        if(this._currentTranslateValue <= -100 )
+        if(this._currentTranslateValue <= -100)
             this._removeIntake(this._item.id)
-        setTimeout(() => {
-            this._item.style.transform = `translateX(0)`      
-        }, 10);
+
+        if(this._item !== undefined) {
+            this._currentTranslateValue = 0;
+            setTimeout(() => {
+                this._item.style.transform = `translateX(0)`      
+            }, 50);
+        }
     }
 
     _getPositionX(e) {
@@ -130,7 +134,6 @@ export default class DairyProductList extends LitElement{
                 background-color: red;
                 height: 100%;
                 right: 0px;
-                z-index: 0;
             }
             .delete > span {
                 width: 100%;
@@ -138,6 +141,23 @@ export default class DairyProductList extends LitElement{
                 /* text-align: center; */
                 align-items: center;
                 justify-content: center;
+                color: white;
+                opacity: 1;
+                /* font-weight: bold; */
+                /* font-size: 18px; */
+            }
+            .background-containter {
+                display: flex;
+                height: 100%;
+                position: absolute;
+                width: 100%;
+                z-index: 0;
+            }
+            .background {
+                height: 100%;
+                position: absolute;
+                width: 100%;
+                background-color: #f0ebeb;
             }
         `;
     }
@@ -160,8 +180,13 @@ export default class DairyProductList extends LitElement{
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="delete">
-                                        <span>Delete</span>
+                                    <div class="background-containter">
+                                        <div class="background">
+
+                                        </div>
+                                        <div class="delete">
+                                            <span>Delete</span>
+                                        </div>
                                     </div>
                                 </div>
 
