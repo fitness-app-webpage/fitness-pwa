@@ -23,6 +23,7 @@ export default class SelectorPicker extends LitElement{
     super();
     this.value = "";
     this.name = "";
+    this.options = []
     this.label = "";
     this.ariaLabel = "";
     this.validity = {};
@@ -34,11 +35,14 @@ export default class SelectorPicker extends LitElement{
     super.connectedCallback();
     this.setAttribute('tabindex', '0');
     this.addEventListener('focus', this.setFocus.bind(this))
+    this.options.map(e =>{
+      if(e.checked)
+        this.value = e.value
+    })
     this.internals.setFormValue(this.value)
     if(this.required && this.value === "") {
       this.internals.setValidity({customError: true}, this.errormessage)
     }
-    
   }
 
   disconnectedCallback() {
