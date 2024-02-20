@@ -173,7 +173,7 @@ export default class DairyProductList extends LitElement{
         Router.go(`${BASE}/product?productname=${e.target.id}`)
     }
     _removeIntake(id) {
-        if(self.confirm("You to delete this product")) {
+        if(self.confirm("Are you sure you want to delete this product from your intake")) {
             deleteIntake(id).then(e => {
                     this.dispatchEvent(new CustomEvent("intakeDeleted", {
                         bubbles: true,
