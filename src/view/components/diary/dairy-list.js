@@ -48,6 +48,13 @@ export default class DairyList extends LitElement {
                 .toISOString()
                 .split("T")[0];
     }
+    connectedCallback() {
+        super.connectedCallback()
+        this.data.map(e => {
+            this._total += e.totalCalories;
+        })
+    }
+    
     static get styles() {
         return css`
         .container {
@@ -98,11 +105,6 @@ export default class DairyList extends LitElement {
     }
     handleClick() {
         Router.go(`${BASE}/products?mealtype=${this.title.toUpperCase()}`)
-    }
-    _changedDate(e) {
-        this._data = [];
-        this._total = 0;
-        this._date = e.detail
     }
 }
 

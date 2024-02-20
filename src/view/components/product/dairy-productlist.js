@@ -5,6 +5,7 @@ import { BASE } from "../../../app";
 import "../scanner/scanner-div"
 import "../input/search-bar"
 import "./product-searchbar"
+import { deleteIntake } from "../../../service/ApiService";
 
 export default class DairyProductList extends LitElement{
     static get properties() {
@@ -16,14 +17,73 @@ export default class DairyProductList extends LitElement{
         super();
         this.products = [];
     }
+    connectedCallback() {
+        super.connectedCallback()
+        this.addEventListener("touchstart", this._startTouch)
+        this.addEventListener("touchmove", this._touchMove)
+        this.addEventListener("touchend", this._touchEnd)
+    }
+
+    disconnectedCallback() {
+        super.disconnectedCallback();
+        this.removeEventListener("touchstart", this._startTouch)
+        this.removeEventListener("touchmove", this._touchMove)
+        this.removeEventListener("touchend", this._touchEnd)
+    }
+    firstUpdated() {
+        super.firstUpdated()
+        this._items = this.shadowRoot.querySelectorAll(".inner-container")
+        this._items.forEach(data => {
+            data.addEventListener("touchmove", () => {
+                this._item = data
+            })
+        })
+    }
+
+    _startTouch(e) {
+        this._startPosition = this._getPositionX(e)
+    }
+    _touchMove(e) {
+        this._xPosition = this._getPositionX(e)
+        this._currentTranslateValue = this._xPosition - this._startPosition < 0 
+            ?  this._xPosition - this._startPosition
+            : 0;
+
+        requestAnimationFrame(() => {
+            this._item.style.transform = `translateX(${this._currentTranslateValue}px)`
+        })
+    }
+
+    _touchEnd(e) {
+        if(this._currentTranslateValue <= -100 )
+            this._removeIntake(this._item.id)
+        setTimeout(() => {
+            this._item.style.transform = `translateX(0)`      
+        }, 10);
+    }
+
+    _getPositionX(e) {
+        return e.touches[0].clientX
+    }
     static get styles(){
         return css`
             h1 {
                 text-align: center;
             }
-            .containter {
+            .container {
+                position: relative;
                 display: flex;
-                flex-direction: column;
+                flex-direction: row;
+                overflow: hidden;
+                /* z-index: 0; */
+            }
+            .inner-container {
+                width: 100vw;
+                height: 100%;
+                transform: translateX(0);
+                transition: transform 0.2s ease-out;
+                z-index: 1;
+                background-color: white;
             }
             .product-card {
                 height: 50px;
@@ -63,6 +123,22 @@ export default class DairyProductList extends LitElement{
                 flex-direction: column;
                 width: calc(100% - 40px);
             }
+            .delete {
+                display: flex;
+                position: absolute;
+                width: 100px;
+                background-color: red;
+                height: 100%;
+                right: 0px;
+                z-index: 0;
+            }
+            .delete > span {
+                width: 100%;
+                display: flex;
+                /* text-align: center; */
+                align-items: center;
+                justify-content: center;
+            }
         `;
     }
     render() {
@@ -71,24 +147,42 @@ export default class DairyProductList extends LitElement{
                     (e) => e.id,
                     (e) => html`
                                 <div class="container">
-                                    <div class="product-card">
-                                        <div class="product-container">
-                                            <div class="product-column">
-                                                <span class="name">${e.name}</span>
-                                                <div class="product-info">
-                                                    <span>${e.gramsEaten} gram</span>
+                                    <div class="inner-container" id="${e.id}">
+                                        <div class="product-card">
+                                            <div class="product-container">
+                                                <div class="product-column">
+                                                    <span class="name">${e.products.name}</span>
+                                                    <div class="product-info">
+                                                        <span>${e.products.gramsEaten} gram</span>
+                                                    </div>
                                                 </div>
+                                                <span id="${e.products.name}" @click="${this.handleClick}">${e.products.nutritions.calories}</span>
                                             </div>
-                                            <span id="${e.name}" @click="${this.handleClick}">${e.nutritions.calories}</span>
                                         </div>
                                     </div>
+                                    <div class="delete">
+                                        <span>Delete</span>
+                                    </div>
                                 </div>
+
                                 `
                 )
             }`
     }
     handleClick(e) {
         Router.go(`${BASE}/product?productname=${e.target.id}`)
+    }
+    _removeIntake(id) {
+        if(self.confirm("You to delete this product")) {
+            deleteIntake(id).then(e => {
+                    this.dispatchEvent(new CustomEvent("intakeDeleted", {
+                        bubbles: true,
+                        composed: true
+                    }))
+                }).catch(e => {
+                    console.log(e)
+                })
+        }
     }
 }
 customElements.define('dairy-productlist', DairyProductList); 

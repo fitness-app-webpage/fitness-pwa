@@ -42,6 +42,18 @@ export default class Dairy extends LitElement{
         },
         args: () => []
     })
+    connectedCallback() {
+        super.connectedCallback()
+        this.addEventListener("intakeDeleted", this._updateData)
+    }
+    disconnectedCallback() {
+        super.disconnectedCallback()
+        this.removeEventListener("intakeDeleted", this._updateData)
+    }
+    _updateData() {
+        this._dailyGoalTask.run()
+        this._dairyTask.run()
+    }
 
     static get styles(){
         return css`
@@ -98,7 +110,7 @@ export default class Dairy extends LitElement{
                                         <dairy-list title="Diner" .data="${this._makeIntakeData(e.intakes, "DINER")}"></dairy-list>
                                         <dairy-list title="Snack" .data="${this._makeIntakeData(e.intakes, "SNACK")}"></dairy-list>
                                     </div>`,
-                    error: () => html`<daily-goalinfo></daily-goalinfo>
+                    error: () => html`<daily-goalinfo daily="${this._totalCalories}" remaining="${this._totalCalories}"></daily-goalinfo>
                                     <div class="container-dairy">
                                         <dairy-list title="Breakfast"></dairy-list>
                                         <dairy-list title="Lunch"></dairy-list>
@@ -113,7 +125,7 @@ export default class Dairy extends LitElement{
         let data = [];
         intakes.map(e => {
             if(e.mealType === type){
-                e.products.map(x => data = [...data, x])
+                e.products.map(x => data = [...data, {id: e.id, totalCalories: e.totalKcal, products: x}])
             }
         })
         return data;

@@ -294,7 +294,6 @@ function deleteRequest(url) {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + storage.getAccessToken(),
         },
-        body: JSON.stringify(data),
     };
     return fetch(api_url + url, fetchOptions)
         .then(response => {
@@ -341,4 +340,7 @@ export function getIntakes(date) {
 }
 export function getDailyGoal() {
     return getRequest("/daily");
+}
+export function deleteIntake(id) {
+    return deleteRequest("/intake/delete/" + id)
 }
