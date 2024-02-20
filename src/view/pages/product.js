@@ -1,6 +1,7 @@
 import { LitElement, html, css } from "lit";
 import "../components/page/page"
 import "../components/product/product-view"
+import { BASE } from "../../app";
 
 export default class Product extends LitElement{
     static get properties() {
@@ -18,10 +19,13 @@ export default class Product extends LitElement{
         this._previousRoute = "";
     }
 
-    onBeforeEnter(location, commands, router) {
-        this._previousRoute = router.__previousContext === undefined || router.__previousContext.path === "/scan/product" 
+    onBeforeEnter(location, commands, router) {        
+        this._previousRoute = router.__previousContext === undefined || router.__previousContext.path === BASE + "/scan/product" 
                 ? "/products" 
                 : router.__previousContext.pathname
+        this._previousRoute = BASE !== "" && this._previousRoute.slice(0, BASE.length) === BASE 
+            ? this._previousRoute.slice(BASE.length) 
+            : this._previousRoute
         this._location = new URLSearchParams(location.search).get("productname");
         this._mealtype = new URLSearchParams(location.search).get("mealtype")
     }
