@@ -1,5 +1,5 @@
 import { LitElement, html, css } from "lit";
-import { getProductByName, createIntake} from "../../../service/ApiService";
+import { getProductById, findProductByBarcode, createIntake} from "../../../service/ApiService";
 import { BASE, router } from "../../../app";
 import { Router } from "@vaadin/router";
 import "../charts/circle-bar"
@@ -9,6 +9,7 @@ export default class ProductView extends LitElement{
     static get properties() {
         return{
             _data: {type: Object, state: true},
+            data: {type: Object},
             location: {type: String},
             _name: {type: String, state: true},
             _brand: {type: String, state: true},
@@ -27,8 +28,9 @@ export default class ProductView extends LitElement{
         }
     }
     _myTask = new Task(this, {
-        task: async ([location], {signal}) => {
-            return await getProductByName(location, signal).then(e => {
+        task: async (data) => {
+            console.log(data)
+            return data.then(e => {
                 this._name = e.name;
                 this._brand = e.brand;
                 this._image = e.image;
@@ -54,12 +56,13 @@ export default class ProductView extends LitElement{
                 throw new Error(error.message)
             })
         },
-        args: () => [this.location]
+        args: () => [this.data]
     })
 
     constructor() {
         super();
         this._data = {};
+        this.data = {};
         this.location = "";
         this._total = 0;
         this._abortController = new AbortController();
@@ -68,6 +71,7 @@ export default class ProductView extends LitElement{
     }
     connectedCallback() {
         super.connectedCallback()
+        console.log(this.data)
         self.addEventListener("submitProduct", this._handleSubmitProduct.bind(this), {once: true, signal: this._abortController.signal})
     }
     disconnectedCallback() {

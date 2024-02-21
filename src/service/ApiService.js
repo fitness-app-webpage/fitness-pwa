@@ -326,8 +326,8 @@ export function addProduct(data) {
 export function getProducts() {
     return getRequest("/product")
 }
-export function getProductByName(name) {
-    return getRequest("/product/" + name)
+export function getProductById(id) {
+    return getRequest("/product/id/" + id)
 }
 export function createIntake(data) {
     return postRequest("/intake", data);

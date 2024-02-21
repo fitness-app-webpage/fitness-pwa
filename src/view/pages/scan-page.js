@@ -20,7 +20,7 @@ export default class ScanPage extends LitElement{
     onBeforeEnter(location, commands, router) {
         this._mealtype = location.search === "" 
                 ? "" 
-                : location.search.slice(1) + "&";
+                : location.search;
     }
     static get styles(){
         return css`

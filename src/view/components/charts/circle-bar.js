@@ -1,6 +1,4 @@
 import { LitElement, html, css } from "lit";
-import { getProductByName } from "../../../service/ApiService";
-import {until} from 'lit/directives/until.js';
 import Chart from "chart.js/auto"
 
 export default class CircleBar extends LitElement{

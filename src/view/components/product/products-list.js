@@ -15,7 +15,7 @@ export default class ProductsList extends LitElement{
     }
     constructor() {
         super();
-        this._products = "";
+        this._products = [];
         this._param = router.location.params.mealtype === undefined ? "" : "/" + router.location.params.mealtype;
     }
     static get styles(){
@@ -79,7 +79,7 @@ export default class ProductsList extends LitElement{
                                         <span>${e.nutritions.calories} cal</span>
                                     </div>
                                 </div>
-                                <span class="button" @click="${this.handleClick}" id="${e.name}">X</span>
+                                <span class="button" @click="${this.handleClick}" id="${e.id}">X</span>
                                 </div>
                             </div>
                                 `
@@ -89,10 +89,10 @@ export default class ProductsList extends LitElement{
     handleClick(e) {
         if(Object.values(router.location).length !== 0) {
             const queryParma = router.location.search;
-            Router.go(`${BASE}/product${queryParma}&productname=${e.target.id}`)
+            Router.go(`${BASE}/product/${e.target.id}${queryParma}`)
             return;
         }
-        Router.go(`${BASE}/product?productname=${e.target.id}`)
+        Router.go(`${BASE}/product/${e.target.id}`)
     }
 }
 customElements.define('products-list', ProductsList); 

@@ -73,7 +73,7 @@ export default class ScannerDiv extends LitElement{
             this._decodedText = decodedText;
             this._scanner.clear();
             findProductByBarcode(decodedText).then(e => {
-                Router.go(`${BASE}/product?${this.mealtype}productname=${e.name}`)
+                Router.go(`${BASE}/product/${e.barcode}${this.mealtype}`)
             }).catch(error => {
                 this.dispatchEvent(new CustomEvent("getBarcode", {
                     detail: {barcode: decodedText, error: error.message}

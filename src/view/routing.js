@@ -35,7 +35,7 @@ router.setRoutes([
     {path: `${BASE}/dairy`, name: "Dairy", component: 'dairy-page', action: changeTitleAndAuthCheck},
     {path: `${BASE}/addproduct`, name: "Add a product", component: 'addproduct-page', action: changeTitleAndAuthCheck}, 
     {path: `${BASE}/products`, name: "Products", component: 'products-page', action: changeTitleAndAuthCheck},
-    {path: `${BASE}/product`, name: "Product", component: 'product-page', action: changeTitleAndAuthCheck},
+    {path: `${BASE}/product/:code`, name: "Product", component: 'product-page', action: changeTitleAndAuthCheck},
     {path: `${BASE}/products`, name: "Products", component: 'products-page', action: changeTitleAndAuthCheck},
     {path: `${BASE}/scan/product`, name: "Scan barcode", component: 'scan-page', action: changeTitleAndAuthCheck},
 //     {path: `${BASE}/dashboard-manager`, name: "Dashboard manager", component: 'manager-dashboard', action: changeTitleAndAuthCheck},
