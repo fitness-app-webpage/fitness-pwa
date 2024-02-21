@@ -41,6 +41,8 @@ export default class DairyProductList extends LitElement{
     }
 
     _startTouch(e) {
+        this._width = this.shadowRoot.querySelector(".container").offsetWidth
+        this._deleteDiv = this.shadowRoot.querySelector(".delete")
         this._startPosition = this._getPositionX(e)
     }
     _touchMove(e) {
@@ -50,17 +52,29 @@ export default class DairyProductList extends LitElement{
             : 0;
 
         requestAnimationFrame(() => {
-            this._item.style.transform = `translateX(${this._currentTranslateValue}px)`
+            if((this._width + this._currentTranslateValue) <= (this._width / 1.5) 
+            && (this._width + this._currentTranslateValue) > (this._width / 1.55)) {
+                
+                this._deleteDiv.style.width = `${this._width - (this._width + this._currentTranslateValue)}px`
+                this._item.style.transform = `translateX(${this._currentTranslateValue}px)`
+            } else if((this._width + this._currentTranslateValue) <= (this._width / 1.55)) {
+                this._deleteDiv.style.width = `${this._width - ((this._width / 1.55) + (this._currentTranslateValue * 0.1))}px`
+                this._item.style.transform = `translateX(-${(this._width / 3.1) - (this._currentTranslateValue * 0.1)}px)`
+            } else {
+                this._item.style.transform = `translateX(${this._currentTranslateValue}px)`
+                this._deleteDiv.style.width = "100px"
+            }
         })
     }
 
     _touchEnd(e) {
-        if(this._currentTranslateValue <= -100)
+        if((this._width + this._currentTranslateValue) <= (this._width / 1.5))
             this._removeIntake(this._item.id)
 
         if(this._item !== undefined) {
             this._currentTranslateValue = 0;
             setTimeout(() => {
+                this._deleteDiv.style.width = "100px"
                 this._item.style.transform = `translateX(0)`      
             }, 50);
         }
@@ -85,7 +99,7 @@ export default class DairyProductList extends LitElement{
                 width: 100vw;
                 height: 100%;
                 transform: translateX(0);
-                transition: transform 0.2s ease-out;
+                transition: transform 0.1s ease-out;
                 z-index: 1;
                 background-color: white;
             }
@@ -134,6 +148,7 @@ export default class DairyProductList extends LitElement{
                 background-color: red;
                 height: 100%;
                 right: 0px;
+                transition: 0.2s ease-out;
             }
             .delete > span {
                 width: 100%;
@@ -158,6 +173,20 @@ export default class DairyProductList extends LitElement{
                 position: absolute;
                 width: 100%;
                 background-color: #f0ebeb;
+            }
+            @keyframes vibrate {
+                0%, 2%, 4%, 6%, 8%, 10%, 12%, 14%, 16%, 18% {
+                -webkit-transform: translate3d(-1px, 0, 0);
+                        transform: translate3d(-1px, 0, 0);
+                }
+            1%, 3%, 5%, 7%, 9%, 11%, 13%, 15%, 17%, 19% {
+                -webkit-transform: translate3d(1px, 0, 0);
+                        transform: translate3d(1px, 0, 0);
+                }   
+            20%, 100% {
+                -webkit-transform: translate3d(0, 0, 0);
+                        transform: translate3d(0, 0, 0);
+                }
             }
         `;
     }
