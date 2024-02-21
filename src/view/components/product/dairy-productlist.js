@@ -32,17 +32,17 @@ export default class DairyProductList extends LitElement{
     }
     firstUpdated() {
         super.firstUpdated()
-        this._items = this.shadowRoot.querySelectorAll(".inner-container")
+        this._items = this.shadowRoot.querySelectorAll(".container")
         this._items.forEach(data => {
             data.addEventListener("touchmove", () => {
-                this._item = data
+                this._item = data.firstElementChild
+                this._deleteDiv = data.lastElementChild.lastElementChild
             })
         })
     }
 
     _startTouch(e) {
         this._width = this.shadowRoot.querySelector(".container").offsetWidth
-        this._deleteDiv = this.shadowRoot.querySelector(".delete")
         this._startPosition = this._getPositionX(e)
     }
     _touchMove(e) {
