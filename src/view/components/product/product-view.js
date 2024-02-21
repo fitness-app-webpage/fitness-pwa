@@ -1,5 +1,5 @@
 import { LitElement, html, css } from "lit";
-import { getProductById, findProductByBarcode, createIntake} from "../../../service/ApiService";
+import { createIntake } from "../../../service/ApiService";
 import { BASE, router } from "../../../app";
 import { Router } from "@vaadin/router";
 import "../charts/circle-bar"
@@ -27,37 +27,6 @@ export default class ProductView extends LitElement{
 
         }
     }
-    _myTask = new Task(this, {
-        task: async (data) => {
-            console.log(data)
-            return data.then(e => {
-                this._name = e.name;
-                this._brand = e.brand;
-                this._image = e.image;
-                this._quantity = e.quantity;
-                this._calories = e.nutritions.calories;
-                this._protein = e.nutritions.protein;
-                this._carbs = e.nutritions.carbs;
-                this._fat = e.nutritions.fat;
-                this._salt = e.nutritions.salt;
-    
-                this._calperg = e.nutritions.calories / e.quantity;
-                this._proteinperg = e.nutritions.protein / e.quantity;
-                this._carbsperg = e.nutritions.carbs / e.quantity;
-                this._fatperg = e.nutritions.fat / e.quantity;
-                this._saltperg = e.nutritions.salt / e.quantity;
-                Object.entries(e.nutritions).map(([k, v]) => {
-                    if(k !== "calories") {
-                        this._total += v
-                    }
-                })
-                return e;
-            }).catch(error => {
-                throw new Error(error.message)
-            })
-        },
-        args: () => [this.data]
-    })
 
     constructor() {
         super();
@@ -71,7 +40,27 @@ export default class ProductView extends LitElement{
     }
     connectedCallback() {
         super.connectedCallback()
-        console.log(this.data)
+
+        this._name = this.data.name;
+        this._brand = this.data.brand;
+        this._image = this.data.image;
+        this._quantity = this.data.quantity;
+        this._calories = this.data.nutritions.calories;
+        this._protein = this.data.nutritions.protein;
+        this._carbs = this.data.nutritions.carbs;
+        this._fat = this.data.nutritions.fat;
+        this._salt = this.data.nutritions.salt;
+
+        this._calperg = this.data.nutritions.calories / this.data.quantity;
+        this._proteinperg = this.data.nutritions.protein / this.data.quantity;
+        this._carbsperg = this.data.nutritions.carbs / this.data.quantity;
+        this._fatperg = this.data.nutritions.fat / this.data.quantity;
+        this._saltperg = this.data.nutritions.salt / this.data.quantity;
+        Object.entries(this.data.nutritions).map(([k, v]) => {
+            if(k !== "calories") {
+                this._total += v
+            }
+        })
         self.addEventListener("submitProduct", this._handleSubmitProduct.bind(this), {once: true, signal: this._abortController.signal})
     }
     disconnectedCallback() {
@@ -165,50 +154,46 @@ export default class ProductView extends LitElement{
     }
     
     render(){
-        return this._myTask.render({
-            pending: () => html`<span>Loading...</span>`,
-            complete: (e) => html`
-                        <div class="container">
-                                <h1>${this._name}, ${this._brand}</h1>
-                                <div class="image-form">
-                                    <img src="${this._image}">
-                                    <numberic-input type="number" value=${this._quantity} @input-changed="${this.handleInput}" label="amount" name="amount" abbreviateType="gram(s)"></numberic-input>
-                                </div>
-                                <div class="serving">
-                                    <span>Serving size</span>
-                                    <span>${e.quantity} gram</span>
-                                </div>
-                                <div class="nutritions">
-                                    <circle-bar .data="${[
-                                        {value: this._protein, color: "#32A8F0", label: "Protein"},
-                                        {value: this._fat, color: "#F02F2F", label: "Fat"},
-                                        {value: this._carbs, color: "#42ca5b", label: "Carbs"},
-                                        {value: this._salt, color: "#6E1FF0", label: "Salt"}
-                                        ]}" title="nitritions" text="${this._calories}" secondtext="Cal" textcolor="#EF9437"></circle-bar>
-                                        <div class="protein">
-                                            <span class="percentage-protein">${(this._protein / this._total * 100).toFixed(1)}%</span>
-                                            <span>${this._protein} g</span>
-                                            <span class="nutrition-type">Protein</span>
-                                        </div>
-                                        <div class="fat">
-                                            <span class="percentage-fat">${(this._fat / this._total * 100).toFixed(1)}%</span>
-                                            <span>${this._fat} g</span>
-                                            <span class="nutrition-type">Fat</span>
-                                        </div>
-                                        <div class="carbs">
-                                            <span class="percentage-carbs">${(this._carbs / this._total * 100).toFixed(1)}%</span>
-                                            <span>${this._carbs} g</span>
-                                            <span class="nutrition-type">Carbs</span>
-                                        </div>
-                                        <div class="salt">
-                                            <span class="percentage-salt">${(this._salt / this._total * 100).toFixed(1)}%</span>
-                                            <span>${this._salt} g</span>
-                                            <span class="nutrition-type">Salt</span>
-                                        </div>
-                                </div>
-                            </div>`,
-        error: (error) => html`<span>${error.message}</span>` 
-                            })
+        return html`<div class="container">
+        <h1>${this._name}, ${this._brand}</h1>
+        <div class="image-form">
+            <img src="${this._image}">
+            <numberic-input type="number" value=${this._quantity} @input-changed="${this.handleInput}" label="amount" name="amount" abbreviateType="gram(s)"></numberic-input>
+        </div>
+        <div class="serving">
+            <span>Serving size</span>
+            <span>${this.data.quantity} gram</span>
+        </div>
+        <div class="nutritions">
+            <circle-bar .data="${[
+                {value: this._protein, color: "#32A8F0", label: "Protein"},
+                {value: this._fat, color: "#F02F2F", label: "Fat"},
+                {value: this._carbs, color: "#42ca5b", label: "Carbs"},
+                {value: this._salt, color: "#6E1FF0", label: "Salt"}
+                ]}" title="nitritions" text="${this._calories}" secondtext="Cal" textcolor="#EF9437"></circle-bar>
+                <div class="protein">
+                    <span class="percentage-protein">${(this._protein / this._total * 100).toFixed(1)}%</span>
+                    <span>${this._protein} g</span>
+                    <span class="nutrition-type">Protein</span>
+                </div>
+                <div class="fat">
+                    <span class="percentage-fat">${(this._fat / this._total * 100).toFixed(1)}%</span>
+                    <span>${this._fat} g</span>
+                    <span class="nutrition-type">Fat</span>
+                </div>
+                <div class="carbs">
+                    <span class="percentage-carbs">${(this._carbs / this._total * 100).toFixed(1)}%</span>
+                    <span>${this._carbs} g</span>
+                    <span class="nutrition-type">Carbs</span>
+                </div>
+                <div class="salt">
+                    <span class="percentage-salt">${(this._salt / this._total * 100).toFixed(1)}%</span>
+                    <span>${this._salt} g</span>
+                    <span class="nutrition-type">Salt</span>
+                </div>
+        </div>
+    </div>`
+           
     };
 
     handleInput(e) {
@@ -236,8 +221,8 @@ export default class ProductView extends LitElement{
         const gramValue = this.shadowRoot.querySelector("numberic-input").value;
         this._data = {
             date: this.date, 
-            mealType: this.mealtype, productNameAndAmount: [{
-                name: this.location,
+            mealType: this.mealtype, productIdAndAmount: [{
+                id: this.location,
                 amount: gramValue
             }]
         }

@@ -26,7 +26,7 @@ export default class HeaderBar extends LitElement {
     this._param = mealtype === null || this.href === "/dairy"
       ? "" 
       : "?mealtype=" + mealtype;
-    this.checkicon = mealtype !== null && productName !== null;
+    // this.checkicon = mealtype !== null && productName !== null;
   }
 
 

@@ -25,14 +25,13 @@ export default class Product extends LitElement{
     _myTask = new Task(this, {
         task: async ([location], {signal}) => {
             return this._isBarcode 
-                ? await findProductByBarcode(location, signal).then(e => e).catch(error => new Error(error.message))
-                : await getProductById(location, signal).then(e => e).catch(error => new Error(error.message))
+                ? await findProductByBarcode(location, signal).then(e => e).catch(error => {throw new Error(error.message)})
+                : await getProductById(location, signal).then(e => e).catch(error => {throw new Error(error.message)})
         },
         args: () => [this._location]
     })
 
     onBeforeEnter(location, commands, router) {
-        console.log("a")        
         this._previousRoute = router.__previousContext === undefined || router.__previousContext.path === BASE + "/scan/product" 
                 ? "/products" 
                 : router.__previousContext.pathname
@@ -82,7 +81,8 @@ export default class Product extends LitElement{
         <page-div headerbar headerbartitle="Add product" checkicon location="${this._previousRoute}">
             ${this._myTask.render({
                 pending: () => html`<span>Loading...</span>`,
-                complete: (e) => html`<product-view class="slide" location=${this._location} mealtype="${this._mealtype}" .data="${e}"></product-view>`
+                complete: (e) => html`<product-view class="slide" location=${e.id} mealtype="${this._mealtype}" .data="${e}"></product-view>`,
+                error: (e) => html`<span>${e.message}</span>`
             })}
         </page-div>
         `
