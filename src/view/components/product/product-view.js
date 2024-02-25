@@ -55,7 +55,6 @@ export default class ProductView extends LitElement{
         this._fatperg = this.data.nutritions.fat / this._quantity;
         this._saltperg = this.data.nutritions.salt / this._quantity;
         this._abbreviate = this.data.unit.unit;
-        console.log(this.data)
         Object.entries(this.data.nutritions).map(([k, v]) => {
             if(k !== "calories") {
                 this._total += v
