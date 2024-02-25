@@ -3,8 +3,10 @@ import "../components/page/page"
 import "../components/product/product-view"
 import { getProductById, findProductByBarcode, createIntake } from "../../service/ApiService";
 import { BASE } from "../../app";
+import { Router } from "@vaadin/router";
 import {Task} from '@lit/task';
-export default class Product extends LitElement{
+
+export default class ProductIntake extends LitElement{
     static get properties() {
         return{
             _location: {type: String, state: true},
@@ -85,11 +87,23 @@ export default class Product extends LitElement{
         <page-div headerbar headerbartitle="${this._tilte}" checkicon location="${this._previousRoute}">
             ${this._myTask.render({
                 pending: () => html`<span>Loading...</span>`,
-                complete: (e) => html`<product-view class="slide" location=${e.id} mealtype="${this._mealtype}" .data="${e}"></product-view>`,
+                complete: (e) => html`<product-view class="slide" location=${e.id} mealtype="${this._mealtype}" .data="${e}" @addProductIntake="${this.handleSubmit}"></product-view>`,
                 error: (e) => html`<span>${e.message}</span>`
             })}
         </page-div>
         `
     };
+
+    handleSubmit(e) {
+        createIntake(e.detail).then(e => {
+            if(e.ok) {
+                setTimeout(() => {
+                    Router.go(`${BASE}/dairy`)
+                }, 250);
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+    }
 }
-customElements.define('product-page', Product); 
+customElements.define('product-intake', ProductIntake); 

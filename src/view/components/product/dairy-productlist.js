@@ -205,7 +205,7 @@ export default class DairyProductList extends LitElement{
                                                         <span>${e.products.gramsEaten} gram</span>
                                                     </div>
                                                 </div>
-                                                <span id="${e.products.id}" @click="${this.handleClick}">${e.products.nutritions.calories}</span>
+                                                <span id="${e.id}" @click="${this.handleClick}">${e.products.nutritions.calories}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -224,7 +224,7 @@ export default class DairyProductList extends LitElement{
             }`
     }
     handleClick(e) {
-        Router.go(`${BASE}/product/${e.target.id}`)
+        Router.go(`${BASE}/intake/${e.target.id}`)
     }
     _removeIntake(id) {
         if(self.confirm("Are you sure you want to delete this product from your intake")) {

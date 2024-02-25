@@ -125,7 +125,7 @@ export default class Dairy extends LitElement{
         let data = [];
         intakes.map(e => {
             if(e.mealType === type){
-                e.products.map(x => data = [...data, {id: e.id, totalCalories: e.totalKcal, products: x}])
+                data = [...data, {id: e.id, totalCalories: e.totalKcal, products: e.product}]
             }
         })
         return data;

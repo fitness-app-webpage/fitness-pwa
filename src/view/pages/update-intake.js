@@ -1,17 +1,20 @@
 import { LitElement, html, css } from "lit";
 import "../components/page/page"
 import "../components/product/product-view"
-import { getProductById, findProductByBarcode, createIntake } from "../../service/ApiService";
+import { getIntakeById, updateIntake } from "../../service/ApiService";
 import { BASE } from "../../app";
+import { Router } from "@vaadin/router";
 import {Task} from '@lit/task';
-export default class Product extends LitElement{
+
+export default class UpdateIntake extends LitElement{
     static get properties() {
         return{
             _location: {type: String, state: true},
             _mealtype: {type: String, state: true},
             _previousRoute: {type: String, state: true},
-            _isBarcode: {type: Boolean, state: true},
-            _title: {type: String, state: true}
+            _title: {type: String, state: true},
+            _intakeId: {type: String, state: true},
+            _data: {type: Object, state: true}
         }
     }
 
@@ -20,15 +23,19 @@ export default class Product extends LitElement{
         this._location = "";
         this._mealtype = "";
         this._previousRoute = "";
-        this._isBarcode = true;
         this._tilte = "Product";
+        this._intakeId = "";
+        this._data = {};
     }
 
     _myTask = new Task(this, {
         task: async ([location], {signal}) => {
-            return this._isBarcode 
-                ? await findProductByBarcode(location, signal).then(e => e).catch(error => {throw new Error(error.message)})
-                : await getProductById(location, signal).then(e => e).catch(error => {throw new Error(error.message)})
+            return getIntakeById(location).then(e => {
+                this._intakeId = e.id
+                return e.product;
+            }).catch(error => {
+                throw new Error(error.message)
+            });
         },
         args: () => [this._location]
     })
@@ -43,8 +50,6 @@ export default class Product extends LitElement{
         
         this._location = location.params.id
         this._mealtype = new URLSearchParams(location.search).get("mealtype")
-        if(this._location.length !== 13)
-            this._isBarcode = false;
         if(this._mealtype !== null)
             this._tilte = "Add product to " + this._mealtype.toLowerCase();
     }
@@ -85,11 +90,24 @@ export default class Product extends LitElement{
         <page-div headerbar headerbartitle="${this._tilte}" checkicon location="${this._previousRoute}">
             ${this._myTask.render({
                 pending: () => html`<span>Loading...</span>`,
-                complete: (e) => html`<product-view class="slide" location=${e.id} mealtype="${this._mealtype}" .data="${e}"></product-view>`,
+                complete: (e) => html`<product-view class="slide" location=${e.id} mealtype="${this._mealtype}" .data="${e}" @addProductIntake="${this.handleSubmit}"></product-view>`,
                 error: (e) => html`<span>${e.message}</span>`
             })}
         </page-div>
         `
     };
+
+    handleSubmit(e) {
+        this._data = {amount: e.detail.productIdAndAmount.amount}
+        updateIntake(this._intakeId, this._data).then(e => {
+            if(e.ok) {
+                setTimeout(() => {
+                    Router.go(`${BASE}/dairy`)
+                }, 250);
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+    }
 }
-customElements.define('product-page', Product); 
+customElements.define('update-intake', UpdateIntake); 

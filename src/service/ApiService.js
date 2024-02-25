@@ -336,11 +336,17 @@ export function findProductByBarcode(data) {
     return getRequest("/product/barcode/" + data)
 }
 export function getIntakes(date) {
-    return getRequest("/intake/" + date)
+    return getRequest("/intake/date/" + date)
+}
+export function getIntakeById(id) {
+    return getRequest("/intake/" + id)
 }
 export function getDailyGoal() {
     return getRequest("/daily");
 }
 export function deleteIntake(id) {
     return deleteRequest("/intake/delete/" + id)
+}
+export function updateIntake(id, data) {
+    return patchRequest("/intake/" + id, data)
 }

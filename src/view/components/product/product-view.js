@@ -1,9 +1,5 @@
 import { LitElement, html, css } from "lit";
-import { createIntake } from "../../../service/ApiService";
-import { BASE, router } from "../../../app";
-import { Router } from "@vaadin/router";
 import "../charts/circle-bar"
-import {Task} from '@lit/task';
 
 export default class ProductView extends LitElement{
     static get properties() {
@@ -22,7 +18,7 @@ export default class ProductView extends LitElement{
             _salt: {type: Number, state: true},
             _total: {type: Number, state: true},
             date: {type: String},
-            mealtype: {type: String}
+            mealtype: {type: String},
             
 
         }
@@ -44,18 +40,18 @@ export default class ProductView extends LitElement{
         this._name = this.data.name;
         this._brand = this.data.brand;
         this._image = this.data.image;
-        this._quantity = this.data.quantity;
+        this._quantity = this.data.quantity !== undefined ? this.data.quantity : this.data.gramsEaten;
         this._calories = this.data.nutritions.calories;
         this._protein = this.data.nutritions.protein;
         this._carbs = this.data.nutritions.carbs;
         this._fat = this.data.nutritions.fat;
         this._salt = this.data.nutritions.salt;
 
-        this._calperg = this.data.nutritions.calories / this.data.quantity;
-        this._proteinperg = this.data.nutritions.protein / this.data.quantity;
-        this._carbsperg = this.data.nutritions.carbs / this.data.quantity;
-        this._fatperg = this.data.nutritions.fat / this.data.quantity;
-        this._saltperg = this.data.nutritions.salt / this.data.quantity;
+        this._calperg = this.data.nutritions.calories / this._quantity;
+        this._proteinperg = this.data.nutritions.protein / this._quantity;
+        this._carbsperg = this.data.nutritions.carbs / this._quantity;
+        this._fatperg = this.data.nutritions.fat / this._quantity;
+        this._saltperg = this.data.nutritions.salt / this._quantity;
         Object.entries(this.data.nutritions).map(([k, v]) => {
             if(k !== "calories") {
                 this._total += v
@@ -221,20 +217,14 @@ export default class ProductView extends LitElement{
         const gramValue = this.shadowRoot.querySelector("numberic-input").value;
         this._data = {
             date: this.date, 
-            mealType: this.mealtype, productIdAndAmount: [{
+            mealType: this.mealtype, productIdAndAmount: {
                 id: this.location,
                 amount: gramValue
-            }]
-        }
-        createIntake(this._data).then(e => {
-            if(e.ok) {
-                setTimeout(() => {
-                    Router.go(`${BASE}/dairy`)
-                }, 250);
             }
-        }).catch(error => {
-            console.log(error)
-        })
+        }
+        this.dispatchEvent(new CustomEvent("addProductIntake",
+            {detail: this._data}
+        ))
     }
 }
 customElements.define('product-view', ProductView); 

@@ -11,6 +11,8 @@ import "./pages/add-product"
 import "./pages/products"
 import "./pages/product"
 import "./pages/scan-page"
+import "./pages/product-intake"
+import "./pages/update-intake"
 
 
 const changeTitleAndAuthCheck = (context, commands) => {
@@ -35,9 +37,11 @@ router.setRoutes([
     {path: `${BASE}/dairy`, name: "Dairy", component: 'dairy-page', action: changeTitleAndAuthCheck},
     {path: `${BASE}/addproduct`, name: "Add a product", component: 'addproduct-page', action: changeTitleAndAuthCheck}, 
     {path: `${BASE}/products`, name: "Products", component: 'products-page', action: changeTitleAndAuthCheck},
-    {path: `${BASE}/product/:code`, name: "Product", component: 'product-page', action: changeTitleAndAuthCheck},
+    {path: `${BASE}/product/:id`, name: "Product", component: 'product-intake', action: changeTitleAndAuthCheck},
     {path: `${BASE}/products`, name: "Products", component: 'products-page', action: changeTitleAndAuthCheck},
     {path: `${BASE}/scan/product`, name: "Scan barcode", component: 'scan-page', action: changeTitleAndAuthCheck},
+    {path: `${BASE}/intake/:id`, name: "Update intake", component: 'update-intake', action: changeTitleAndAuthCheck},
+ 
 //     {path: `${BASE}/dashboard-manager`, name: "Dashboard manager", component: 'manager-dashboard', action: changeTitleAndAuthCheck},
 //     {path: `${BASE}/dashboard-employee`, name: "Dashboard employee", component: 'employee-dashboard', action: changeTitleAndAuthCheck},
 //     {path: `${BASE}/report-generation`, name: "Report Generation", component: 'report-generation', action: changeTitleAndAuthCheck},
