@@ -50,6 +50,7 @@ export default class HeaderBar extends LitElement {
         left: 50%;
         text-align: center;
         transform: translate(-50%);
+        width: 75%;
       }
       .back, .select {
         -webkit-tap-highlight-color: transparent;

@@ -10,7 +10,8 @@ export default class Product extends LitElement{
             _location: {type: String, state: true},
             _mealtype: {type: String, state: true},
             _previousRoute: {type: String, state: true},
-            _isBarcode: {type: Boolean, state: true}
+            _isBarcode: {type: Boolean, state: true},
+            _title: {type: String, state: true}
         }
     }
 
@@ -20,6 +21,7 @@ export default class Product extends LitElement{
         this._mealtype = "";
         this._previousRoute = "";
         this._isBarcode = true;
+        this._tilte = "Product";
     }
 
     _myTask = new Task(this, {
@@ -43,6 +45,8 @@ export default class Product extends LitElement{
         this._mealtype = new URLSearchParams(location.search).get("mealtype")
         if(this._location.length !== 13)
             this._isBarcode = false;
+        if(this._mealtype !== null)
+            this._tilte = "Add product to " + this._mealtype.toLowerCase();
     }
 
     static get styles(){
@@ -78,7 +82,7 @@ export default class Product extends LitElement{
     
     render(){
         return html`
-        <page-div headerbar headerbartitle="Add product" checkicon location="${this._previousRoute}">
+        <page-div headerbar headerbartitle="${this._tilte}" checkicon location="${this._previousRoute}">
             ${this._myTask.render({
                 pending: () => html`<span>Loading...</span>`,
                 complete: (e) => html`<product-view class="slide" location=${e.id} mealtype="${this._mealtype}" .data="${e}"></product-view>`,
