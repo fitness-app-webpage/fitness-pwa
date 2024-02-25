@@ -8,7 +8,8 @@ export default class UploadProfileImage extends LitElement {
       data: {type: Object},
       _error: {type: String},
       _profilePicture: {state: true},
-      _disabled: {type: Boolean, state: true}
+      _disabled: {type: Boolean, state: true},
+      _loading: {type: Boolean, state: true}
     }
   };
 
@@ -18,6 +19,7 @@ export default class UploadProfileImage extends LitElement {
     this._error = "";
     this._profilePicture = JSON.parse(localStorage.getItem("profileImage"))
     this._disabled = true;
+    this._loading = false;
   }
 
   async firstUpdated() {
@@ -102,7 +104,7 @@ export default class UploadProfileImage extends LitElement {
                 <svg class="plus"></svg>`}
                 </label>
             <input type="file" name="fileImage" id="fileImage" accept="image/*" @change="${this.handleChange}"/>
-            <button-div ?disabled="${this._disabled}" value="Submit" @click=${this.handleSubmit}></button-div>
+            <button-div ?disabled="${this._disabled}" value="Submit" @click=${this.handleSubmit} ?loading="${this._loading}"></button-div>
           </form>
           <error-message message="${this._error}"></error-message>
   `;
@@ -126,10 +128,13 @@ export default class UploadProfileImage extends LitElement {
     const form = e.target;
     this.data = new FormData(form);
     localStorage.setItem("profileImage", JSON.stringify(this._profilePicture))
+    this._loading = true; this._disabled = false;
     uploadProfilePhoto(this.data).then(e => {
       this._error = e;
     }).catch(error => {
       this._error = error.message
+    }).then(() => {
+      this._loading = false; this._disabled = true;
     })
     this.dispatchEvent(new StorageEvent('storage', {
       key: "profileImage",

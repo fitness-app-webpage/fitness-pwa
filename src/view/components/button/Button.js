@@ -5,7 +5,7 @@ export default class Button extends LitElement{
     return{
         value: {type: String},
         disabled: {type: Boolean, Reflect: true},
-        loadingEnabled: {type: Boolean, Reflect: true}
+        loading: {type: Boolean, Reflect: true}
     }
   };
   
@@ -13,7 +13,7 @@ export default class Button extends LitElement{
     super();
     this.value = "Button";
     this.disabled = false;
-    this.loadingEnabled = false;
+    this.loading = false;
   }
   
   static get styles(){ 
@@ -74,7 +74,7 @@ export default class Button extends LitElement{
 
 
   render() {
-    return this.loadingEnabled 
+    return this.loading 
     ? html`
     <button type="button" ?disabled=${this.disabled} class="loading">
       ${this.value}

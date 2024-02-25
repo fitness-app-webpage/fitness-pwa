@@ -76,7 +76,7 @@ export default class LoginDiv extends LitElement {
             <input-field type="email" name="email" @input-changed="${this.listenerInput}" class="email-input" label="Email"></input-field>
             <input-field type="password" name="password" @input-changed="${this.listenerInput}" class="pass-input" label="Password"></input-field>
             <error-message message="${this._errorMessage}"></error-message>
-            <button-div @click="${this._login}" value="Login" ?disabled=${this._disabled} ?loadingEnabled=${this._loadingEnabled}></button-div>
+            <button-div @click="${this._login}" value="Login" ?disabled=${this._disabled} ?loading=${this._loadingEnabled}></button-div>
           </div>
           <div class="other-links">
             <hr>
