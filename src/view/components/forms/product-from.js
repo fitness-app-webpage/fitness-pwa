@@ -11,7 +11,8 @@ export default class ProductForm extends LitElement {
       _error: {type: String},
       _disabled: {type: Boolean, state: true},
       _barcode: {type: String, state: true},
-      _click: {type: Boolean, state: true}
+      _click: {type: Boolean, state: true},
+      _abbreviate: {type: String, state: true}
     }
   };
 
@@ -22,6 +23,7 @@ export default class ProductForm extends LitElement {
     this._error = "";
     this._barcode = "";
     this._disabled = false;
+    this._abbreviate = "g"
   }
 
   static get styles(){ 
@@ -111,6 +113,7 @@ export default class ProductForm extends LitElement {
                   {value: "FOOD", label: "Food", checked: true},
                   {value: "DRINK", label: "Drink"}
                 ]}"
+                @selection-changed="${this.handleSelection}"
                 required>
               </selector-picker>
             </div>
@@ -119,7 +122,7 @@ export default class ProductForm extends LitElement {
                 <input-field name="brand" label="Brand name" pattern=".{1,}" errormessage="Field cannot be empty" required></input-field>
             </div>
             <div class="second-row">            
-                <numberic-input name="quantity" label="Amount" pattern="([0-9]{1,3})?([\.][0-9][0-9]?)?" errormessage="Quantity cannot be more than '10000'" abbreviateType="g" value="100" required></numberic-input>
+                <numberic-input name="quantity" label="Amount" pattern="([0-9]{1,3})?([\.][0-9][0-9]?)?" errormessage="Quantity cannot be more than '10000'" abbreviateType="${this._abbreviate}" value="100" required></numberic-input>
                 <numberic-input name="calories" label="Calories" pattern="([0-9]{1,3})?([\.][0-9][0-9]?)?" errormessage="Calories cannot be more than 10000" abbreviateType="kcal" required></numberic-input>
             </div>
             <div class="third-row">
@@ -188,6 +191,16 @@ export default class ProductForm extends LitElement {
   }
   handleClick() {
     this._click = !this._click
+  }
+  handleSelection(e) {
+    switch(e.target.value) {
+      case "FOOD":
+        this._abbreviate = "g";
+        break;
+      case "DRINK":
+        this._abbreviate = "ml"
+        break;
+    }
   }
 }
 

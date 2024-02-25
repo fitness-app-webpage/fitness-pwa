@@ -131,7 +131,7 @@ export default class SelectorPicker extends LitElement{
     this.value = e.target.value;
     this.internals.setFormValue(this.value)
     this.setValidity(e.target)
-    this.dispatchEvent(new CustomEvent('input-changed', {[e.target.name]: e.target.value}));
+    this.dispatchEvent(new CustomEvent('selection-changed', {[e.target.name]: e.target.value}));
   }
   setValidity(input) {
     if(!input.checkValidity()) {
