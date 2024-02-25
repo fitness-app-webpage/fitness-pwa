@@ -19,6 +19,7 @@ export default class ProductView extends LitElement{
             _total: {type: Number, state: true},
             date: {type: String},
             mealtype: {type: String},
+            _abbreviate: {type: String}
             
 
         }
@@ -33,6 +34,7 @@ export default class ProductView extends LitElement{
         this._abortController = new AbortController();
         this.date = new Date(new Date().getTime() - (new Date().getTimezoneOffset() * 60000 )).toISOString().split("T")[0];
         this.mealtype = "";
+        this._abbreviate = "";
     }
     connectedCallback() {
         super.connectedCallback()
@@ -52,6 +54,7 @@ export default class ProductView extends LitElement{
         this._carbsperg = this.data.nutritions.carbs / this._quantity;
         this._fatperg = this.data.nutritions.fat / this._quantity;
         this._saltperg = this.data.nutritions.salt / this._quantity;
+        this._abbreviate = this._formatAbbreviate(this.data.unit.unit);
         Object.entries(this.data.nutritions).map(([k, v]) => {
             if(k !== "calories") {
                 this._total += v
@@ -154,7 +157,7 @@ export default class ProductView extends LitElement{
         <h1>${this._name}, ${this._brand}</h1>
         <div class="image-form">
             <img src="${this._image}">
-            <numberic-input type="number" value=${this._quantity} @input-changed="${this.handleInput}" label="amount" name="amount" abbreviateType="gram(s)"></numberic-input>
+            <numberic-input type="number" value=${this._quantity} @input-changed="${this.handleInput}" label="amount" name="amount" abbreviateType="${this._abbreviate}"></numberic-input>
         </div>
         <div class="serving">
             <span>Serving size</span>
@@ -225,6 +228,12 @@ export default class ProductView extends LitElement{
         this.dispatchEvent(new CustomEvent("addProductIntake",
             {detail: this._data}
         ))
+    }
+
+    _formatAbbreviate(str) {
+        const lastChar = str.charAt(str.length - 1);
+        const rest = str.slice(0, str.length - 1);
+        return rest + "(" + lastChar + ")";
     }
 }
 customElements.define('product-view', ProductView); 
