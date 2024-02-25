@@ -58,14 +58,14 @@ export default class UploadProfileImage extends LitElement {
         flex-direction: column;
       }
       label {
+        position: relative;
         -webkit-tap-highlight-color: transparent;
       }
       .plus {
         -webkit-tap-highlight-color: transparent;
-        content: "";
         position: absolute;
-        right: 107px;
-        bottom: 65px;
+        right: 0px;
+        bottom: 20px;
         width: 40px;
         height: 40px;
         background: url("plus.svg") center / contain no-repeat;
