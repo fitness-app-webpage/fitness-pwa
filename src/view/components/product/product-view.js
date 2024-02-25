@@ -54,7 +54,8 @@ export default class ProductView extends LitElement{
         this._carbsperg = this.data.nutritions.carbs / this._quantity;
         this._fatperg = this.data.nutritions.fat / this._quantity;
         this._saltperg = this.data.nutritions.salt / this._quantity;
-        this._abbreviate = this._formatAbbreviate(this.data.unit.unit);
+        this._abbreviate = this.data.unit.unit;
+        console.log(this.data)
         Object.entries(this.data.nutritions).map(([k, v]) => {
             if(k !== "calories") {
                 this._total += v
@@ -157,11 +158,11 @@ export default class ProductView extends LitElement{
         <h1>${this._name}, ${this._brand}</h1>
         <div class="image-form">
             <img src="${this._image}">
-            <numberic-input type="number" value=${this._quantity} @input-changed="${this.handleInput}" label="amount" name="amount" abbreviateType="${this._abbreviate}"></numberic-input>
+            <numberic-input type="number" value=${this._quantity} @input-changed="${this.handleInput}" label="amount" name="amount" abbreviateType="${this._formatAbbreviate(this._abbreviate)}"></numberic-input>
         </div>
         <div class="serving">
             <span>Serving size</span>
-            <span>${this.data.quantity} gram</span>
+            <span>${this._quantity} ${this._abbreviate.slice(0, this._abbreviate.length - 1)}</span>
         </div>
         <div class="nutritions">
             <circle-bar .data="${[
