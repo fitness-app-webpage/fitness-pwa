@@ -42,13 +42,13 @@ export default class Button extends LitElement{
       .loading::after {
         position: absolute;
         content: "";
-        width: 16px;
-        height: 16px;
+        width: var(--loading-width, 16px);
+        height: var(--loading-height, 16px);
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        margin: auto auto auto 20px;
+        margin: var(--loading-margin, auto auto auto 20px);
         border: 4px solid transparent;
         border-radius: 50%;
         border-top-color: #ffffff;

@@ -78,6 +78,9 @@ export default class UploadProfileImage extends LitElement {
       button-div {
         margin: 10px 0 0 0;
         width: 100px;
+        --loading-width: 12px;
+        --loading-height: 12px;
+        --loading-margin: auto auto auto 5px;
       }
     }
       

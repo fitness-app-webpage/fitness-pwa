@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "lit";
 import "../components/page/page"
+import "../components/notification/notification-bar"
 
 export default class home extends LitElement{
     static get styles(){
@@ -12,7 +13,9 @@ export default class home extends LitElement{
     render() {
         return html`
         <page-div>
-            <h1>Home</h1>
+            <notification-bar></notification-bar>
+            <!-- <h1>Home</h1> -->
+
         </page-div>`
     }
 }
