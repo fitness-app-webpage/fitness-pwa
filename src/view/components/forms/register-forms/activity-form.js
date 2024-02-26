@@ -51,6 +51,9 @@ export default class ActivityForm extends LitElement {
               width: calc(100% - 54px);
               padding: 40px 0;                
             }
+            selector-picker {
+              --padding: 15px 0;
+            }
     }
     `;
   }
@@ -63,11 +66,11 @@ export default class ActivityForm extends LitElement {
               name="activityLevel" 
               label="Activity level(pal)" 
               .options=${[
-                {value: "LITTLETONONE", label: "little to none"}, 
-                {value: "UNDERAVERAGE", label: "Under average"}, 
-                {value: "AVERAGE", label: "Average"}, 
-                {value: "SLIGHTLYABOVEAVERAGE", label: "Slightly above average"}, 
-                {value: "ABOVEAVERAGE", label: "Above average"}
+                {value: "LITTLETONONE", label: "little to none", info: "Spend most of the day sitting and does not sport"}, 
+                {value: "UNDERAVERAGE", label: "Under average", info: "Sports 1-3 days per week"}, 
+                {value: "AVERAGE", label: "Average", info: "Sports 3-5 days per week"}, 
+                {value: "SLIGHTLYABOVEAVERAGE", label: "Slightly above average", info: "Sports 5-7 days per week"}, 
+                {value: "ABOVEAVERAGE", label: "Above average", info: "Sports 7+ days per week"}
               ]} 
               required>
             </selector-picker>

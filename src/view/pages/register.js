@@ -46,7 +46,7 @@ export default class Register extends LitElement {
       html`<userinfo2-form @back=${this.handleBack} @next=${this.handleNext}></userinfo2-form>`,
       html`<register-form @back=${this.handleBack} @submit=${this.handleSubmit}></register-form>`
     ]
-    this._stepCounter = 2;
+    this._stepCounter = 0;
   }
 
   static get styles(){ 
