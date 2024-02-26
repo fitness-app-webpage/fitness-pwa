@@ -63,6 +63,14 @@ export default class ProductsList extends LitElement{
                 flex-direction: column;
                 width: calc(100% - 40px);
             }
+            button {
+                border: transparent;
+                width: 32px;
+                height: 32px;
+                background: url("add-icon.svg") center / contain no-repeat;
+                cursor: pointer;
+                
+            }
         `;
     }
     render() {
@@ -79,7 +87,7 @@ export default class ProductsList extends LitElement{
                                         <span>${e.nutritions.calories} cal</span>
                                     </div>
                                 </div>
-                                <span class="button" @click="${this.handleClick}" id="${e.id}">X</span>
+                                <button @click="${this.handleClick}" id="${e.id}"></button>
                                 </div>
                             </div>
                                 `
