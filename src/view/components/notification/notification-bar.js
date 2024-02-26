@@ -15,11 +15,21 @@ export default class NotificationBar extends LitElement{
         this._counter = 1;
         this._idCounter = 1;
     }
+    firstUpdated() {
+        super.firstUpdated()
+        this._container = this.shadowRoot.querySelector(".container");
+    }
+    updated() {
+        super.updated()
+        if(this._notifications.length === 0) {
+            this._container.style = "display: none"
+        }
+    }
     static get styles(){
         return css`
          @media only screen and (max-width: 480px) {
             .container {
-                display: flex;
+                display: none;
                 flex-direction: column-reverse;
                 position: relative;
                 align-items: flex-end;
@@ -95,7 +105,8 @@ export default class NotificationBar extends LitElement{
         `
 
     };
-    handleClick(e) {        
+    handleClick(e) {       
+        this._container.style = "display: flex" 
         if(this._notifications.length >= 4) {
             this._notifications.splice(-1)
             this._notifications = [...this._notifications, this._makeNotification()]

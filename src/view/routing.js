@@ -18,7 +18,6 @@ import "./pages/update-intake"
 const changeTitleAndAuthCheck = (context, commands) => {
     document.title = context.route.name;
     if(!service.checkAuth() && context.route.path !== `${BASE}/login`) {
-        console.log("a")
         return commands.redirect(`${BASE}/login`);
     }
 }
