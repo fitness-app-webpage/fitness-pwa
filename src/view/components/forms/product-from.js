@@ -12,7 +12,8 @@ export default class ProductForm extends LitElement {
       _disabled: {type: Boolean, state: true},
       _barcode: {type: String, state: true},
       _click: {type: Boolean, state: true},
-      _abbreviate: {type: String, state: true}
+      _abbreviate: {type: String, state: true},
+      _labelImageText: {type: String, state: true}
     }
   };
 
@@ -24,6 +25,7 @@ export default class ProductForm extends LitElement {
     this._barcode = "";
     this._disabled = false;
     this._abbreviate = "g"
+    this._labelImageText = "Select image Optional";
   }
 
   static get styles(){ 
@@ -134,10 +136,9 @@ export default class ProductForm extends LitElement {
                 <numberic-input name="salt" label="Salt" pattern="([0-9]{1,3})?([\.][0-9][0-9]?)?" errormessage="Salt cannot be more than 100" abbreviateType="g" required></numberic-input>
             </div>
             <label for="image">
-              Select image
-              <span>Optional</span>
+              ${this._labelImageText}
             </label>
-            <input type="file" name="image" id="image" accept="image/*"/>
+            <input type="file" name="image" id="image" accept="image/*" @change="${this.handleChange}"/>
             <button-div ?disabled="${this._disabled}" value="Submit" @click=${this.handleSubmit}></button-div>
           </form>
           <error-message message="${this._error}"></error-message>
@@ -156,6 +157,7 @@ export default class ProductForm extends LitElement {
     reader.onload = () => {
       this._profilePicture = {imageBase64: btoa(reader.result)}
     }
+    this._labelImageText = "Image selected"
   }
   submitForm(e) {
     e.preventDefault();
