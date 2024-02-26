@@ -86,6 +86,8 @@ export default class SelectorPicker extends LitElement{
           cursor: pointer;
           font-size: var(--font-size, 20px);
           width: var(--width);
+          display: flex;
+          flex-direction: column;
         }
         label:hover {
             border-color: #8d8a8a;
@@ -99,6 +101,15 @@ export default class SelectorPicker extends LitElement{
       margin-left: 12px;
       color: red;
       visibility: hidden;
+      }
+      .extra-info {
+        font-size: 14px;
+        opacity: 0.8;
+        color: black;
+        font-weight: normal;
+      }
+      input:checked + label .extra-info {
+        opacity: 1;
       }
       `;
     }
@@ -118,7 +129,11 @@ export default class SelectorPicker extends LitElement{
                     @click="${this.updateValue}" 
                     ?required="${this.required}"
                     ?checked="${e.checked}"
-                /><label for=${e.value}>${e.label}</label>`    
+                />
+                <label for=${e.value}>
+                  ${e.label}
+                  <span class="extra-info">${e.info}</span>
+                </label>`    
         )}
 
     </div>

@@ -51,6 +51,12 @@ export default class GoalForm extends LitElement {
               width: calc(100% - 54px);
               padding: 40px 0;               
             }
+            p {
+              text-align: center;
+            }
+            selector-picker {
+              --padding: 15px 0;
+            }
     }
     `;
   }
@@ -58,19 +64,19 @@ export default class GoalForm extends LitElement {
   render() {
     return html`
           <h1>Goal</h1>
+          <p>What do you want to achieve?</p>
           <form @submit=${this.submitForm} @keyup=${this.enterKeyPressed} novalidate>
             <selector-picker 
               name="goal" 
               .options=${[
-                {value: "LOSEWEIGHT", label: "Lose weight"}, 
-                {value: "SLOWLYLOSEWEIGHT", label: "Slowly lose weight"}, 
-                {value: "MAINTAINWEIGHT", label: "Maintain weight"}, 
-                {value: "SLOWLYGAINWEIGHT", label: "Slowly gain weight"}, 
-                {value: "GAINWEIGHT", label: "Gain weight"}
+                {value: "LOSEWEIGHT", label: "Lose weight", info: "Reduce your daily calories intake by 20%"}, 
+                {value: "SLOWLYLOSEWEIGHT", label: "Slowly lose weight", info: "Reduce your daily calories intake by 10%"}, 
+                {value: "MAINTAINWEIGHT", label: "Maintain weight", info: "Maintain your current weight"}, 
+                {value: "SLOWLYGAINWEIGHT", label: "Slowly gain weight", info: "Increase your daily calories intake by 10%"}, 
+                {value: "GAINWEIGHT", label: "Gain weight", info: "Increase your daily calories intake by 20%"}
               ]} 
               required>
             </selector-picker>
-            <!-- <input-field type="text" name="goal" label="Goal" value="SLOWLYLOSEWEIGHT"  required></input-field> -->
             <input-field type="text" name="protein" label="Weight per kilo grams protein" pattern="([0-2])?([\.][0-9]?)?" required></input-field>
             <div class="button-container">
               <button-div value="Back" @click=${this.handleBack}></button-div>
