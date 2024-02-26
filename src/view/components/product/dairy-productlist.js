@@ -58,8 +58,8 @@ export default class DairyProductList extends LitElement{
                 this._deleteDiv.style.width = `${this._width - (this._width + this._currentTranslateValue)}px`
                 this._item.style.transform = `translateX(${this._currentTranslateValue}px)`
             } else if((this._width + this._currentTranslateValue) <= (this._width / 1.55)) {
-                this._deleteDiv.style.width = `${this._width - ((this._width / 1.55) + (this._currentTranslateValue * 0.1))}px`
-                this._item.style.transform = `translateX(-${(this._width / 3.1) - (this._currentTranslateValue * 0.1)}px)`
+                this._deleteDiv.style.width = `${this._width - ((this._width / 1.5) + (this._currentTranslateValue * 0.1))}px`
+                this._item.style.transform = `translateX(-${(this._width / 3) - (this._currentTranslateValue * 0.1)}px)`
             } else {
                 this._item.style.transform = `translateX(${this._currentTranslateValue}px)`
                 this._deleteDiv.style.width = "100px"
