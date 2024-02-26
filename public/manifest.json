@@ -3,7 +3,7 @@
     "start_url": "/fitness-pwa/",
     "icons": [
         {
-            "src": "icon.svg",
+            "src": "icon.png",
             "sizes": "64x64",
             "type": "image/x-icon"
         }
