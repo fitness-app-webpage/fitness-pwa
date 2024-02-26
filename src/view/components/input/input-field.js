@@ -209,18 +209,21 @@ export default class InputField extends LitElement{
   }
   checkValidation() {
     const input = this.shadowRoot.querySelector("input")
-    const errorDiv = this.shadowRoot.querySelector(".background-div");
-    const errorMessage = this.shadowRoot.querySelector(".error-message");
     if(!input.checkValidity()) {
-      errorDiv.classList.add("invalid-input")
-      errorDiv.id = "invalid-input"
-      errorMessage.style = "visibility: visible;" 
-      setTimeout(() => {
-        errorDiv.id = "";
-      }, 500)
+      this.setError();
       return false;     
     }
     return true;
+  }
+  setError() {
+    const errorDiv = this.shadowRoot.querySelector(".background-div");
+    const errorMessage = this.shadowRoot.querySelector(".error-message");
+    errorDiv.classList.add("invalid-input")
+    errorDiv.id = "invalid-input"
+    errorMessage.style = "visibility: visible;" 
+    setTimeout(() => {
+      errorDiv.id = "";
+    }, 500)
   }
 }
 customElements.define('input-field', InputField);

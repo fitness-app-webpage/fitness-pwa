@@ -61,6 +61,7 @@ export default class RegisterForm extends LitElement {
             <input-field type="text" name="username" label="Username" pattern=".{1,}" required></input-field>
             <input-field type="email" name="email" label="Email" pattern=".{1,}" required></input-field>
             <input-field type="password" name="password" label="Password" pattern=".{1,}" required></input-field>
+            <input-field type="password" name="confirm_password" label="Confirm password" pattern=".{1,}" errormessage="Passwords do not match" required></input-field>
             <div class="button-container">
               <button-div value="Back" @click=${this.handleBack}></button-div>
               <button-div value="Register" @click=${this.handleSubmit}></button-div>
@@ -75,7 +76,13 @@ export default class RegisterForm extends LitElement {
     if(form.checkValidity()) {
       const formData = new FormData(form);
       this.data = Object.fromEntries(formData.entries())
-      this.dispatchEvent(new CustomEvent('submit', {detail: this.data}));
+      if(this.data.password === this.data.confirm_password) {
+        // const {confirm_password, ...data} = this.data
+        // this.data = data;
+        this.dispatchEvent(new CustomEvent('submit', {detail: this.data}));
+      } else {
+        this.shadowRoot.querySelector("input-field[name='confirm_password']").setError()
+      }
     } else {
       let firstInvalidInput = false;
       Array.from(form.elements).map(e => {
