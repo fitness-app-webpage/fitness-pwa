@@ -187,6 +187,7 @@ export default class DatePicker extends LitElement{
       .picker {
         display: none;
         position: absolute;
+        z-index: 1;
         /* inset: auto auto 0px 0px; */
         height: 340px;
         width: 320px;

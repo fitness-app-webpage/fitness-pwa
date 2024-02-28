@@ -206,7 +206,7 @@ function getRequest(url) {
                     });
             }
             return response.json().then(e => {
-                throw new Error(e.message)
+                throw new Error(JSON.stringify({message: e.message, status: e.status}))
             })
         })
 }
@@ -349,4 +349,7 @@ export function deleteIntake(id) {
 }
 export function updateIntake(id, data) {
     return patchRequest("/intake/" + id, data)
+}
+export function setGoal(data) {
+    return postRequest("/goal", data)
 }
