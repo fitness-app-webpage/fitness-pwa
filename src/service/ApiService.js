@@ -4,16 +4,16 @@ import {BASE} from "../app"
 import { jwtDecode } from "jwt-decode";
 
 // deployed urls
-const api_url = "https://fitness-kcal-api-1706479824946.azurewebsites.net/api";
-const refresh_url = "https://fitness-kcal-api-1706479824946.azurewebsites.net/authenticate/refreshtoken";
-const login_url = "https://fitness-kcal-api-1706479824946.azurewebsites.net/login";
-const register_url = "https://fitness-kcal-api-1706479824946.azurewebsites.net/register"
+// const api_url = "https://fitness-kcal-api-1706479824946.azurewebsites.net/api";
+// const refresh_url = "https://fitness-kcal-api-1706479824946.azurewebsites.net/authenticate/refreshtoken";
+// const login_url = "https://fitness-kcal-api-1706479824946.azurewebsites.net/login";
+// const register_url = "https://fitness-kcal-api-1706479824946.azurewebsites.net/register"
 
 // local urls
-// const api_url = "http://localhost:8080/api";
-// const refresh_url = "http://localhost:8080/authenticate/refreshtoken";
-// const login_url = "http://localhost:8080/login";
-// const register_url = "http://localhost:8080/register"
+const api_url = "http://localhost:8080/api";
+const refresh_url = "http://localhost:8080/authenticate/refreshtoken";
+const login_url = "http://localhost:8080/login";
+const register_url = "http://localhost:8080/register"
 
 
 
@@ -341,8 +341,8 @@ export function getIntakes(date) {
 export function getIntakeById(id) {
     return getRequest("/intake/" + id)
 }
-export function getDailyGoal() {
-    return getRequest("/daily");
+export function getGoal() {
+    return getRequest("/goal");
 }
 export function deleteIntake(id) {
     return deleteRequest("/intake/delete/" + id)

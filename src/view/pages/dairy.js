@@ -4,7 +4,7 @@ import '../components/diary/dairy-list'
 import '../components/diary/daily-goalinfo'
 import '../components/diary/date-selector'
 import {Task} from '@lit/task';
-import { getIntakes, getDailyGoal } from "../../service/ApiService";
+import { getIntakes, getGoal } from "../../service/ApiService";
 
 export default class Dairy extends LitElement{
     static get properties() {
@@ -35,8 +35,8 @@ export default class Dairy extends LitElement{
 
     _dailyGoalTask = new Task(this, {
         task: async () => {
-            return await getDailyGoal().then(e => {
-                this._totalCalories = e.kcal
+            return await getGoal().then(e => {
+                this._totalCalories = e.nutritions.calories
                 return e;
             })
         },
