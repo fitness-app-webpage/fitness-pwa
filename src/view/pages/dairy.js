@@ -38,7 +38,7 @@ export default class Dairy extends LitElement{
             return await getIntakes(dateString).then(e => {
                 return e;
             }).catch(error => {
-                console.log(error)
+                return {totalCalories: 0}
             })
         },
         args: () => [this._date]
@@ -60,6 +60,10 @@ export default class Dairy extends LitElement{
     disconnectedCallback() {
         super.disconnectedCallback()
         this.removeEventListener("intakeDeleted", this._updateData)
+    }
+    firstUpdated() {
+        super.firstUpdated()
+        this._datePicker = this.shadowRoot.querySelector("date-selector")
     }
     _updateData() {
         // this._dailyGoalTask.run()
@@ -103,10 +107,9 @@ export default class Dairy extends LitElement{
         return html`
         <page-div>
             <div class="container">
-                <!-- <h1>Dairy</h1> -->
+                <date-selector @changedDate="${this._changeDate}"></date-selector>
                 ${this._dairyTask.render({
                     pending: () => html`
-                    <date-selector @changedDate="${this._changeDate}"></date-selector>
                     <daily-goalinfo></daily-goalinfo>
                     <div class="container-dairy">
                                         <dairy-list title="Breakfast"></dairy-list>
@@ -115,7 +118,6 @@ export default class Dairy extends LitElement{
                                         <dairy-list title="Snack"></dairy-list>
                                     </div>`,
                     complete: (e) => html`
-                    <date-selector @changedDate="${this._changeDate}"></date-selector>
                     <daily-goalinfo consumed=${e.totalCalories} daily="${this._totalCalories}" remaining="${this._totalCalories - e.totalCalories}"></daily-goalinfo>
                                     <div class="container-dairy">
                                         <dairy-list title="Breakfast" .data="${this._makeIntakeData(e.intakes, "BREAKFAST")}"></dairy-list>
@@ -123,22 +125,29 @@ export default class Dairy extends LitElement{
                                         <dairy-list title="Diner" .data="${this._makeIntakeData(e.intakes, "DINER")}"></dairy-list>
                                         <dairy-list title="Snack" .data="${this._makeIntakeData(e.intakes, "SNACK")}"></dairy-list>
                                     </div>`,
-                    error: (e) => html`<set-goal @response="${this._updateData}"></set-goal>`
+                    error: (e) => { this._datePicker.style = "display: none;"
+                        return html`<set-goal @response="${this._goalSet}"></set-goal>`}
                 })}
             </div>
         </page-div>`
     }
     _makeIntakeData(intakes, type) {
         let data = [];
-        intakes.map(e => {
-            if(e.mealType === type){
-                data = [...data, {id: e.id, totalCalories: e.totalKcal, products: e.product}]
-            }
-        })
+        if(intakes !== undefined) {
+            intakes.map(e => {
+                if(e.mealType === type){
+                    data = [...data, {id: e.id, totalCalories: e.totalKcal, products: e.product}]
+                }
+            })
+        }
         return data;
     }
     _changeDate(e) {
         this._date = e.detail
+    }
+    _goalSet(e) {
+        this._datePicker.style = "display: block;"
+        this._updateData();
     }
 }
 customElements.define('dairy-page', Dairy); 

@@ -144,9 +144,9 @@ export default class DateSelector extends LitElement {
     }
     _makeDateAndTitle(i) {
         this._date.setDate(this._date.getDate() + i)
-
+        
         this._setDays();
-
+        
         this.dispatchEvent(new CustomEvent("changedDate", {
             detail: this._dateString,
             bubbles: true,
