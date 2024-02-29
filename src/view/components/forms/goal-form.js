@@ -67,9 +67,12 @@ export default class GoalForm extends LitElement {
     e.preventDefault();
     const form = e.target;
     if(form.checkValidity()) {
-      this.data = new FormData(form);
+      const formData = new FormData(form);
+      this.data = Object.fromEntries(formData.entries())
       setGoal(this.data).then(e => {
-        console.log(e)
+        if(e.ok) {
+          this.dispatchEvent(new CustomEvent("response"))
+        }
       }).catch(error => {
         console.log(error)
       })

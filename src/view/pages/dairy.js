@@ -123,7 +123,7 @@ export default class Dairy extends LitElement{
                                         <dairy-list title="Diner" .data="${this._makeIntakeData(e.intakes, "DINER")}"></dairy-list>
                                         <dairy-list title="Snack" .data="${this._makeIntakeData(e.intakes, "SNACK")}"></dairy-list>
                                     </div>`,
-                    error: (e) => html`<set-goal></set-goal>`
+                    error: (e) => html`<set-goal @response="${this._updateData}"></set-goal>`
                 })}
             </div>
         </page-div>`
