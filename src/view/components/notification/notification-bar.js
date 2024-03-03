@@ -102,6 +102,7 @@ export default class NotificationBar extends LitElement{
             )}
             <!-- ${this._notifications} -->
         </div>
+        <button @click="${this._handleNotification}">Notification</button>
         `
 
     };
@@ -130,6 +131,18 @@ export default class NotificationBar extends LitElement{
                     <div class="loading-bar"></div>
                 </div>
             </div>`}
+    }
+
+    _handleNotification(e) {
+        navigator.serviceWorker.register("sw.js").then(async (registration) => {
+            const result = await Notification.requestPermission()
+
+            if(result === "granted") {
+                registration.showNotification("hello", {
+                    body: "hello world"
+                })
+            }
+          });
     }
 }
 customElements.define('notification-bar', NotificationBar); 
